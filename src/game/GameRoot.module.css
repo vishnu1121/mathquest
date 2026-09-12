@@ -1,0 +1,4 @@
+.splash {
+  min-height: 100dvh;
+  background: linear-gradient(180deg, var(--scene-sky-top), var(--mint) 70%);
+}

@@ -1,0 +1,139 @@
+.placement {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  background: linear-gradient(180deg, var(--scene-sky-top) 0%, var(--mint) 60%);
+}
+
+.panel {
+  width: min(100%, 820px);
+  display: grid;
+  gap: var(--space-6);
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  border-radius: var(--radius-stage);
+  background: var(--surface);
+  box-shadow: var(--lift);
+}
+
+.hoot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.owl {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.bubble {
+  flex: 1;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-panel) var(--radius-panel) var(--radius-panel) 6px;
+  background: var(--sky-soft);
+  font: 700 var(--step-1) / 1.3 var(--font-display);
+}
+
+.trail {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The trail itself: a run of planks behind the stops. */
+.trail::before {
+  content: "";
+  position: absolute;
+  top: 37px;
+  left: 12%;
+  right: 12%;
+  height: 8px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(90deg, var(--honey) 0 24px, transparent 24px 32px);
+}
+
+.stop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.dot {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  box-shadow: inset 0 0 0 3px var(--line);
+  font: 800 var(--step-2) / 1 var(--font-display);
+  color: var(--ink-soft);
+}
+
+.stop[data-status="start"] .dot {
+  background: var(--sun-soft);
+  box-shadow:
+    inset 0 0 0 4px var(--sun-edge),
+    0 0 0 8px color-mix(in srgb, var(--sun) 30%, transparent);
+  font-size: 2.75rem;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.stop[data-status="ready"] .dot {
+  background: var(--leaf-soft);
+  box-shadow: inset 0 0 0 3px var(--leaf-deep);
+  color: var(--leaf-deep);
+}
+
+.stopName {
+  font: 700 var(--step-0) / 1.2 var(--font-display);
+}
+
+.stopNote {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.cta {
+  justify-self: start;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow:
+      inset 0 0 0 4px var(--sun-edge),
+      0 0 0 14px color-mix(in srgb, var(--sun) 18%, transparent);
+  }
+}
+
+@media (max-width: 640px) {
+  .hoot {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .bubble {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .trail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-5);
+  }
+
+  .trail::before {
+    display: none;
+  }
+
+  .cta {
+    justify-self: stretch;
+  }
+}

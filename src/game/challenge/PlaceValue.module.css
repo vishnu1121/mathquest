@@ -1,0 +1,186 @@
+/* Montessori place-value colors: ones are leaf green, tens are sky blue. */
+
+.addends {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-5);
+}
+
+.number {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: end;
+  gap: var(--space-2) var(--space-3);
+}
+
+.caption {
+  grid-column: 1 / -1;
+  justify-self: center;
+  font: 800 var(--step-1) / 1 var(--font-display);
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.plus {
+  align-self: center;
+  font: 800 var(--step-3) / 1 var(--font-display);
+  color: var(--ink-soft);
+}
+
+.rods {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  min-height: 132px;
+}
+
+.rod {
+  width: 14px;
+  height: 130px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(to bottom, var(--sky) 0 12px, var(--sky-deep) 12px 13px);
+  box-shadow: inset 0 0 0 1px var(--sky-deep);
+}
+
+.rod[data-new="true"] {
+  transform-origin: bottom;
+  animation: grow 520ms var(--ease-spring) both;
+  background: repeating-linear-gradient(to bottom, var(--sun) 0 12px, var(--sun-edge) 12px 13px);
+  box-shadow: inset 0 0 0 1px var(--sun-edge);
+}
+
+.cubes {
+  display: grid;
+  grid-template-columns: repeat(5, 14px);
+  align-content: end;
+  gap: 5px;
+}
+
+.cube {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--leaf);
+  box-shadow: inset 0 0 0 1px var(--leaf-deep);
+}
+
+.frames {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.frame {
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+
+/* Shape as well as color tells the two numbers apart. */
+.cell[data-fill="a"] {
+  border-radius: 50%;
+  background: var(--leaf);
+  box-shadow: inset 0 0 0 2px var(--leaf-deep);
+}
+
+.cell[data-fill="b"] {
+  background: var(--sky);
+  box-shadow: inset 0 0 0 2px var(--sky-deep);
+}
+
+.mat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+
+.column {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.column + .column {
+  border-left: 2px dashed var(--line);
+}
+
+.columnLabel {
+  display: flex;
+  justify-content: space-between;
+  font: 700 var(--step-0) / 1 var(--font-display);
+  color: var(--ink-soft);
+}
+
+.count {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shorter rods on the trade mat so the whole hint fits on a tablet screen. */
+.mat .rods {
+  min-height: 100px;
+}
+
+.mat .rod {
+  height: 98px;
+  background: repeating-linear-gradient(to bottom, var(--sky) 0 9px, var(--sky-deep) 9px 10px);
+}
+
+.mat .rod[data-new="true"] {
+  background: repeating-linear-gradient(to bottom, var(--sun) 0 9px, var(--sun-edge) 9px 10px);
+}
+
+.matFooter {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  min-height: 72px;
+  align-items: center;
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.traded {
+  font: 700 var(--step-0) / 1.3 var(--font-display);
+  color: var(--leaf-deep);
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0.1);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .frame {
+    grid-template-columns: repeat(5, 30px);
+  }
+
+  .cell {
+    width: 30px;
+    height: 30px;
+  }
+}

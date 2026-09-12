@@ -1,0 +1,20 @@
+.speak {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  border: 0;
+  border-radius: 50%;
+  background: var(--sky-soft);
+  color: var(--sky-deep);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--sky) 35%, transparent);
+  transition:
+    transform 110ms var(--ease-out),
+    box-shadow 110ms var(--ease-out);
+}
+
+.speak:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 transparent;
+}

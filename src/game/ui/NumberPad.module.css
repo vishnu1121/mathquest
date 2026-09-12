@@ -1,0 +1,52 @@
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 340px;
+}
+
+.key {
+  display: grid;
+  place-items: center;
+  min-height: 64px;
+  border: 0;
+  border-radius: var(--radius-key);
+  background: var(--surface);
+  color: var(--ink);
+  font: 800 var(--step-2) / 1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    0 var(--press) 0 var(--line-strong);
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform 90ms var(--ease-out),
+    box-shadow 90ms var(--ease-out);
+}
+
+.key:not(:disabled):active {
+  transform: translateY(var(--press));
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    0 0 0 var(--line-strong);
+}
+
+.key:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.erase {
+  color: var(--ink-soft);
+}
+
+.check {
+  background: var(--sun);
+  box-shadow: 0 var(--press) 0 var(--sun-edge);
+}
+
+.check:not(:disabled):active {
+  box-shadow: 0 0 0 var(--sun-edge);
+}

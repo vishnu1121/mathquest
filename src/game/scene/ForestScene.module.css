@@ -1,0 +1,195 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--scene-sky-top) 0%, var(--scene-sky-bottom) 70%);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sun {
+  fill: var(--sun);
+}
+
+.sunGlow {
+  fill: var(--sun);
+  opacity: 0.24;
+  transition: r 900ms var(--ease-out);
+}
+
+.cloud {
+  fill: var(--surface);
+  opacity: 0.92;
+}
+
+.hillFar {
+  fill: var(--scene-hill-far);
+}
+
+.bank {
+  fill: var(--scene-hill-near);
+}
+
+.canopy {
+  fill: var(--scene-canopy);
+}
+
+.canopyLight {
+  fill: var(--scene-canopy-light);
+}
+
+.trunk,
+.post {
+  fill: var(--scene-trunk);
+}
+
+.river {
+  fill: var(--scene-river);
+}
+
+.wave {
+  fill: none;
+  stroke: var(--surface);
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.rope {
+  fill: none;
+  stroke: var(--honey-edge);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.plankMissing {
+  fill: rgba(255, 255, 255, 0.35);
+  stroke: var(--ink-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 8 7;
+  opacity: 0.6;
+}
+
+.plank {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: drop 520ms var(--ease-spring) both;
+}
+
+.plankBody {
+  fill: var(--honey);
+}
+
+.plankEdge {
+  fill: var(--honey-edge);
+}
+
+.plank.wobbly {
+  animation:
+    drop 520ms var(--ease-spring) both,
+    wobble 2.6s 520ms ease-in-out infinite;
+}
+
+.wobbly .plankBody {
+  fill: color-mix(in srgb, var(--honey) 65%, var(--surface));
+}
+
+.gold .plankBody {
+  fill: var(--sun);
+}
+
+.gold .plankEdge {
+  fill: var(--sun-edge);
+}
+
+.tie {
+  stroke: var(--honey-deep);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.stone {
+  fill: var(--surface-soft);
+  stroke: var(--line-strong);
+  stroke-width: 3;
+}
+
+.arch {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.vines {
+  fill: none;
+  stroke: var(--scene-canopy);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.portal {
+  fill: var(--sun);
+  opacity: 0.55;
+  animation: glow 2.4s ease-in-out infinite;
+}
+
+.petal {
+  fill: var(--surface);
+}
+
+.flowerCenter {
+  fill: var(--coral);
+}
+
+.hero {
+  font-size: 78px;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bob 2.8s ease-in-out infinite;
+}
+
+.fog {
+  fill: var(--scene-fog);
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.fog[data-visible="true"] {
+  opacity: 0.85;
+}
+
+@keyframes drop {
+  from {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes glow {
+  50% {
+    opacity: 0.85;
+  }
+}

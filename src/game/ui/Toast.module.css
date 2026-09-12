@@ -1,0 +1,27 @@
+.toast {
+  position: fixed;
+  top: calc(var(--space-4) + 64px);
+  left: 50%;
+  z-index: 10;
+  translate: -50% 0;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--sun);
+  box-shadow:
+    0 var(--press) 0 var(--sun-edge),
+    var(--lift);
+  font: 800 var(--step-1) / 1.2 var(--font-display);
+  white-space: nowrap;
+  animation: pop-in 420ms var(--ease-spring) both;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

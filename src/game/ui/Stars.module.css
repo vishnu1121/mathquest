@@ -1,0 +1,16 @@
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.stars svg {
+  fill: var(--surface-soft);
+  stroke: var(--line-strong);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.stars svg[data-on="true"] {
+  fill: var(--sun);
+  stroke: var(--sun-edge);
+}

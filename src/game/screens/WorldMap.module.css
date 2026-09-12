@@ -1,0 +1,213 @@
+.map {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: var(--mint);
+}
+
+.land {
+  position: relative;
+  min-height: 440px;
+  margin: calc(64px + var(--space-5)) clamp(var(--space-4), 3vw, var(--space-6)) var(--space-4);
+  overflow: hidden;
+  border-radius: var(--radius-stage);
+  background:
+    radial-gradient(40% 45% at 30% 52%, var(--leaf-soft), transparent 70%),
+    radial-gradient(30% 30% at 57% 72%, var(--sun-soft), transparent 70%),
+    radial-gradient(28% 30% at 76% 42%, var(--sky-soft), transparent 70%),
+    linear-gradient(160deg, var(--surface-soft), var(--mint-deep));
+}
+
+.path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.trail,
+.walked {
+  fill: none;
+  stroke-width: 7px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.trail {
+  stroke: var(--honey);
+  stroke-dasharray: 3 16;
+  opacity: 0.8;
+}
+
+.walked {
+  stroke: var(--honey-edge);
+}
+
+.regions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.region {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.regionBody {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-panel);
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--lift);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.here {
+  position: absolute;
+  top: -20px;
+  right: -16px;
+  font-size: 2.1rem;
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+.name {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--lift);
+  font: 700 var(--step-0) / 1.2 var(--font-display);
+  white-space: nowrap;
+}
+
+.note {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.region[data-status="open"] .icon {
+  box-shadow:
+    0 0 0 6px var(--sun),
+    0 0 0 18px color-mix(in srgb, var(--sun) 28%, transparent),
+    var(--lift);
+}
+
+.region[data-status="open"] .regionBody {
+  cursor: pointer;
+}
+
+.region[data-status="unlocked"] .icon {
+  box-shadow:
+    0 0 0 5px var(--leaf),
+    var(--lift);
+}
+
+.region[data-status="locked"] .icon {
+  background: var(--surface-soft);
+  box-shadow: inset 0 0 0 3px var(--line);
+  filter: grayscale(0.8);
+  opacity: 0.72;
+}
+
+.region[data-status="locked"] .name {
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  box-shadow: none;
+  color: var(--ink-soft);
+}
+
+.mission {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0 clamp(var(--space-4), 3vw, var(--space-6)) clamp(var(--space-4), 3vw, var(--space-6));
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-stage);
+  background: var(--surface);
+  box-shadow: var(--lift);
+}
+
+.missionText {
+  flex: 1;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 220px;
+}
+
+.missionLine {
+  font: 700 var(--step-1) / 1.3 var(--font-display);
+}
+
+.trails {
+  display: flex;
+  gap: 6px;
+}
+
+.trails span {
+  width: 42px;
+  height: 12px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.trails span[data-on="true"] {
+  background: var(--sun);
+  box-shadow: inset 0 -4px 0 var(--sun-edge);
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 760px) {
+  .land {
+    min-height: auto;
+    padding: var(--space-5) var(--space-3);
+  }
+
+  .path {
+    display: none;
+  }
+
+  .regions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-2);
+  }
+
+  .region {
+    position: static;
+    transform: none;
+  }
+
+  .icon {
+    width: 76px;
+    height: 76px;
+    font-size: 2.4rem;
+  }
+
+  .name {
+    white-space: normal;
+  }
+}

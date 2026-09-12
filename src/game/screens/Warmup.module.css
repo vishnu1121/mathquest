@@ -1,0 +1,103 @@
+.warmup {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-5);
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  background: linear-gradient(180deg, var(--scene-sky-top) 0%, var(--mint) 42%);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  max-width: 1120px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.hoot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.owl {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.bubble {
+  max-width: 38ch;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-panel) var(--radius-panel) var(--radius-panel) 6px;
+  background: var(--surface);
+  box-shadow: var(--lift);
+  font: 600 var(--step-0) / 1.35 var(--font-display);
+}
+
+/* Progress as planks: each answered question lays one down. */
+.trail {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.marker {
+  width: 38px;
+  height: 14px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  transition: background-color 240ms ease;
+}
+
+.marker[data-state="done"] {
+  background: var(--honey);
+  box-shadow: inset 0 -4px 0 var(--honey-edge);
+}
+
+.marker[data-state="current"] {
+  background: var(--sun);
+  box-shadow: inset 0 -4px 0 var(--sun-edge);
+}
+
+.play {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+  align-items: center;
+  gap: clamp(var(--space-5), 3vw, var(--space-7));
+  max-width: 1120px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+@media (max-width: 860px) {
+  .play {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: start;
+    align-content: start;
+  }
+
+  .play > :first-child {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hoot {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    width: 100%;
+  }
+
+  .bubble {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: none;
+  }
+}

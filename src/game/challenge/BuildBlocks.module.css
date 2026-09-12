@@ -1,0 +1,166 @@
+/* Montessori place-value colors: tens are sky blue rods, ones are leaf green cubes. */
+.builder {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 360px;
+}
+
+.title {
+  font: 800 var(--step-1) / 1.2 var(--font-display);
+}
+
+.mat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 170px;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+
+.column {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.column + .column {
+  border-left: 2px dashed var(--line);
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  font: 700 var(--step--1) / 1 var(--font-display);
+  color: var(--ink-soft);
+}
+
+.count {
+  color: var(--ink);
+  font-size: var(--step-0);
+  font-variant-numeric: tabular-nums;
+}
+
+.rods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.rod {
+  width: 10px;
+  height: 100px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(to bottom, var(--sky) 0 9px, var(--sky-deep) 9px 10px);
+  animation: pop 260ms var(--ease-spring) both;
+}
+
+.cubes {
+  display: grid;
+  grid-template-columns: repeat(5, 14px);
+  gap: 4px;
+  align-content: start;
+  padding: 4px;
+  border-radius: 8px;
+  transition: box-shadow 200ms ease;
+}
+
+.cubes[data-full="true"] {
+  box-shadow: inset 0 0 0 2px var(--sun-edge);
+  background: var(--sun-soft);
+}
+
+.cube {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--leaf);
+  box-shadow: inset 0 0 0 1px var(--leaf-deep);
+  animation: pop 220ms var(--ease-spring) both;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.add,
+.bundle,
+.undo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 60px;
+  border: 0;
+  border-radius: var(--radius-key);
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 2px var(--line),
+    0 var(--press) 0 var(--line-strong);
+  font: 800 var(--step-1) / 1 var(--font-display);
+  transition: transform 90ms var(--ease-out);
+}
+
+.add:not(:disabled):active,
+.bundle:not(:disabled):active,
+.undo:not(:disabled):active {
+  transform: translateY(var(--press));
+}
+
+.bundle {
+  font-size: var(--step-0);
+}
+
+.bundle[data-ready="true"] {
+  background: var(--sun);
+  box-shadow: 0 var(--press) 0 var(--sun-edge);
+  animation: ready 1.6s ease-in-out infinite;
+}
+
+.bundle:disabled,
+.undo:disabled,
+.add:disabled {
+  opacity: 0.5;
+}
+
+.rodIcon {
+  width: 8px;
+  height: 28px;
+  border-radius: 2px;
+  background: var(--sky);
+  box-shadow: inset 0 0 0 1px var(--sky-deep);
+}
+
+.cubeIcon {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--leaf);
+  box-shadow: inset 0 0 0 1px var(--leaf-deep);
+}
+
+.check {
+  width: 100%;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes ready {
+  50% {
+    transform: translateY(-2px);
+  }
+}

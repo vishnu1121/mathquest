@@ -1,0 +1,146 @@
+.complete {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(46dvh, 1fr) auto;
+}
+
+.scene {
+  min-height: 0;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+  width: min(100% - 2 * var(--space-4), 980px);
+  margin: calc(-1 * var(--space-7)) auto clamp(var(--space-4), 3vw, var(--space-6));
+  padding: clamp(var(--space-5), 3vw, var(--space-6));
+  border-radius: var(--radius-stage);
+  background: var(--surface);
+  box-shadow: var(--lift);
+  animation: rise 520ms var(--ease-spring) both;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: clamp(var(--step-3), 4vw, var(--step-5));
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-4);
+}
+
+.award {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-panel);
+  background: var(--sun-soft);
+}
+
+.trophy {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.awardName {
+  font: 800 var(--step-2) / 1.1 var(--font-display);
+}
+
+.awardNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-2);
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.skills {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-tag);
+  background: var(--surface-soft);
+}
+
+.skillName {
+  font: 700 var(--step-0) / 1.2 var(--font-display);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.unlock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.unlockIcon {
+  font-size: 2.75rem;
+  line-height: 1;
+}
+
+.unlockTitle {
+  font: 800 var(--step-1) / 1.2 var(--font-display);
+}
+
+.unlockNote {
+  color: var(--ink-soft);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: var(--step-2);
+  }
+}

@@ -1,0 +1,102 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--scene-sky-top) 0%, var(--scene-sky-bottom) 75%);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hillFar {
+  fill: var(--scene-hill-far);
+}
+
+.ground {
+  fill: var(--scene-hill-near);
+}
+
+.trunk {
+  fill: var(--scene-trunk);
+}
+
+.canopy {
+  fill: var(--scene-canopy);
+}
+
+.canopyLight {
+  fill: var(--scene-canopy-light);
+}
+
+.eye {
+  fill: var(--surface);
+}
+
+.pupil {
+  fill: var(--ink);
+}
+
+.line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.guardian {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.guardian[data-mood="hit"] {
+  animation: shake 420ms ease;
+}
+
+.guardian[data-mood="sleepy"] {
+  animation: sway 3.6s ease-in-out infinite;
+}
+
+.leaf {
+  fill: var(--leaf);
+  stroke: var(--leaf-deep);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 900ms var(--ease-out),
+    opacity 900ms ease,
+    fill 300ms ease;
+}
+
+.vein {
+  fill: none;
+  stroke: var(--leaf-deep);
+  stroke-width: 2;
+}
+
+.leaf[data-fallen="true"] {
+  fill: var(--honey);
+  stroke: var(--honey-edge);
+  opacity: 0;
+  transform: translateY(260px) rotate(80deg);
+}
+
+.hero {
+  font-size: 84px;
+}
+
+@keyframes shake {
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes sway {
+  50% {
+    transform: rotate(1.5deg);
+  }
+}

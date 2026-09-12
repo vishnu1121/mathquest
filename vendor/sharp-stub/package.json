@@ -1,0 +1,7 @@
+{
+  "name": "sharp",
+  "version": "0.35.4",
+  "description": "MathQuest stand-in for sharp so its LGPL-licensed libvips binaries are never installed. Image optimization is disabled.",
+  "license": "MIT",
+  "main": "index.js"
+}
