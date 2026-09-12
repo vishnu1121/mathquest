@@ -107,12 +107,20 @@ export function Boss() {
   return (
     <div className={styles.boss}>
       <div className={styles.sceneBand}>
-        <GuardianScene shieldsLeft={shieldsLeft} total={boss.items.length} mood={moodFor(boss)} hero={heroEmoji} className={styles.scene} />
+        <GuardianScene
+          shieldsLeft={shieldsLeft}
+          total={boss.items.length}
+          mood={moodFor(boss)}
+          hero={heroEmoji}
+          className={styles.scene}
+          speech={
+            <div className={styles.bubble}>
+              <p>{line}</p>
+              <SpeakButton text={line} label="Read the Guardian's words aloud" />
+            </div>
+          }
+        />
         <Hud title="The Forest Guardian" xp={xp} heroEmoji={heroEmoji} heroName={profile.name} />
-        <div className={styles.speech}>
-          <p>{line}</p>
-          <SpeakButton text={line} label="Read the Guardian's words aloud" />
-        </div>
       </div>
 
       <section className={styles.deck} aria-label="Guardian challenge">

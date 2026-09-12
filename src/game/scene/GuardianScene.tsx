@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import styles from "./GuardianScene.module.css";
 
 export type GuardianMood = "ready" | "hit" | "sleepy" | "proud";
@@ -7,12 +8,15 @@ interface GuardianSceneProps {
   total: number;
   mood: GuardianMood;
   hero: string;
+  /** What the Guardian says: beside the Guardian on wide screens, below it on narrow ones. */
+  speech?: ReactNode;
   className?: string;
 }
 
-// Composed for a short, wide band: the shields sit in a flat arc across the middle of the scene
-// so they stay visible when the band crops the top and bottom.
+// Two layers: the hills fill the band and crop freely, while the Guardian, its shields and the hero
+// sit in a tight box that always fits whole, whatever shape the band is.
 const ARC = { cx: 600, cy: 250, rx: 250, ry: 125, from: 205, to: 335 } as const;
+const STAGE_VIEWBOX = "330 86 540 374";
 
 function shieldPosition(index: number, total: number): { x: number; y: number } {
   const t = total === 1 ? 0.5 : index / (total - 1);
@@ -20,18 +24,21 @@ function shieldPosition(index: number, total: number): { x: number; y: number } 
   return { x: Math.round(ARC.cx + ARC.rx * Math.cos(angle)), y: Math.round(ARC.cy + ARC.ry * Math.sin(angle)) };
 }
 
-export function GuardianScene({ shieldsLeft, total, mood, hero, className }: GuardianSceneProps) {
+export function GuardianScene({ shieldsLeft, total, mood, hero, speech, className }: GuardianSceneProps) {
   return (
-    <div
-      className={[styles.scene, className].filter(Boolean).join(" ")}
-      role="img"
-      aria-label={`The Forest Guardian has ${shieldsLeft} of ${total} leaf shields left`}
-    >
-      <svg className={styles.svg} viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <div className={[styles.scene, className].filter(Boolean).join(" ")}>
+      <svg className={styles.backdrop} viewBox="0 0 1200 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
         <ellipse className={styles.hillFar} cx={240} cy={470} rx={560} ry={180} />
         <ellipse className={styles.hillFar} cx={1000} cy={480} rx={560} ry={190} />
         <rect className={styles.ground} x={0} y={430} width={1200} height={90} />
+      </svg>
 
+      <svg
+        className={styles.stage}
+        viewBox={STAGE_VIEWBOX}
+        role="img"
+        aria-label={`The Forest Guardian has ${shieldsLeft} of ${total} leaf shields left`}
+      >
         <g className={styles.guardian} data-mood={mood}>
           <rect className={styles.trunk} x={548} y={300} width={104} height={150} rx={32} />
           <circle className={styles.canopy} cx={600} cy={250} r={105} />
@@ -68,10 +75,12 @@ export function GuardianScene({ shieldsLeft, total, mood, hero, className }: Gua
           );
         })}
 
-        <text className={styles.hero} x={300} y={432} textAnchor="middle">
+        <text className={styles.hero} x={390} y={440} textAnchor="middle">
           {hero}
         </text>
       </svg>
+
+      {speech ? <div className={styles.speech}>{speech}</div> : null}
     </div>
   );
 }
