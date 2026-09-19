@@ -4,6 +4,11 @@ A maths game for kids aged 5 to 11, where the maths is the game rather than a qu
 
 Built for the **Nerdy AI Hackathon** (Prompt 01: K–5 Math Game).
 
+### ▶ [Play it live — mathquest-rosy.vercel.app](https://mathquest-rosy.vercel.app/)
+
+No account, no install. It asks your name once, then you pick a class and you are on your island. The
+live build has AI switched on; everything still works if a provider is down.
+
 The short version: children get an island of their own, eight chapters built from their grade's real
 syllabus, and an owl who helps without giving answers. An AI writes fresh questions while they play, so
 replaying a chapter is not replaying the same five questions — but it is never allowed to *assert* an
