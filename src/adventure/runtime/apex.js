@@ -166,15 +166,31 @@ import { CLASSES } from "../classes/catalog";
     const panel = $("apexPanel");
     if (!panel) return;
     const g = grade();
-    if (!offered()) { panel.innerHTML = ""; return; }
+    if (!g) { panel.innerHTML = ""; return; }
     const info = CLASSES[g];
     const focused = document.activeElement?.id;
 
     if (!unlocked()) {
       const left = chaptersLeft(g, S.get().chapters);
-      panel.innerHTML = `<div class="apex-head"><p class="voyage-kicker">${info.label.toUpperCase()} · APEX MODE</p><h1>The island keeps one more secret.</h1><p class="apex-lede">Finish all eight chapters of ${esc(info.island)} and Apex Mode opens: the same eight quests, at the very hardest this class goes, with rare treasure hidden along the way.</p></div>
-        <div class="apex-locked"><span class="apex-seal" aria-hidden="true">◈</span><div><h2>${left} ${left === 1 ? "chapter" : "chapters"} to go</h2><p>Apex is not another grade. It is ${esc(info.label)} thinking, turned all the way up: more steps, missing middles, and working backwards.</p><button type="button" class="btn" data-apex="next">Take me to my next quest →</button></div></div>`;
+      // The quests are shown even though none of them can be played. A child can see exactly what is
+      // waiting and what it will cost to get there, which is the point of a locked door you can look at.
+      // Built from the class's own chapters rather than from apexQuests, so the younger classes — which
+      // have no Apex quests at all — still see what the mode would replay, and still get told why.
+      const preview = info.chapters.map((chapter, i) => ({ slot: i + 1, emoji: chapter.emoji, place: chapter.place, title: chapter.title, skills: chapter.skills }))
+        .map((quest) => `<button type="button" id="apex-quest-${quest.slot}" data-apex-locked="${quest.slot}" class="locked" aria-label="Apex quest ${quest.slot}: ${esc(quest.title)}. Locked until the island is finished.">
+        <span class="aq-emoji" aria-hidden="true">${quest.emoji}</span><span class="voyage-kicker">APEX ${quest.slot} · ${esc(quest.place)}</span><b>${esc(quest.title)}</b><span class="aq-skills">${esc(quest.skills)}</span><span class="aq-status">🔒 Locked</span></button>`).join("");
+      panel.innerHTML = `<div class="apex-head"><p class="voyage-kicker">${info.label.toUpperCase()} · APEX MODE</p><h1>${offered() ? "The island keeps one more secret." : "Apex Mode opens in Grade 3."}</h1><p class="apex-lede">${offered()
+        ? `Finish all eight chapters of ${esc(info.island)} and Apex Mode opens: the same eight quests, at the very hardest this class goes, with rare treasure hidden along the way.`
+        : `Apex is the hardest version of an island, and it is built for Grades 3, 4 and 5. You are in ${esc(info.label)}. Finish your island, keep going, and it will be waiting.`}</p>
+        <div class="apex-meters"><button type="button" class="apex-meter apex-vault-open" data-apex="vault"><i aria-hidden="true">💎</i> The treasure vault <small>See what is hidden</small></button></div></div>
+        <div class="apex-locked"><span class="apex-seal" aria-hidden="true">◈</span><div><h2>${offered() ? `${left} ${left === 1 ? "chapter" : "chapters"} to go` : "Not yet"}</h2><p>${offered()
+          ? `Apex is not another grade. It is ${esc(info.label)} thinking, turned all the way up: more steps, missing middles, and working backwards.`
+          : "Every island has eight chapters. Finishing yours is how you get there."}</p><button type="button" class="btn" data-apex="next">Take me to my next quest →</button></div></div>
+        ${preview ? `<div class="apex-grid apex-preview">${preview}</div>` : ""}`;
       panel.querySelector('[data-apex="next"]').onclick = () => { window.MQWorld.setView("explore"); window.MQWorld.enterPlace(C().nextChapter()); };
+      panel.querySelector('[data-apex="vault"]').onclick = openVault;
+      panel.querySelectorAll("[data-apex-locked]").forEach((b) => (b.onclick = () => sayLocked()));
+      if (focused && document.getElementById(focused)) document.getElementById(focused).focus({ preventScroll: true });
       return;
     }
 
@@ -183,7 +199,7 @@ import { CLASSES } from "../classes/catalog";
       const record = state.quests[quest.id];
       const open = playtest() || apexQuestOpen(state, g, quest.slot);
       const status = record ? `✓ Cleared · ${record.stars} of 3 stars` : open ? "Ready — this is the hard one →" : `After Apex quest ${quest.slot - 1}`;
-      return `<button type="button" id="apex-quest-${quest.slot}" data-apex-quest="${quest.slot}" class="${record ? "cleared" : ""} ${open && !record ? "next" : ""}" ${open ? "" : "disabled"} aria-label="Apex quest ${quest.slot}: ${esc(quest.title)}. ${status}">
+      return `<button type="button" id="apex-quest-${quest.slot}" ${open ? `data-apex-quest="${quest.slot}"` : `data-apex-locked="${quest.slot}"`} class="${record ? "cleared" : ""} ${open && !record ? "next" : ""} ${open ? "" : "locked"}" aria-label="Apex quest ${quest.slot}: ${esc(quest.title)}. ${status}">
         <span class="aq-emoji" aria-hidden="true">${quest.emoji}</span><span class="voyage-kicker">APEX ${quest.slot} · ${esc(quest.place)}</span><b>${esc(quest.title)}</b><span class="aq-skills">${esc(quest.skills)}</span><span class="aq-status">${open ? status : `🔒 ${status}`}</span></button>`;
     }).join("");
 
@@ -194,7 +210,30 @@ import { CLASSES } from "../classes/catalog";
 
     panel.querySelector('[data-apex="vault"]').onclick = openVault;
     panel.querySelectorAll("[data-apex-quest]").forEach((b) => (b.onclick = () => openQuest(Number(b.dataset.apexQuest))));
+    panel.querySelectorAll("[data-apex-locked]").forEach((b) => (b.onclick = () => sayLocked()));
     if (focused && document.getElementById(focused)) document.getElementById(focused).focus({ preventScroll: true });
+  }
+
+  /**
+   * Why this quest cannot be played yet. Shown when a child taps a locked Apex quest rather than leaving
+   * them to guess: a locked door should always say what opens it.
+   */
+  function sayLocked() {
+    const g = grade();
+    const info = CLASSES[g];
+    const left = chaptersLeft(g, S.get().chapters);
+    MQ.fx.sfx.hoot();
+    const body = isApexGrade(g)
+      ? `<p class="voyage-kicker">APEX MODE · LOCKED</p><h2 id="apexDialogTitle">Finish your island first</h2><div class="ar-ground" aria-hidden="true"><span>${info.emoji}</span></div><p>Apex opens when all eight chapters of ${esc(info.island)} are done. You have <b>${left} ${left === 1 ? "chapter" : "chapters"}</b> to go.</p><p class="ar-fact">Then these same eight quests come back, at the very hardest ${esc(info.label)} goes — with rare treasure buried along the way.</p>`
+      : `<p class="voyage-kicker">APEX MODE · GRADES 3 TO 5</p><h2 id="apexDialogTitle">Not for this class yet</h2><div class="ar-ground" aria-hidden="true"><span>${info.emoji}</span></div><p>Apex is the hardest version of an island, and it is built for Grades 3, 4 and 5. You are in ${esc(info.label)}.</p><p class="ar-fact">Finish ${esc(info.island)}, keep going, and it will be waiting for you.</p>`;
+    dialog("apex-reveal apex-locked-note", body, [
+      { label: "Take me to my next quest →", value: "go" },
+      { label: "Stay here", secondary: true, value: null },
+    ]).then((choice) => {
+      if (choice !== "go" || !C()?.nextChapter()) return;
+      window.MQWorld.setView("explore");
+      window.MQWorld.enterPlace(C().nextChapter());
+    });
   }
 
   function openQuest(slot) {
@@ -238,8 +277,11 @@ import { CLASSES } from "../classes/catalog";
     const tab = document.querySelector('[data-world-view="apex"]');
     const nav = document.querySelector(".voyage-nav");
     if (!tab || !nav) return;
-    tab.hidden = !offered();
-    nav.toggleAttribute("data-apex", offered());
+    // Always visible, for every class. A mode a child cannot see is a mode they cannot look forward to,
+    // and the panel behind it explains itself: Grades 3-5 see how many chapters are left, younger classes
+    // are told plainly that Apex arrives in Grade 3.
+    tab.hidden = false;
+    nav.toggleAttribute("data-apex", true);
     tab.querySelector(".apex-dot")?.remove();
     if (offered() && unlocked() && !read().nova) {
       const dot = document.createElement("i");
@@ -247,8 +289,7 @@ import { CLASSES } from "../classes/catalog";
       dot.setAttribute("aria-hidden", "true");
       tab.append(dot);
     }
-    // A Grade 1 child must never be left looking at a panel their class does not have.
-    if (!offered() && document.getElementById("mapScreen")?.dataset.view === "apex") window.MQWorld.setView("explore");
+
   }
 
   register();

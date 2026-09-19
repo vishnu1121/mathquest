@@ -182,3 +182,13 @@ html[data-calm] .ar-ground.shimmer > i { opacity: 0.85; }
   #app .voyage-nav[data-apex] button > span { font-size: 19px; }
   .apex-dot { top: 5px; right: 6px; width: 8px; height: 8px; }
 }
+
+/* A locked quest is readable, not hidden. It looks unavailable and says so in words as well as colour,
+   and it is still a button, because tapping it is how a child finds out what opens it. */
+.apex-grid button.locked { background: #eae4d4; color: #55665f; cursor: pointer; }
+.apex-grid button.locked:hover { border-color: var(--apex-gold); background: #efe9d9; }
+.apex-grid button.locked .aq-emoji { filter: grayscale(1); opacity: 0.55; }
+.apex-grid button.locked .aq-status { color: #6b7d78; }
+.apex-preview { margin-top: 22px; }
+.apex-locked-note .ar-ground { height: 104px; }
+.apex-locked-note .ar-ground > span { font-size: 46px; }

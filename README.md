@@ -11,6 +11,17 @@ answer. It has to show its working, and the server re-solves that working before
 
 ---
 
+## The flow, in four screens
+
+| | |
+|---|---|
+| **1. One question, then the adventure.** No account, no splash page. The name stays on the device. | **2. Pick your class.** Six islands, one per grade. A grown-up can change this later. |
+| ![The name screen](docs/screenshots/01-name.png) | ![Choosing a class](docs/screenshots/02-class.png) |
+| **3. Pick a hero.** Every option is unisex, and it can be changed at any time. | **4. Your island.** Eight chapters in order, a camp, keepsakes to find, and your name under your hero. |
+| ![Choosing a hero](docs/screenshots/03-hero.png) | ![The island map](docs/screenshots/04-island.png) |
+
+---
+
 ## Contents
 
 - [What you actually play](#what-you-actually-play)
@@ -40,6 +51,11 @@ standard it covers.
 drag planks into a bridge, place points on a grid, turn dials on a place-value workbench, count crates
 into a cargo ship. Typing a number on a keypad is one input among many.
 
+![The place-value workbench](docs/screenshots/05-board.png)
+
+*Grade 4's place-value workbench. The digits and the blocks are the real operands, drawn from the question
+the code generated — not decoration beside a sum.*
+
 **Hoot the owl** sits with you the whole way. He notices pauses and mistakes, and asks one question
 that fits the moment. He is not allowed to say the answer — a guard strips any hint containing it.
 
@@ -47,6 +63,11 @@ that fits the moment. He is not allowed to say the answer — a guard strips any
 rating and misconception bosses. Practice has trails, a mixed expedition and a set of static maths
 cards for looking things up. The Adults dashboard shows real evidence per skill — independent answers
 kept separate from ones that needed a hint or a retry — and can export a text snapshot.
+
+| | |
+|---|---|
+| ![The maths cards](docs/screenshots/12-cards.png) | ![The adults dashboard](docs/screenshots/13-adults.png) |
+| **Maths cards** in Practice: the rule on the front, a worked example one tap away. No AI — every equation on every card is re-solved by a test. | **The adults view** shows real evidence per skill, keeps independent answers separate from supported ones, and exports a text snapshot. |
 
 **Everything is local.** Progress lives in browser storage under `mq.playtest.v3`. No accounts, no
 analytics, no server-side profile. The name you type is stored on the device and never sent anywhere.
@@ -63,10 +84,23 @@ The ordering is the whole point. A child who guessed right and knows they guesse
 actually works, and because the question is already scored, asking cannot cost them anything. The
 server drops any explanation whose closing line lands on a different answer than the code computed.
 
+![The explainer, opened after the question was marked](docs/screenshots/07-explainer.png)
+
+*The question is already marked correct — "✓ You got it! 2,869 + 3,252 = 6,121" — and only then does
+"How it works" appear underneath it. Four steps, ending on the answer the code computed. A real reply,
+captured live.*
+
 ### Fresh questions during play
 
 Replay a chapter and the questions are different — new scenarios, new wording, new problem shapes, not
 the same sum with the numbers swapped.
+
+![A question written by the model](docs/screenshots/08-ai-question.png)
+
+*Mission 2 of the Crystal Canyon Express, written live by the model: "Sam loads 81 carts, each cart holds
+64 stones. How many stones are there in total?" The built-in questions in this chapter are bare
+algorithms like `5,696 − 4,637`; this one has a scenario, and its arithmetic was re-solved by the server
+before it was drawn.*
 
 The next question is written **while the child is still answering the current one**, so nothing ever
 waits on a provider. Question 1 of a chapter is always a built-in one; there is no cutscene to hide a
@@ -155,6 +189,12 @@ of the model: 4 of 40 rounds at Grades 3–4, 3 of 40 at Grade 5 (one grade up f
 school, and that edge deserves more care). A stretch round is labelled to the child and is excluded
 from the learner model.
 
+![The Apex panel](docs/screenshots/09-apex.png)
+
+*The Apex tab is visible to every class from the start. Until the island is finished, the quests are shown
+but locked, and tapping one says exactly what opens it rather than doing nothing. Kindergarten to Grade 2
+are told plainly that Apex arrives in Grade 3.*
+
 **Apex is fully playable with AI switched off.** The built-in fallback draws each chapter's hardest
 generators, and the last two rounds bring in a different chapter from the same class, so a quest ends
 by combining topics.
@@ -176,6 +216,11 @@ pay.
 | 7 | Europium Glow Gem | Europium | 4 of 5 first-try |
 | 8 | Neo Star Gem | Neodymium | 4 of 5 first-try |
 | all eight cleared | **The Nova Gem** | — | finish every Apex quest |
+
+| | |
+|---|---|
+| ![Finding a gem](docs/screenshots/10-gem.png) | ![The treasure vault](docs/screenshots/11-vault.png) |
+| **A gem comes out of the ground** after a quest that was played well enough to shake it loose. | **The vault** names what you found and keeps the rest a silhouette. |
 
 A gem you did not earn stays buried, and the card says *"something is still humming under Anvil
 Row"* — never what it needs. The vault shows found gems with a one-line fact, silhouettes for the rest,

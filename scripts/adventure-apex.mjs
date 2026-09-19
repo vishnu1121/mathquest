@@ -1,7 +1,8 @@
 // Apex Mode, the rare gems and AI-written questions, end to end in a real browser.
 //
 // What this proves, in order of how much it would hurt to get wrong:
-//   1. Kindergarten, Grade 1 and Grade 2 have no Apex tab at all — not locked, absent.
+//   1. Kindergarten, Grade 1 and Grade 2 can see and open the Apex tab, and are told plainly that it
+//      arrives in Grade 3. No Apex level is registered for them and none can be opened.
 //   2. Apex stays shut until the whole island is finished, and then opens.
 //   3. A generated question really reaches the board, and a question the model got WRONG never does.
 //   4. Gameplay is identical with generation switched off: same boards, no stall, no error.
@@ -106,20 +107,29 @@ async function playQuest(page) {
   return found;
 }
 
-// ---------- 1. Apex does not exist for the younger classes ----------
+// ---------- 1. The younger classes can look, and are told why they cannot play ----------
 {
   const { page } = await newPage("young", { width: 1280, height: 860 });
   for (const grade of ["K", "1", "2"]) {
     await arrive(page, grade, { islandDone: true });
-    await expect(apexTab(page)).toBeHidden();
+    // Visible and reachable: a mode you cannot see is a mode you cannot look forward to.
+    await expect(apexTab(page)).toBeVisible();
+    await apexTab(page).click();
+    await expect(page.locator("#apexPanel")).toContainText("Grade 3");
+    // Tapping a quest says what opens it, rather than doing nothing.
+    await page.locator("#apexPanel [data-apex-locked]").first().click();
+    await expect(page.locator("dialog.apex-locked-note[open]")).toBeVisible();
+    await expect(page.locator("dialog.apex-locked-note[open]")).toContainText("Grades 3, 4 and 5");
+    await page.locator("dialog.apex-locked-note[open] .vp-actions button").last().click();
+    // But nothing is playable, and a finished island does not change that.
     const registered = await page.evaluate(() => window.MQ.levels.filter((l) => l.id.startsWith("apex-") && l.grade === window.MQClasses.grade()).length);
     if (registered !== 0) throw new Error(`grade ${grade} has ${registered} apex levels registered`);
-    // Even a direct call must not open one: the level belongs to another class.
     await page.evaluate(() => window.MQ.openLevel(window.MQ.levels.find((l) => l.id.startsWith("apex-"))));
     await expect(page.locator("#mapScreen")).toBeVisible();
     if (await page.evaluate(() => Boolean(window.MQApex.offered()))) throw new Error(`grade ${grade} is offered Apex`);
+    if (await page.evaluate(() => Boolean(window.MQApex.unlocked()))) throw new Error(`grade ${grade} unlocked Apex`);
   }
-  await shot(page, "01-no-apex-for-young-classes");
+  await shot(page, "01-young-classes-can-look");
   await page.close();
 }
 
@@ -131,7 +141,13 @@ async function playQuest(page) {
   await apexTab(page).click();
   await expect(page.locator("#apexPanel .apex-locked")).toBeVisible();
   await expect(page.locator("#apexPanel")).toContainText(/chapters to go/);
-  if (await page.locator("#apexPanel .apex-grid").count()) throw new Error("locked Apex is showing its quests");
+  // The quests are shown, but every one of them says what opens it instead of opening.
+  await expect(page.locator("#apexPanel .apex-preview button")).toHaveCount(8);
+  if (await page.locator("#apexPanel [data-apex-quest]").count()) throw new Error("a locked Apex quest is playable");
+  await page.locator("#apexPanel [data-apex-locked]").first().click();
+  await expect(page.locator("dialog.apex-locked-note[open]")).toContainText("Finish your island first");
+  await expect(page.locator("dialog.apex-locked-note[open]")).toContainText(/chapters to go|chapter to go/);
+  await page.locator("dialog.apex-locked-note[open] .vp-actions button").last().click();
   await shot(page, "02-apex-locked");
 
   await page.evaluate(() => {
@@ -140,7 +156,11 @@ async function playQuest(page) {
   });
   await expect(page.locator("#apexPanel .apex-grid button")).toHaveCount(8);
   await expect(page.locator("#apexPanel .apex-grid button").nth(0)).toBeEnabled();
-  await expect(page.locator("#apexPanel .apex-grid button").nth(1)).toBeDisabled();
+  // Quest 2 is not playable until quest 1 is cleared, and says so when tapped rather than doing nothing.
+  await expect(page.locator("#apexPanel .apex-grid button").nth(1)).toHaveClass(/locked/);
+  await page.locator("#apexPanel .apex-grid button").nth(1).click();
+  await expect(page.locator("dialog.apex-locked-note[open]")).toBeVisible();
+  await page.locator("dialog.apex-locked-note[open] .vp-actions button").last().click();
   await shot(page, "03-apex-unlocked");
 
   // The vault opens before anything is found, and gives nothing away.
@@ -299,8 +319,10 @@ for (const [name, options, label] of [
   await page.evaluate(() => window.MQ.showMap());
   for (const grade of ["K", "1", "2"]) {
     await page.evaluate((g) => { window.MQClasses.switchTo(g, { quiet: true }); window.MQApex.syncNav(); }, grade);
-    await expect(apexTab(page)).toBeHidden();
+    // The tab is there for every class, but the switch must not hand a Kindergartener a playable Apex.
+    await expect(apexTab(page)).toBeVisible();
     if (await page.evaluate(() => window.MQApex.unlocked())) throw new Error(`the playtest switch unlocked Apex for grade ${grade}`);
+    if (await page.evaluate(() => window.MQApex.offered())) throw new Error(`grade ${grade} is offered Apex`);
   }
   await page.close();
 }
@@ -338,4 +360,4 @@ if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);
 }
-console.log(`\nApex passed: hidden for K/1/2, locked until the island is done, generated questions checked before they are drawn, unchanged with AI off, eight quests to the Nova Gem, per-class treasure, and the nav bar measured at 360px. Screenshots: ${out}`);
+console.log(`\nApex passed: visible but unplayable for K/1/2, locked until the island is done, generated questions checked before they are drawn, unchanged with AI off, eight quests to the Nova Gem, per-class treasure, and the nav bar measured at 360px. Screenshots: ${out}`);
