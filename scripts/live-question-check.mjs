@@ -45,7 +45,7 @@ async function run(levelId) {
     const prompt = (await page.locator("#cgPrompt").textContent())?.trim();
     const source = await page.locator("#stage").getAttribute("data-question-source");
     seen.push({ round: round + 1, source, prompt });
-    await page.locator('[data-cg="help"]').click();
+    await page.evaluate(() => window.MQClassGames.fillAnswer());
     await page.locator('[data-cg="check"]').click();
     await page.locator('[data-cg="next"]').waitFor({ state: "visible", timeout: 20000 });
     await page.locator('[data-cg="next"]').click();

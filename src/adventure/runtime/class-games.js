@@ -71,7 +71,7 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
     const taskName = cfg.apex ? "APEX CHALLENGE" : cfg.grade === "K" ? "PLAY" : "MISSION";
     stage.dataset.class = cfg.grade;
     stage.dataset.activity = cfg.arena ? "arena" : cfg.apex ? "apex" : "chapter";
-    stage.innerHTML = `<div class="trail-workspace class-workspace"><header class="trail-header"><div><p class="eyebrow">${esc(cfg.kicker)}</p><h1>${esc(cfg.title)}</h1></div><span class="trail-band" id="cgSkill"></span></header><div class="trail-progress" role="progressbar" aria-label="Questions finished" aria-valuemin="0" aria-valuemax="${ROUNDS}" aria-valuenow="${round}">${Array.from({ length: ROUNDS }, (_, i) => `<span data-stop="${i}" class="${i < round ? "found" : ""}">${i < round ? "✓" : i + 1}</span>`).join("")}</div><p class="cg-story-beat" role="status"></p><div class="cg-arena-readout" hidden></div><div class="trail-task"><span class="cg-mascot" aria-hidden="true">${cfg.emoji}</span><div><p class="eyebrow" id="cgRound"></p><h2 id="cgPrompt" tabindex="-1"></h2></div></div><div class="trail-board cg-board" id="cgBoard"></div><div class="trail-feedback" id="cgFeedback" role="status" aria-live="polite"></div><div class="cg-how-host" id="cgHow"></div><div class="trail-actions"><button type="button" class="trail-help" data-cg="help">✦ See a worked example</button><button type="button" class="btn" data-cg="check">Try it! →</button><button type="button" class="btn" data-cg="next" hidden>Next question →</button></div></div>`;
+    stage.innerHTML = `<div class="trail-workspace class-workspace"><header class="trail-header"><div><p class="eyebrow">${esc(cfg.kicker)}</p><h1>${esc(cfg.title)}</h1></div><span class="trail-band" id="cgSkill"></span></header><div class="trail-progress" role="progressbar" aria-label="Questions finished" aria-valuemin="0" aria-valuemax="${ROUNDS}" aria-valuenow="${round}">${Array.from({ length: ROUNDS }, (_, i) => `<span data-stop="${i}" class="${i < round ? "found" : ""}">${i < round ? "✓" : i + 1}</span>`).join("")}</div><p class="cg-story-beat" role="status"></p><div class="cg-arena-readout" hidden></div><div class="trail-task"><span class="cg-mascot" aria-hidden="true">${cfg.emoji}</span><div><p class="eyebrow" id="cgRound"></p><h2 id="cgPrompt" tabindex="-1"></h2></div></div><div class="trail-board cg-board" id="cgBoard"></div><div class="trail-feedback" id="cgFeedback" role="status" aria-live="polite"></div><div class="cg-how-host" id="cgHow"></div><div class="trail-actions"><button type="button" class="btn" data-cg="check">Try it! →</button><button type="button" class="btn" data-cg="next" hidden>Next question →</button></div></div>`;
 
 
     const readButton = document.createElement("button");
@@ -148,7 +148,7 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
       q("#cgPrompt").textContent = task.prompt;
       setFeedback("Take your time. There is no timer.", "");
       explainer.reset();
-      q('[data-cg="check"]').hidden = false; q('[data-cg="next"]').hidden = true; q('[data-cg="help"]').disabled = false;
+      q('[data-cg="check"]').hidden = false; q('[data-cg="next"]').hidden = true;
       const answerNumbers = new Set(numbersIn(task.kind === "choice" ? task.options.find((o) => o.id === task.answer).label : task.kind === "number" ? task.answer : task.kind === "line" ? String(task.answer) : ""));
       api.setHint(() => ({ text: task.hint, facts: { game: `${cfg.title}: ${SKILL_NAMES[task.skill] || "math practice"}. Help the child think about the idea; do not state the answer.`, goal: task.prompt, moves: moves.length ? moves : ["The child is looking at the question."], allowed: [...new Set(numbersIn(task.prompt))].filter((n) => !answerNumbers.has(n)).slice(0, 12) } }));
       draw();
@@ -202,13 +202,26 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
       if (focused && document.getElementById(focused) && stage.contains(document.getElementById(focused))) document.getElementById(focused).focus({ preventScroll: true });
     }
 
-    function showMe() {
-      if (solved) return;
+    /**
+     * Fill the board with a correct response.
+     *
+     * This used to be a "See a worked example" button beside Check. It is not on screen any more —
+     * the owner judged that handing a child the answer mid-question did not belong in the game, and the
+     * explainer covers the same ground honestly, after a question has been marked.
+     *
+     * The function survives because the browser suites are the only coverage class-games.js has, and
+     * answering a board is how they walk it: `smoke:classes` alone solves 247 questions across every
+     * task kind, several of which (sorting, ordering, building a world) cannot be answered from the
+     * companion snapshot. It is registered per mount and torn down with the level, and it still marks
+     * the round as supported, so nothing it touches can be mistaken for independent work.
+     */
+    function fillAnswer() {
+      if (solved) return false;
       helped = true; checkpoint();
       response = structuredClone(correctResponse(task));
-      setFeedback(`✦ Here is one way: ${task.explain} Press Check when you are ready.`, "supportive");
-      move("Asked to be shown how.");
-      api.sfx.hoot(); draw();
+      move("The answer was filled in for a test.");
+      draw();
+      return true;
     }
     function check() {
       if (solved) return;
@@ -240,7 +253,7 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
       const c = api.center(q(".cg-mascot")); api.addCoins(2, c); api.burst(c.x, c.y, { count: 10, chars: ["✦", cfg.emoji], spread: 70 });
       const stop = q(`[data-stop="${round}"]`); stop.classList.add("found"); stop.textContent = "✓";
       q(".trail-progress").setAttribute("aria-valuenow", String(round + 1));
-      q('[data-cg="check"]').hidden = true; q('[data-cg="help"]').disabled = true;
+      q('[data-cg="check"]').hidden = true;
       // "You wanna know how?" opens only now: the question is marked, the coins are paid and the learner
       // model is written, so nothing the explainer says can change what the child earned. A child who
       // guessed right can ask how it works without the asking costing them anything.
@@ -276,7 +289,6 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
       if (act === "next") { if (!solved) return; round += 1; if (round >= ROUNDS) finish(); else begin(); return; }
       if (solved) return;
       if (act === "check") return check();
-      if (act === "help") return showMe();
       const r = response, t = task;
       if (act === "scene") {
         const index = Number(b.dataset.i);
@@ -311,8 +323,10 @@ import { recordClassWork, restoreClassWork, restoreRun } from "../classes/progre
     stage.addEventListener("dragstart", (e) => { const b = e.target.closest("[data-play=card]"); if (b && !solved) { playUI.card = b.dataset.id; e.dataTransfer.setData("text/plain", b.dataset.id); } }, { signal: lifecycle.signal });
     stage.addEventListener("dragover", (e) => { if (e.target.closest("[data-drop]")) e.preventDefault(); }, { signal: lifecycle.signal });
     stage.addEventListener("drop", (e) => { const bay = e.target.closest("[data-drop]"); if (!bay || task.kind !== "sort" || solved) return; e.preventDefault(); const id = e.dataTransfer.getData("text/plain"); if (!task.items.some(i => i.id === id)) return; response.placements[id] = bay.dataset.drop; playUI.card = null; move("Moved a parcel into " + bay.dataset.drop); draw(); }, { signal: lifecycle.signal });
+    // See fillAnswer: a handle for the browser suites, never a control on screen.
+    window.MQClassGames.fillAnswer = fillAnswer;
     begin();
-    return () => { lifecycle.abort(); window.speechSynthesis?.cancel(); };
+    return () => { lifecycle.abort(); delete window.MQClassGames.fillAnswer; window.speechSynthesis?.cancel(); };
   }
 
   window.MQClassGames = { mount };

@@ -11,7 +11,7 @@ page.on('pageerror',e=>errors.push(String(e.message)));page.on('console',m=>{if(
 const snap=()=>page.evaluate(()=>window.MQHoot.snapshot());
 const grade=async g=>page.evaluate(g=>{window.MQClasses.switchTo(g,{quiet:true});window.MQS.update(s=>{for(const c of window.MQClasses.current().chapters)s.chapters[c.id]=true;});},g);
 const open=async id=>{await page.evaluate(id=>window.MQ.openLevel(window.MQ.levels.find(l=>l.id===id)),id);await expect(page.locator('#cgPrompt')).toBeVisible();};
-const solve=async()=>{await page.locator('[data-cg=help]').click();await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');await page.locator('[data-cg=next]').click();};
+const solve=async()=>{await page.evaluate(() => window.MQClassGames.fillAnswer());await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');await page.locator('[data-cg=next]').click();};
 try{
  await page.route('**/api/adventure-ai',r=>r.fulfill({json:{enabled:false,explain:false,generate:false,ok:false,reason:'unavailable'}}));
  await page.addInitScript(()=>{if(!localStorage.getItem('mq.playtest.v3'))localStorage.setItem('mq.playtest.v3',JSON.stringify({grade:'4',prologue:true,hero:'🧑‍🚀',muted:true,unlockAll:true,chapters:{},coins:25}));});

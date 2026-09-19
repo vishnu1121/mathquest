@@ -162,6 +162,24 @@ it; and **every browser suite's entry click is now optional** (`.click({timeout:
 because a suite that reloads part-way through will not be asked a second time. That bit down
 `smoke:grade-play` before it was caught.
 
+**"See a worked example" is gone (2026-09-18).** The button sat beside Check on every class, practice and
+Apex board and filled in the correct answer. The owner called it a development button and asked for it
+out; it also undercut the explainer, which covers the same ground honestly after a question has been
+marked rather than before. The markup, the click handler and the enable/disable calls are removed.
+
+The function behind it survives as `window.MQClassGames.fillAnswer`, registered per mount and deleted on
+teardown, because the browser suites are the only coverage `class-games.js` has and answering a board is
+how they walk it — `smoke:classes` alone solves 247 questions across every task kind, and sorting,
+ordering and world boards cannot be answered from the companion snapshot. It still marks the round as
+supported, so nothing it fills can be counted as independent work. Seven suites now call it instead of
+clicking. **It is not on screen, but it is still one console call away**; removing it entirely would mean
+teaching the suites to drive each of the eight input types by hand, which is worth doing and is not a
+half-hour job.
+
+`pathway.js` keeps its own "✦ Show me a step" on the learning trails. That is a different screen with a
+different label, and those trails are currently unreachable anyway: `catalog.ts` converts every `trail`
+practice entry to an `engine` one, so class practice all goes through `class-games.js`.
+
 ### ?demo=1
 
 `?demo=1` sets the same `unlockAll` flag the hidden "Playtest: unlock all chapters" button sets, so every chapter — and with it Apex — opens for a recording or a walkthrough. It changes nothing about how progress is *earned*; clear it with `MQS.update(s => s.unlockAll = false)`.

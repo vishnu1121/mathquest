@@ -23,7 +23,7 @@ try {
  expect(await page.locator('.class-stage').evaluate(e=>getComputedStyle(e,'::before').pointerEvents)).toBe('none');
  await fit();await shot('desktop-question');
  await page.locator('#cgInput').fill('1');await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).not.toBeEmpty();
- await page.locator('[data-cg=help]').click();await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');await page.locator('[data-cg=next]').click();await expect(page.locator('#cgRound')).toContainText('2 OF');
+ await page.evaluate(() => window.MQClassGames.fillAnswer());await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');await page.locator('[data-cg=next]').click();await expect(page.locator('#cgRound')).toContainText('2 OF');
  for(const g of ['K','1','2','3','4','5']) {
    await grade(g);const id=await page.evaluate(()=>window.MQClasses.current().chapters.find(c=>c.kind==='engine').id);await open(id);await fit();
    await expect(page.locator('.class-stage')).toHaveAttribute('data-class',g);
@@ -33,7 +33,7 @@ try {
  await page.locator('#voyage-place-g4-mine').click();await expect(page.locator('.voyage-panel')).toBeVisible();await page.keyboard.press('Escape');await expect(page.locator('.voyage-panel')).toHaveCount(0);
  await open('g4-express');await fit();await shot('phone-question');
  expect(await page.locator('.class-stage').evaluate(e=>getComputedStyle(e,'::before').backgroundImage)).toContain('learning-grove-phone.svg');
- await page.locator('[data-cg=help]').click();await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');
+ await page.evaluate(() => window.MQClassGames.fillAnswer());await page.locator('[data-cg=check]').click();await expect(page.locator('#cgFeedback')).toContainText('✓');
  await page.evaluate(()=>{document.documentElement.setAttribute('data-calm','');window.MQ.showMap();});
  expect(await page.locator('.vi-wave').first().evaluate(e=>getComputedStyle(e).animationName)).toBe('none');
  expect(errors).toEqual([]);

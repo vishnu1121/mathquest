@@ -79,7 +79,7 @@ const apexTab = (page) => page.locator('[data-world-view="apex"]');
 /** Answer the question on screen by asking to be shown, then checking. Works for every board kind. */
 async function solveRound(page) {
   await expect(page.locator("#cgPrompt")).toBeVisible();
-  await page.locator('[data-cg="help"]').click();
+  await page.evaluate(() => window.MQClassGames.fillAnswer());
   await page.locator('[data-cg="check"]').click();
   await expect(page.locator('[data-cg="next"]')).toBeVisible();
 }

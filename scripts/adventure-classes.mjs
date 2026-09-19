@@ -31,7 +31,7 @@ async function newPage(label, viewport, init) {
 async function solveOne(page, boardShot) {
   await expect(page.locator('[data-cg="check"]')).toBeVisible();
   if (boardShot) await page.locator("#cgBoard").screenshot({ path: path.join(out, "boards", `${boardShot}.png`) });
-  await page.locator('[data-cg="help"]').click();
+  await page.evaluate(() => window.MQClassGames.fillAnswer());
   await page.locator('[data-cg="check"]').click();
   await expect(page.locator("#cgFeedback")).toContainText("✓ You got it!");
 }

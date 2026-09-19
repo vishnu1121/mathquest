@@ -76,11 +76,11 @@ try {
  await page.screenshot({path:`${out}/desktop-k-subtraction.png`});
  for(const [g,id] of [['1','g1-story'],['2','g2-bridge'],['3','g3-twostep'],['4','g4-falls'],['5','g5-foundry']]){
    await grade(page,g);await open(page,id);
-   if(g==='4'){for(let i=0;i<2;i++){await page.locator('[data-cg=help]').click();await next(page);}}
+   if(g==='4'){for(let i=0;i<2;i++){await page.evaluate(() => window.MQClassGames.fillAnswer());await next(page);}}
    await expect(page.locator('.play-world')).toBeVisible();await playWorld(page);
    await page.screenshot({path:`${out}/desktop-grade-${g}.png`});
  }
- await grade(page,'3');await open(page,'g3-facts');await page.locator('[data-cg=help]').click();await next(page);await expect(page.locator('.pw-game-share')).toBeVisible();await playWorld(page);
+ await grade(page,'3');await open(page,'g3-facts');await page.evaluate(() => window.MQClassGames.fillAnswer());await next(page);await expect(page.locator('.pw-game-share')).toBeVisible();await playWorld(page);
  await grade(page,'K');await page.evaluate(()=>window.MQS.update(s=>{s.minis.flight=true;s.best.flight=8;}));await grade(page,'5');expect(await page.evaluate(()=>Boolean(window.MQS.get().minis.flight))).toBe(false);
  // Direct entry is protected too, not only map links.
  await page.evaluate(()=>{window.MQ.openLevel(window.MQ.levels.find(l=>l.id==='fireflies'));});await expect(page.locator('#levelScreen')).toBeHidden();

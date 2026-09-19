@@ -80,9 +80,8 @@ import { checkTask, correctResponse, validateTask } from "../classes/tasks";
           // reply mangled in transit cannot reach a board.
           if (reply.task.skill !== spec.skill) return;
           if (validateTask(reply.task).length) return;
-          // And it must actually be winnable. "See a worked example" fills the board with
-          // correctResponse(task) and asks the child to press Check — if that did not pass, the game
-          // would show a child the right answer and then mark it wrong.
+          // And it must actually be winnable: correctResponse(task) has to pass checkTask. A generated
+          // board that cannot be solved by its own correct response is one a child could never finish.
           try {
             if (!checkTask(reply.task, correctResponse(reply.task))) return;
           } catch { return; }

@@ -237,7 +237,7 @@
 }
 .cg-how-wait { margin: 0; font-size: 16px; color: var(--ui-text-soft, #5a6a85); }
 .cg-how-listen { margin-top: 14px; }
-/* The ask sits beside "See a worked example" and reads as the same class of offer. */
+/* The ask sits in the same row as Check and reads as an offer rather than a control. */
 .cg-how-ask[aria-expanded="true"] { background: var(--ui-surface-alt, #eef3fa); }
 @media (max-width: 700px) {
   .cg-how { padding: 14px; margin-top: 12px; }
