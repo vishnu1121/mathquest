@@ -39,7 +39,7 @@ async function newPage(label, viewport, { explain = true } = {}) {
 
 async function toFirstQuestion(page, grade) {
   await page.goto(url);
-  await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+  await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
   // Unlock first. `MQ.openLevel` on a chapter that is still locked hangs the renderer — not reachable
   // through the UI, which only offers unlocked chapters, but every smoke script has to avoid it.
   await page.evaluate((g) => {
@@ -142,7 +142,7 @@ try {
   {
     const { page, asked } = await newPage("sorting", { width: 1280, height: 900 });
     await page.goto(url);
-    await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     await page.evaluate(() => {
       window.MQClasses.switchTo("2", { quiet: true });
       window.MQS.update((s) => { for (const c of window.MQClasses.current().chapters) s.chapters[c.id] = true; });
@@ -199,7 +199,7 @@ try {
   {
     const { page, asked } = await newPage("surfaces", { width: 1280, height: 900 });
     await page.goto(url);
-    await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     await page.evaluate(() => {
       window.MQClasses.switchTo("4", { quiet: true });
       window.MQS.update((s) => { s.unlockAll = true; for (const c of window.MQClasses.current().chapters) s.chapters[c.id] = true; });
@@ -261,7 +261,7 @@ try {
     const { page } = await newPage("arena", { width: 1280, height: 900 });
     await page.addInitScript(() => localStorage.setItem("mq.playtest.v3", JSON.stringify({ prologue: true, muted: true, hero: "🧑‍🚀", chapters: {} })));
     await page.goto(url);
-    await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     const arena = await page.evaluate(() => (window.MQ.levels.find((l) => l.id === "arena") || {}).id);
     if (!arena) throw new Error("no arena level registered");
     await page.evaluate(() => window.MQ.openLevel(window.MQ.levels.find((l) => l.id === "arena")));

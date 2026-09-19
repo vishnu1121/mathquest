@@ -29,7 +29,7 @@ try {
     };
     try {
       await page.goto(process.env.BASE_URL ?? "http://localhost:3001");
-      await page.getByRole("button", { name: "Continue the adventure" }).click();
+      await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
       await expect(page.locator(".title-screen")).toHaveCount(0);
       await shot("01-map");
       await page.locator('[data-world-view="quests"]').click();
@@ -143,7 +143,7 @@ try {
       expect(saved.chapters.guardian).toBe(true);
       expect(saved.classes.K.chapters.fireflies).toBe(true);
       await page.reload();
-      await page.getByRole("button", { name: "Continue the adventure" }).click();
+      await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
       await expect(page.locator("#voyage-place-guardian")).toHaveAttribute("aria-label", "Chapter 3: The Muddled Guardian, restored");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       console.log(`${label}: Chapters 2–3 in their classes, Teach Pip, dance, journal and saved progress passed`);

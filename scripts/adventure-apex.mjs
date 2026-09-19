@@ -65,7 +65,7 @@ async function newPage(label, viewport, { generate = true, rejected = false, cor
 async function arrive(page, grade, { islandDone = false } = {}) {
   await page.addInitScript(() => localStorage.setItem("mq.playtest.v3", JSON.stringify({ grade: "3", prologue: true, muted: true, hero: "🧑‍🚀", chapters: {} })));
   await page.goto(url);
-  await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+  await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
   await page.evaluate(([g, done]) => {
     window.MQClasses.switchTo(g, { quiet: true });
     if (done) window.MQS.update((s) => { for (const c of window.MQClasses.current().chapters) s.chapters[c.id] = true; });

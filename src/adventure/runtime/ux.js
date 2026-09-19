@@ -178,10 +178,11 @@
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = cleanName(input.value);
-      S.update((state) => { if (name) state.name = name; else delete state.name; });
+      S.update((state) => { state.greeted = true; if (name) state.name = name; else delete state.name; });
       leave();
     });
-    el.querySelector(".ts-skip").addEventListener("click", leave);
+    // Skipping is an answer too, and is remembered as one.
+    el.querySelector(".ts-skip").addEventListener("click", () => { S.update((state) => { state.greeted = true; }); leave(); });
   }
 
   // ---------- Ending certificate ----------
@@ -238,19 +239,21 @@
     });
   }
 
-  // ---------- Start: the title moment comes before the prologue ----------
+  // ---------- Start: ask for a name once, then never stand in the way again ----------
   const originalStart = MQ.start;
   MQ.start = function start() {
     const seenPrologue = Boolean(S.get().prologue);
+    // Asked and answered — by typing a name or by skipping. Either way the question is settled, and
+    // putting it in front of a child every time they open the game is a page between them and the island.
+    const greeted = Boolean(S.get().greeted || S.get().name);
     addCalmButton();
     setupMap();
     setupMoments();
-    S.update((s) => (s.prologue = true)); // hold the prologue until the child presses Play
+    S.update((s) => (s.prologue = true)); // hold the prologue until the child is through the door
     originalStart();
     S.update((s) => (s.prologue = seenPrologue));
-    titleScreen(() => {
-      if (!seenPrologue) window.MQStory.prologue();
-    });
+    const enter = () => { if (!seenPrologue) window.MQStory.prologue(); };
+    if (greeted) enter(); else titleScreen(enter);
   };
 
   window.MQUX = { certificate, toast, openJournal, cleanName };

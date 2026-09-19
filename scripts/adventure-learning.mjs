@@ -30,7 +30,7 @@ try {
     const card = (n) => page.getByRole("button", { name: `Card ${n}`, exact: true });
     try {
       await page.goto(process.env.BASE_URL ?? "http://localhost:3001");
-      await page.getByRole("button", { name: "Continue the adventure" }).click();
+      await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
       if (width < 600) {
         await expect(page.locator(".title-screen")).toHaveCount(0);
         const heading = await page.locator("#journeyHeading").boundingBox();
@@ -84,7 +84,7 @@ try {
       await page.screenshot({ path: path.join(out, `${width}-03-learning-journal.png`) });
       await page.locator(".journal-card > button").click();
       await page.reload();
-      await page.getByRole("button", { name: "Continue the adventure" }).click();
+      await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
       expect((await state()).learning.skills.regroup).toEqual(supported);
       expect((await state()).chapters).toEqual({ "g2-evenodd": true, "g2-castle": true });
       await enterGuardian();

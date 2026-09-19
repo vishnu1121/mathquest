@@ -23,7 +23,7 @@ async function run(width) {
     if (!localStorage.getItem("mq.playtest.v3")) localStorage.setItem("mq.playtest.v3", JSON.stringify({ prologue: true, hero: "🧑‍🚀", muted: true, grade: "2", chapters: { "g2-evenodd": true, "g2-castle": true, guardian: true } }));
   });
   const shot = (name) => page.screenshot({ path: path.join(out, `${width}-${name}.png`), fullPage: true, animations: "disabled" });
-  const resume = async () => { await page.getByRole("button", { name: "Continue the adventure" }).click(); await expect(page.locator(".title-screen")).toHaveCount(0); };
+  const resume = async () => { await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{}); await expect(page.locator(".title-screen")).toHaveCount(0); };
   const visit = async (id) => { await page.locator(`[data-place="${id}"]`).click(); await page.locator(".vp-actions .btn").click(); };
   const skipIntro = async () => { await page.locator('[data-story="skip"]').click(); await expect(page.locator(".vg-mission")).toBeVisible(); };
   const continueBonus = async () => {

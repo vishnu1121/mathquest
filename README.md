@@ -15,7 +15,7 @@ answer. It has to show its working, and the server re-solves that working before
 
 | | |
 |---|---|
-| **1. One question, then the adventure.** No account, no splash page. The name stays on the device. | **2. Pick your class.** Six islands, one per grade. A grown-up can change this later. |
+| **1. One question, then the adventure.** Asked once, on the first visit only. No account, no splash page, and the name stays on the device. | **2. Pick your class.** Six islands, one per grade. A grown-up can change this later. |
 | ![The name screen](docs/screenshots/01-name.png) | ![Choosing a class](docs/screenshots/02-class.png) |
 | **3. Pick a hero.** Every option is unisex, and it can be changed at any time. | **4. Your island.** Eight chapters in order, a camp, keepsakes to find, and your name under your hero. |
 | ![Choosing a hero](docs/screenshots/03-hero.png) | ![The island map](docs/screenshots/04-island.png) |

@@ -22,7 +22,7 @@ page.on("pageerror", (e) => errors.push(String(e.message)));
 
 await page.addInitScript(() => localStorage.setItem("mq.playtest.v3", JSON.stringify({ grade: "5", prologue: true, muted: true, hero: "🧑‍🚀", chapters: {}, unlockAll: true })));
 await page.goto(url);
-await page.getByRole("button", { name: /Continue the adventure|Start the adventure/ }).first().click();
+await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
 await page.evaluate(() => {
   window.MQClasses.switchTo("5", { quiet: true });
   // Mark the island finished: it skips the chapter cutscene (openLevel awaits it, and it only resolves on

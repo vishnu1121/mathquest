@@ -27,7 +27,7 @@ async function open(label, viewport, reducedMotion) {
     if (!localStorage.getItem("mq.playtest.v3")) localStorage.setItem("mq.playtest.v3", JSON.stringify({ prologue: true, hero: "🧑‍🚀", grade: "1", chapters: {}, unlockAll: true }));
   });
   await page.goto(url);
-  await page.getByRole("button", { name: "Continue the adventure" }).click();
+  await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
   await expect(page.locator(".title-screen")).toHaveCount(0);
   const button = (name, exact = true) => page.getByRole("button", { name, exact }).first();
   const hop = async (ones, bigs = 0) => {

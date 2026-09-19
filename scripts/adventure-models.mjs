@@ -22,12 +22,24 @@ try{
  expect(await page.locator('.ts-title, .ts-art-wrap, .ts-hoot').count()).toBe(0);
  // Only letters, spaces, hyphens and apostrophes survive, and never more than fourteen of them.
  await page.fill('#tsName','  Ada <b>9</b> Lovelace-Rose  ');
- await page.getByRole('button',{name:'Continue the adventure'}).click();await expect(page.locator('.title-screen')).toHaveCount(0);
+ await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});await expect(page.locator('.title-screen')).toHaveCount(0);
  const saved=await page.evaluate(()=>window.MQS.get().name);
  if(!/^[\p{L}\p{M} '’-]+$/u.test(saved)||saved.length>14) throw new Error(`the name was not cleaned: "${saved}"`);
  // It goes where the hero stands, in place of YOU.
  await page.evaluate(()=>window.MQ.showMap());
  await expect(page.locator('#voyageHero i')).toHaveText(saved.toUpperCase());
+ // And it is asked ONCE. Coming back must land on the island, not on the question again.
+ await page.reload();
+ await expect(page.locator('#voyageWorld')).toBeVisible();
+ expect(await page.locator('#tsName').count()).toBe(0);
+ // A grown-up can still correct it, which is the only way back to it.
+ await page.locator('#adultBtn').click();
+ await expect(page.locator('.ad-name')).toHaveValue(saved);
+ await page.locator('.ad-name').fill('Sam');
+ await page.locator('.ad-name').blur();
+ await page.keyboard.press('Escape');
+ await page.evaluate(()=>window.MQ.showMap());
+ await expect(page.locator('#voyageHero i')).toHaveText('SAM');
  await grade('4');await open('g4-express');
  // The place-value workbench shows the real operands, digit by digit, in the right columns.
  await expect(page.locator('.mw-columns .mw-heading')).toHaveCount(5);

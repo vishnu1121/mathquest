@@ -51,7 +51,7 @@ async function run({ label, width, height, reducedMotion }) {
 
   try {
     await page.goto(url);
-    await page.getByRole("button", { name: "Continue the adventure" }).click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     await expect(page.locator(".title-screen")).toHaveCount(0);
 
     // ---- Chapter 1: Hoot watches the river ----

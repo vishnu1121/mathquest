@@ -42,7 +42,7 @@ try {
     const page = await newPage("tablet", { width: 1024, height: 768 });
     const shot = (name) => page.screenshot({ path: path.join(out, `tablet-${name}.png`) });
     await page.goto(url);
-    await page.getByRole("button", { name: "Start the adventure" }).click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     const picker = page.locator(".class-picker");
     await expect(picker.getByRole("heading", { name: "Which class are you in?" })).toBeVisible();
     await expect(picker.locator("[data-grade]")).toHaveCount(6);
@@ -161,7 +161,7 @@ try {
   {
     const page = await newPage("legacy", { width: 1024, height: 768 }, { prologue: true, hero: "🧑‍🚀", muted: true, coins: 9, chapters: { frog: true, fireflies: true, guardian: true, skyrail: true }, stars: { frog: 3, guardian: 2 } });
     await page.goto(url);
-    await page.getByRole("button", { name: "Continue the adventure" }).click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     await page.locator('.class-picker [data-grade="2"]').click();
     await expect(page.locator("#voyage-place-guardian")).toHaveAttribute("aria-label", "Chapter 3: The Muddled Guardian, restored");
     await expect(page.locator("#voyage-place-g2-evenodd")).toHaveAttribute("aria-label", "Chapter 1: Odd & Even Stepping Stones, ready");
@@ -177,7 +177,7 @@ try {
   {
     const page = await newPage("every-level", { width: 1024, height: 768 }, { prologue: true, hero: "🧑‍🚀", muted: true, grade: "K", unlockAll: true, chapters: {} });
     await page.goto(url);
-    await page.getByRole("button", { name: "Continue the adventure" }).click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     const classes = await page.evaluate(() => window.MQClasses.CLASS_LIST.map((c) => ({ id: c.id, chapters: c.chapters.filter((ch) => ch.kind === "engine").map((ch) => ch.id), practice: c.practice.map((p) => ({ id: p.id, kind: p.kind })), expedition: c.expedition.id })));
     let solved = 0;
     for (const c of classes) {
@@ -211,7 +211,7 @@ try {
     const page = await newPage("phone", { width: 390, height: 844 }, { prologue: true, hero: "🧑‍🚀", muted: true, grade: "4", unlockAll: true, chapters: { "g4-mine": true, "g4-express": true, "g4-factors": true, "g4-falls": true, "g4-docks": true, cloudbridge: true, "g4-angles": true } });
     const shot = (name) => page.screenshot({ path: path.join(out, `phone-${name}.png`), fullPage: true });
     await page.goto(url);
-    await page.getByRole("button", { name: "Continue the adventure" }).click();
+    await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});
     await expect(page.locator("#voyageWorld")).toContainText("GRADE 4 · CRYSTAL CANYON");
     await noOverflow(page);
     await shot("01-island");

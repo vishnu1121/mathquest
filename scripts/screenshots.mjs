@@ -49,12 +49,12 @@ for (const viewport of VIEWPORTS) {
   const shot = (name) => page.screenshot({ path: path.join(OUT, `${viewport.name}-${name}.png`) });
 
   await page.goto(`${BASE}/?reset&demo=1`);
-  const start = page.getByRole("button", { name: "Start the adventure" });
-  await start.waitFor({ timeout: 60000 });
+  const start = page.getByRole("button", { name: /Continue the adventure|Start the adventure/ });
+  await start.waitFor({ timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(900);
   await shot("1-welcome");
 
-  await start.click();
+  await start.click({ timeout: 4000 }).catch(() => {});
   await page.getByRole("button", { name: "Grade 2" }).click();
   await shot("2-profile");
   await page.getByRole("button", { name: "Start the warm-up" }).click();

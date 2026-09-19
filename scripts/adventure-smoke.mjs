@@ -50,7 +50,8 @@ async function run(vp, full) {
     await step("title and hero", async () => {
       await page.waitForTimeout(1900);
       await shot("00-title");
-      await click("Start the adventure");
+      // The name box is asked once; a later visit goes straight in.
+      await page.getByRole("button",{name:/Continue the adventure|Start the adventure/}).first().click({timeout:4000}).catch(()=>{});
       await page.waitForTimeout(700);
       await shot("01-class-picker");
       await page.locator('.class-picker [data-grade="1"]').click(); // Grade 1 begins with The Scattered River.

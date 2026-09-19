@@ -153,6 +153,15 @@ This is worth flagging against the project's own rule that learner state stays o
 
 The name is drawn where the hero stands on the island (`voyage-world.js`, in place of `YOU`), upper-cased and escaped.
 
+**The name is asked once (2026-09-18).** The first version showed the name box on *every* load, so a
+returning child met a form before their island every single time — the owner reported it as "a page is
+landing before the home page", and it was. `ux.js` now records `greeted` when the question is answered,
+by typing a name **or** by skipping, and a greeted save goes straight to the map. Two consequences worth
+knowing: a grown-up can correct or clear the name from the Adults panel, which is the only way back to
+it; and **every browser suite's entry click is now optional** (`.click({timeout:4000}).catch(() => {})`),
+because a suite that reloads part-way through will not be asked a second time. That bit down
+`smoke:grade-play` before it was caught.
+
 ### ?demo=1
 
 `?demo=1` sets the same `unlockAll` flag the hidden "Playtest: unlock all chapters" button sets, so every chapter — and with it Apex — opens for a recording or a walkthrough. It changes nothing about how progress is *earned*; clear it with `MQS.update(s => s.unlockAll = false)`.

@@ -32,7 +32,7 @@ try {
    return route.fulfill({json:{ok:true,data:{notice:'Some bunnies are waiting.',hint}}});
  });
  await page.addInitScript(()=>{if(!localStorage.getItem('mq.playtest.v3'))localStorage.setItem('mq.playtest.v3',JSON.stringify({grade:'K',prologue:true,hero:'🧑‍🚀',muted:true,unlockAll:true,chapters:{},coins:25}));});
- await page.goto(url);await page.getByRole('button',{name:'Continue the adventure'}).click();await expect(page.locator('.title-screen')).toHaveCount(0);
+ await page.goto(url);await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});await expect(page.locator('.title-screen')).toHaveCount(0);
  await grade(page,'K');await expect(page.locator('.roaming-hoot')).toBeVisible();
  await open(page,'k-bunny');await expect(page.locator('.pw-game-patch')).toBeVisible();
  await page.locator('.rh-ask').click();await expect(page.locator('.hc-history li')).toHaveCount(1);
@@ -95,7 +95,7 @@ try {
  for(let round=0;round<3;round++){let lights=await page.locator('[data-light]').count();for(let i=0;i<lights;i++)await page.locator(`[data-light="${i}"]`).click();if(round<2)await page.locator('.mini [data-next]').click();}
  await page.screenshot({path:`${out}/phone-firefly-bonus.png`,fullPage:true});await page.locator('.mini-done .btn').click();await expect(page.locator('.mini')).toHaveCount(0);
  await grade(page,'5');await open(page,'g5-foundry');await playWorld(page);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:`${out}/phone-fractions.png`,fullPage:true});
- await page.route('**/api/adventure-ai',route=>route.fulfill({json:{enabled:false}}));await page.reload({waitUntil:'domcontentloaded',timeout:30000});await page.getByRole('button',{name:'Continue the adventure'}).click();await expect(page.locator('.title-screen')).toHaveCount(0);await page.locator('.rh-ask').click();await expect(page.locator('.hc-source')).toContainText('AI is not connected');
+ await page.route('**/api/adventure-ai',route=>route.fulfill({json:{enabled:false}}));await page.reload({waitUntil:'domcontentloaded',timeout:30000});await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});await expect(page.locator('.title-screen')).toHaveCount(0);await page.locator('.rh-ask').click();await expect(page.locator('.hc-source')).toContainText('AI is not connected');
  // Grades 3–5 trade the drawing and music minis for Number Chute; the younger classes keep them.
  await page.setViewportSize({width:1280,height:900});
  for(const [g,first,last] of [['1','Mist Painter','Glow Orchestra'],['4','Factor Falls','Exact Order']]){

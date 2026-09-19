@@ -13,7 +13,7 @@ try {
  await page.route('**/api/adventure-ai',r=>r.fulfill({json:{enabled:false,ok:false,reason:'unavailable'}}));
  await page.addInitScript(()=>{if(!localStorage.getItem('mq.playtest.v3'))localStorage.setItem('mq.playtest.v3',JSON.stringify({grade:'K',prologue:true,muted:true,hero:'🧑‍🚀',chapters:{}}));});
  await page.goto(process.env.BASE_URL||'http://localhost:3001',{waitUntil:'domcontentloaded'});
- await page.getByRole('button',{name:'Continue the adventure'}).click();await grade('K');
+ await page.getByRole('button',{name:/Continue the adventure|Start the adventure/}).click({timeout:4000}).catch(()=>{});await grade('K');
  await expect(page.locator('.voyage-world')).toHaveCSS('background-color','rgb(85, 205, 213)');
  for(const sel of ['.voyage-camera','.voyage-island','.voyage-island>.voyage-island-art'])await expect(page.locator(sel)).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
  await fit();await shot('desktop-island');
