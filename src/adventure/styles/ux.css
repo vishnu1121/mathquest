@@ -177,17 +177,79 @@ html[data-calm] .sy-drift, html[data-calm] .sy-flyby { display: none; }
    outer class on purpose: accessibility.js inerts it, roaming-hoot.js hides the owl behind it, and
    classes.js waits for it to leave before offering the class picker. */
 .title-screen.ts-welcome {
-  display: grid; place-items: center; align-content: center; gap: 26px; padding: 24px; overflow: hidden;
-  background: #223b54; color: #fff2d5;
+  position: fixed; display: grid; place-items: center; align-content: center; gap: 26px; padding: 24px;
+  overflow: hidden; color: #fff2d5;
+  /* Night over the isles: a little warmth at the top where the lantern hangs, deepening to the horizon. */
+  background:
+    radial-gradient(90% 55% at 50% 4%, #35516d 0%, #35516d00 62%),
+    linear-gradient(#152941 0%, #1d3550 44%, #24405c 100%);
 }
+
+/* ---- The world behind the card. Hand-drawn, like everything else here: no images. ---- */
+.ts-night { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* A fixed field, placed by percentage so it spreads at any window size rather than bunching into the
+   top-left corner the way pixel coordinates do. Not random: the same sky every time. */
+.tsn-star { position: absolute; left: var(--x); top: var(--y); border-radius: 50%; background: #dfeaf5; }
+.tsn-star.s1 { width: 2px; height: 2px; opacity: 0.42; }
+.tsn-star.s2 { width: 3px; height: 3px; opacity: 0.62; }
+.tsn-twinkle {
+  position: absolute; left: var(--x); top: var(--y); width: 3px; height: 3px; border-radius: 50%;
+  background: #fff6e0; box-shadow: 0 0 7px 2px rgb(255 232 178 / 0.55);
+  animation: ts-twinkle 4.6s ease-in-out var(--d) infinite;
+}
+@keyframes ts-twinkle { 0%, 100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.25); } }
+
+/* The lantern in the wordmark is the light source, so the page is lit from where it hangs. */
+.tsn-glow {
+  position: absolute; left: 50%; top: -120px; width: min(760px, 120vw); aspect-ratio: 1; translate: -50% 0;
+  border-radius: 50%; background: radial-gradient(closest-side, rgb(255 205 120 / 0.2), rgb(255 205 120 / 0));
+}
+.ts-welcome .mq-brand { position: relative; }
+.ts-welcome .mq-brand::after {
+  content: ""; position: absolute; left: 6px; top: 50%; width: 120px; height: 84px; translate: -50% -50%;
+  z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 213 130 / 0.38), rgb(255 213 130 / 0));
+  animation: ts-lantern 5.2s ease-in-out infinite;
+}
+@keyframes ts-lantern { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+
+/* The far shore. Two ridges is enough to read as distance; three starts to look like a logo. */
+.tsn-hills { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: min(30vh, 220px); }
+.tsn-hills .h-far { fill: #17303f; }
+.tsn-hills .h-near { fill: #102530; }
+.tsn-water {
+  position: absolute; right: 0; bottom: 0; left: 0; height: 46px;
+  background: linear-gradient(rgb(23 60 74 / 0), #173c4a 70%);
+}
+
+/* Fireflies, because this island has them. Slow enough to be noticed only if you look. */
+.tsn-fly {
+  position: absolute; left: var(--x); top: var(--y); width: 4px; height: 4px; border-radius: 50%;
+  background: #ffdf9b; box-shadow: 0 0 9px 3px rgb(255 214 130 / 0.45);
+  animation: ts-drift 13s ease-in-out var(--d) infinite;
+}
+@keyframes ts-drift {
+  0%, 100% { opacity: 0; transform: translate(0, 0); }
+  18% { opacity: 0.9; }
+  50% { opacity: 0.7; transform: translate(26px, -34px); }
+  82% { opacity: 0.85; }
+  99% { opacity: 0; transform: translate(-14px, -62px); }
+}
+
+/* Everything above sits behind the card and the wordmark. */
+.ts-welcome .ts-nav, .ts-welcome .ts-card { position: relative; z-index: 1; }
 /* The mark sits above the card rather than in a bar: there is no page to head, only a question to ask.
    storybook.css gives .ts-nav a full-width rule and a space-between row, which this undoes. */
 .ts-welcome .ts-nav { width: auto; padding: 0; border: 0; justify-content: center; }
 .ts-welcome .mq-brand { font-size: 30px; }
 .ts-card {
+  position: relative;
   display: grid; justify-items: stretch; gap: 14px; width: min(420px, 100%); padding: 30px;
-  border: 1px solid #3c5d79; border-radius: 26px; background: #1b3148; text-align: left;
-  box-shadow: 0 18px 44px rgb(8 20 32 / 0.35);
+  border: 1px solid #3c5d79; border-radius: 26px; text-align: left;
+  /* Lit from above, like everything else on this screen. */
+  background: linear-gradient(#20374f, #182c42);
+  box-shadow: 0 18px 44px rgb(6 16 26 / 0.45), inset 0 1px 0 rgb(255 226 170 / 0.16);
   animation: rise var(--dur-deliberate) var(--ease-decelerate) 0.1s both;
 }
 .ts-card h2 { margin: 0; color: #fff3d6; font: 900 clamp(26px, 4vw, 34px)/1.1 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
@@ -211,5 +273,9 @@ html[data-calm] .sy-drift, html[data-calm] .sy-flyby { display: none; }
   .ts-card { padding: 22px; border-radius: 20px; }
   .ts-welcome .ts-nav { top: 20px; }
 }
-@media (prefers-reduced-motion: reduce) { .ts-card { animation: none; } }
-html[data-calm] .ts-card { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ts-card, .tsn-twinkle, .tsn-fly, .ts-welcome .mq-brand::after { animation: none; }
+  .tsn-fly { opacity: 0.8; }
+}
+html[data-calm] :is(.ts-card, .tsn-twinkle, .tsn-fly, .ts-welcome .mq-brand::after) { animation: none; }
+html[data-calm] .tsn-fly { opacity: 0.8; }

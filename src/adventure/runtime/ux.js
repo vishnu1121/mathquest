@@ -153,6 +153,14 @@
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-labelledby", "tsTitle");
     el.innerHTML = `
+      <div class="ts-night" aria-hidden="true">
+        <i class="tsn-star s1" style="--x:6%;--y:12%"></i><i class="tsn-star s2" style="--x:13%;--y:31%"></i><i class="tsn-star s1" style="--x:19%;--y:8%"></i><i class="tsn-star s1" style="--x:24%;--y:48%"></i><i class="tsn-star s2" style="--x:31%;--y:19%"></i><i class="tsn-star s1" style="--x:38%;--y:5%"></i><i class="tsn-star s1" style="--x:44%;--y:38%"></i><i class="tsn-star s2" style="--x:52%;--y:11%"></i><i class="tsn-star s1" style="--x:58%;--y:26%"></i><i class="tsn-star s1" style="--x:64%;--y:7%"></i><i class="tsn-star s2" style="--x:71%;--y:42%"></i><i class="tsn-star s1" style="--x:77%;--y:17%"></i><i class="tsn-star s1" style="--x:84%;--y:33%"></i><i class="tsn-star s2" style="--x:89%;--y:9%"></i><i class="tsn-star s1" style="--x:95%;--y:24%"></i><i class="tsn-star s1" style="--x:3%;--y:42%"></i><i class="tsn-star s1" style="--x:9%;--y:57%"></i><i class="tsn-star s1" style="--x:28%;--y:62%"></i><i class="tsn-star s1" style="--x:47%;--y:55%"></i><i class="tsn-star s1" style="--x:67%;--y:59%"></i><i class="tsn-star s1" style="--x:86%;--y:52%"></i><i class="tsn-star s1" style="--x:97%;--y:44%"></i><i class="tsn-star s1" style="--x:16%;--y:22%"></i><i class="tsn-star s2" style="--x:74%;--y:28%"></i>
+        <i class="tsn-twinkle" style="--x:16%;--y:19%;--d:0s"></i><i class="tsn-twinkle" style="--x:78%;--y:13%;--d:1.7s"></i><i class="tsn-twinkle" style="--x:63%;--y:31%;--d:3.1s"></i>
+        <span class="tsn-glow"></span>
+        <svg class="tsn-hills" viewBox="0 0 1200 220" preserveAspectRatio="none"><path class="h-far" d="M0 118c126-34 214 12 322 6s176-52 292-44 168 52 276 44 214-38 310-22v218H0Z"/><path class="h-near" d="M0 168c150-40 236 14 356 8s186-38 294-30 180 44 288 36 180-26 262-14v52H0Z"/></svg>
+        <span class="tsn-water"></span>
+        <i class="tsn-fly" style="--x:22%;--y:63%;--d:0s"></i><i class="tsn-fly" style="--x:81%;--y:57%;--d:2.4s"></i><i class="tsn-fly" style="--x:69%;--y:74%;--d:4.8s"></i>
+      </div>
       <div class="ts-nav"><span class="mq-brand"><span class="brand-mark" aria-hidden="true">✦</span>mathquest<span class="brand-dot">.</span></span></div>
       <form class="ts-card" novalidate>
         <h2 id="tsTitle">${returning ? "Welcome back." : "What should we call you?"}</h2>
