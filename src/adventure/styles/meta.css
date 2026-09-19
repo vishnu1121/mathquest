@@ -1,0 +1,87 @@
+/* Badges (toasts and Badge Book) and Hoot's Shop (pay-exact and the secret chest) */
+
+/* ---------- Badge toasts ---------- */
+.badge-toast {
+  position: fixed; top: 12px; left: 50%; z-index: 50; display: flex; align-items: center; gap: 14px;
+  min-width: min(360px, calc(100vw - 32px)); max-width: calc(100vw - 32px); padding: 12px 20px 12px 14px; border-radius: 24px;
+  background: linear-gradient(135deg, #fff, var(--sun-soft)); box-shadow: 0 0 0 3px var(--sun), 0 20px 40px -12px rgba(36, 59, 83, 0.5);
+  transform: translate(-50%, -150%); transition: transform 0.45s var(--ease-spring);
+}
+.badge-toast.show { transform: translate(-50%, 0); }
+.badge-toast.small { min-width: 0; padding: 8px 16px 8px 10px; background: var(--surface); box-shadow: 0 0 0 2px var(--line), var(--lift); }
+.bt-emoji { display: grid; flex: none; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle, #fff 0 40%, #ffe066 70%, var(--sun)); font-size: 36px; line-height: 1; animation: badge-spin 0.9s var(--ease-spring); }
+.badge-toast.small .bt-emoji { width: 40px; height: 40px; font-size: 22px; animation: none; }
+.bt-copy { display: grid; gap: 3px; }
+.bt-kicker { color: #a87200; font: 800 12px/1 var(--font-display); }
+.bt-name { font: 800 20px/1.15 var(--font-display); }
+.badge-toast.small .bt-name { font-size: 15px; }
+.bt-desc { color: var(--ink-soft); font-size: 14px; }
+.bt-progress { display: block; width: 140px; height: 8px; overflow: hidden; border-radius: 999px; background: var(--line); }
+.bt-progress span { display: block; height: 100%; border-radius: inherit; background: var(--leaf); }
+@keyframes badge-spin { from { transform: rotate(-200deg) scale(0); } }
+
+/* ---------- Book and shop overlays ---------- */
+.book, .shop { position: fixed; inset: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 1fr); place-items: start center; padding: 16px; overflow-y: auto; background: rgba(20, 30, 50, 0.6); animation: fade 0.25s ease; }
+.book-card, .shop-card { width: min(900px, 100%); margin-block: auto; padding: 20px; border-radius: 30px; background: var(--surface); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6); animation: pop-in 0.4s var(--ease-spring); }
+.book-head, .shop-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+.book-head h2, .shop-head h2 { font: 800 26px/1.1 var(--font-display); }
+.book-count, .shop-coins { padding: 6px 12px; border-radius: 999px; background: var(--sun-soft); color: #7a5600; font: 800 15px/1 var(--font-display); }
+.book-close, .shop-close { margin-left: auto; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.book-badge { display: grid; align-content: start; justify-items: center; gap: 4px; padding: 14px 10px; border-radius: 20px; background: var(--mint); text-align: center; }
+.book-badge.got { background: linear-gradient(160deg, #fff8dc, var(--amber-soft)); box-shadow: inset 0 0 0 2px var(--sun); }
+.bb-emoji { font-size: 44px; line-height: 1.1; }
+.book-badge.locked .bb-emoji { filter: grayscale(1); opacity: 0.45; }
+.bb-name { font: 800 16px/1.2 var(--font-display); }
+.bb-desc { color: var(--ink-soft); font-size: 14px; line-height: 1.3; }
+.bb-state { color: var(--leaf-deep); font: 800 13px/1 var(--font-display); }
+.book-badge .bt-progress { width: 80%; margin-top: 4px; }
+.book-reset { min-height: 44px; margin-top: 16px; border: 0; background: none; color: var(--ink-soft); font: 700 14px/1 var(--font-display); text-decoration: underline; cursor: pointer; }
+
+/* ---------- Shop ---------- */
+.shop-card { width: min(820px, 100%); }
+.shop-preview { display: flex; align-items: center; gap: 24px; margin-bottom: 14px; padding: 14px 18px; border-radius: 20px; background: var(--sky-soft); }
+.shop-preview p { color: var(--ink-soft); font: 700 16px/1.3 var(--font-display); }
+.shop-hero { position: relative; font-size: 64px; line-height: 1; }
+.sh-hat { position: absolute; top: -26px; left: 50%; font-size: 36px; transform: translateX(-50%) rotate(-8deg); }
+/* Face wear is anchored by its middle, not its top edge, and 38% down the hero's em box is the eye line
+   for every hero emoji. Anchoring by the top edge put a 30px pair of shades on the chef's neckerchief. */
+.sh-hat[data-slot="face"] { top: 38%; font-size: 29px; transform: translate(-50%, -50%); }
+.sh-pet { position: absolute; right: -40px; bottom: 0; font-size: 34px; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.shop-item { display: grid; justify-items: center; gap: 6px; padding: 14px 10px; border-radius: 20px; background: var(--mint); text-align: center; }
+.shop-item.owned { box-shadow: inset 0 0 0 2px var(--leaf); }
+.si-emoji { font-size: 48px; line-height: 1.1; }
+.si-name { font: 800 15px/1.2 var(--font-display); }
+.si-price { color: #7a5600; font: 800 14px/1 var(--font-display); }
+.shop-item .btn { width: 100%; min-height: 48px; padding: 0 12px; font-size: 16px; }
+.pay-goal { font: 700 20px/1.35 var(--font-display); text-align: center; text-wrap: balance; }
+.pay-tray { display: grid; justify-items: center; gap: 8px; margin: 14px 0; padding: 16px; border-radius: 22px; background: var(--sun-soft); }
+.pay-pile { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; min-height: 56px; }
+.pay-bag { position: relative; font-size: 44px; line-height: 1; animation: pop-in 0.3s var(--ease-spring); }
+.pay-bag i { position: absolute; bottom: 2px; left: 50%; color: #fff; font: 800 13px/1 var(--font-display); font-style: normal; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); transform: translateX(-50%); }
+.pay-coin { font-size: 30px; line-height: 1; animation: pop-in 0.3s var(--ease-spring); }
+.pay-total { font: 800 26px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.pay-total.exact { color: var(--leaf-deep); }
+.pay-total.over { color: var(--coral-deep); }
+.pay-note { color: var(--ink-soft); font: 700 16px/1.3 var(--font-display); text-align: center; }
+.pay-buttons, .pay-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.pay-actions { align-items: center; justify-content: space-between; margin-top: 12px; }
+
+/* ---------- Secret chest ---------- */
+.secret-box .shop-card { width: min(520px, 100%); text-align: center; }
+.secret-chest { font-size: 90px; line-height: 1.1; animation: chest-shake 1.2s ease-in-out infinite; }
+.secret-chest.open { animation: pop-in 0.5s var(--ease-spring); }
+.secret-stones { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 14px 0; }
+.secret-stone {
+  width: 72px; height: 72px; border: 0; border-radius: 22px 26px 20px 28px; background: radial-gradient(circle at 35% 30%, #d9dde2, #9aa3ad 70%);
+  box-shadow: 0 5px 0 #6f7882; color: var(--ink); font: 800 28px/1 var(--font-display); cursor: pointer; transition: transform 0.15s var(--ease-spring);
+}
+.secret-stone[aria-pressed="true"] { background: radial-gradient(circle at 35% 30%, #fff3c4, var(--sun) 70%); box-shadow: 0 5px 0 var(--sun-edge), 0 0 0 4px #fff; transform: translateY(-4px); }
+@keyframes chest-shake { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-8deg); } 90% { transform: rotate(8deg); } 95% { transform: rotate(-4deg); } }
+
+@media (max-width: 600px) {
+  .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .book-head h2, .shop-head h2 { font-size: 22px; }
+}

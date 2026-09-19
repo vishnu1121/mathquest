@@ -1,0 +1,55 @@
+/* Living scenery behind each level, and larger pieces on wide screens */
+.scenery { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+/* Clip instead of hide: focusing a pad or firefly must never scroll these boxes and shift the scene. */
+.stage, .river, .glade, .riddle-field, .map-board, .story-stage, .sc { overflow: clip; }
+.stage > .frog-scene, .stage > .glade, .stage > .duel { z-index: 1; }
+.sy { position: absolute; line-height: 1; opacity: 0.9; }
+.sy-drift { left: -15%; animation: sy-drift 50s linear infinite; }
+.sy-flyby { left: -10%; animation: sy-flyby 20s linear infinite; }
+.sy-bob { animation: sy-bob 4s ease-in-out infinite; }
+.sy-sun {
+  position: absolute; top: 5%; right: 16%; width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #fff6c9 0 34%, #ffd84d 55%, rgba(255, 216, 77, 0) 72%);
+  box-shadow: 0 0 70px 24px rgba(255, 214, 77, 0.3); animation: sy-pulse 5s ease-in-out infinite;
+}
+.sy-sun.moon { background: radial-gradient(circle at 42% 40%, #fffbe8 0 44%, #e9e3c8 60%, rgba(233, 227, 200, 0) 72%); box-shadow: 0 0 50px 14px rgba(255, 250, 220, 0.22); }
+.sy-far { position: absolute; right: 0; bottom: 0; left: 0; height: 30%; }
+.sy-far span { position: absolute; bottom: 6%; line-height: 1; opacity: 0.5; transform-origin: 50% 100%; animation: sy-sway 6s ease-in-out infinite; }
+.frog-stage .sy-far { bottom: auto; top: 18%; height: 20%; }
+.frog-stage .sy-far span { bottom: 0; opacity: 0.4; }
+.scenery.night .sy { opacity: 0.75; }
+.scenery.night .sy-far span { opacity: 0.3; }
+.duel-stage .sy-far span { opacity: 0.35; }
+
+@keyframes sy-drift { to { transform: translateX(130vw); } }
+@keyframes sy-flyby {
+  0% { transform: translate(0, 0) scaleX(-1); }
+  25% { transform: translate(32vw, -24px) scaleX(-1); }
+  50% { transform: translate(64vw, 10px) scaleX(-1); }
+  75% { transform: translate(96vw, -16px) scaleX(-1); }
+  100% { transform: translate(125vw, 0) scaleX(-1); }
+}
+@keyframes sy-bob { 50% { transform: translateY(-14px) rotate(6deg); } }
+@keyframes sy-pulse { 50% { transform: scale(1.07); } }
+@keyframes sy-sway { 50% { transform: rotate(3deg); } }
+
+/* Wide screens: the duel and cards grow instead of floating small in empty space */
+.emoji-guardian { font-size: clamp(150px, 26vh, 300px) !important; }
+@media (min-width: 1300px) {
+  .duel { max-width: 1400px; margin-inline: auto; }
+  .guardian { width: min(560px, 36vw); }
+  .tree { max-height: 40vh; }
+  .shield { width: 104px; height: 104px; }
+  .shield span { font-size: 34px; }
+  .spell-slot, .spell-total { width: 100px; height: 120px; font-size: 46px; }
+  .spell-total { min-width: 120px; }
+  .spell-op { font-size: 40px; }
+  .card { width: 116px; height: 154px; border-radius: 22px; }
+  .card-num { font-size: 48px; }
+  .hand { gap: 16px; min-height: 164px; }
+  .duel-speech, .frog-card, .glade-card { max-width: 520px; font-size: 20px; }
+  .frog-goal, .glade-goal { font-size: 26px; }
+  .river { height: clamp(260px, 46vh, 460px); }
+  .fly { width: 92px; height: 92px; margin: -46px 0 0 -46px; }
+  .fly-num { font-size: 36px; }
+}

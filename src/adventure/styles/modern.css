@@ -1,0 +1,143 @@
+/* Modern layer: glass HUD with one icon set, luminous gradient buttons, soft mesh skies, a bento
+   Playground, the hero picker and the mini-game shell. Loaded last so it refines everything before it. */
+
+:root {
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-strong: rgba(255, 255, 255, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 10px 28px -14px rgba(36, 59, 83, 0.4);
+  --grad-sun: linear-gradient(180deg, #ffdd6e 0%, #ffbe2b 100%);
+  --grad-sky: linear-gradient(160deg, #3b95d8 0%, #1d5f99 100%);
+  --grad-violet: linear-gradient(160deg, #7d5df2 0%, #5536c4 100%);
+  --grad-berry: linear-gradient(160deg, #e5507a 0%, #b52a52 100%);
+  --radius-xl: 28px;
+}
+
+/* ---------- Soft mesh sky behind the whole app ---------- */
+.app {
+  background:
+    radial-gradient(1100px 620px at 8% -12%, #d6f0ff 0%, transparent 60%),
+    radial-gradient(900px 520px at 100% -4%, #fff0c4 0%, transparent 55%),
+    radial-gradient(800px 600px at 50% 120%, #ddf6e3 0%, transparent 60%),
+    linear-gradient(180deg, #eaf7ff 0%, #f6fbef 72%);
+}
+
+/* ---------- Glass HUD and icons ---------- */
+.hud-pill {
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+.hud-icon { color: var(--ink); transition: transform var(--dur-fast) var(--ease-standard), background var(--dur-fast); }
+.hud-icon:hover { transform: translateY(-1px); background: var(--glass-strong); }
+.mq-icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.mq-icon.fill { fill: currentColor; stroke: none; }
+.hud-coins .mq-icon { color: #e2a100; }
+.badge-pill .mq-icon { color: #d9822b; }
+.hud-calm[aria-pressed="true"] { color: var(--leaf-deep); }
+.quest, .shop-card, .book-card, .hp-card { border: 1px solid var(--glass-border); }
+
+/* ---------- Luminous buttons ---------- */
+.btn {
+  border-radius: 22px;
+  background: var(--grad-sun);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 0 #d49a0d, 0 14px 26px -12px rgba(212, 154, 13, 0.65);
+  transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard), opacity var(--dur-normal);
+}
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:active:not(:disabled) { transform: translateY(3px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 0 #d49a0d, 0 6px 12px -8px rgba(212, 154, 13, 0.6); }
+.btn.secondary {
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1.5px rgba(36, 59, 83, 0.1), 0 4px 0 rgba(36, 59, 83, 0.12), 0 12px 22px -14px rgba(36, 59, 83, 0.4);
+}
+.btn.secondary:active:not(:disabled) { box-shadow: inset 0 0 0 1.5px rgba(36, 59, 83, 0.1), 0 1px 0 rgba(36, 59, 83, 0.12); }
+.btn.sky {
+  background: var(--grad-sky); color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 0 #154a78, 0 14px 26px -12px rgba(21, 74, 120, 0.6);
+}
+.btn.sky:active:not(:disabled) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 0 #154a78; }
+.chip { transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-fast); }
+
+/* ---------- Screen transitions (View Transitions where supported) ---------- */
+::view-transition-old(root) { animation: vt-out var(--dur-moderate) var(--ease-accelerate) both; }
+::view-transition-new(root) { animation: vt-in var(--dur-moderate) var(--ease-decelerate) both; }
+@keyframes vt-out { to { opacity: 0; transform: scale(0.98); } }
+@keyframes vt-in { from { opacity: 0; transform: scale(1.02); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* ---------- Playground: bento cards for story mini-games ---------- */
+.playground { display: grid; gap: 12px; margin-top: 8px; }
+.playground-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.playground-head h2 { font: 800 26px/1.1 var(--font-display); }
+.playground-head p { color: var(--ink-soft); font-size: 16px; }
+.play-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.play-card {
+  position: relative; isolation: isolate; display: grid; align-content: end; gap: 4px; width: 100%; min-height: 160px; padding: 18px;
+  overflow: hidden; border: 0; border-radius: var(--radius-xl); color: #fff; text-align: left; cursor: pointer;
+  box-shadow: 0 18px 32px -20px rgba(36, 59, 83, 0.7); transition: transform var(--dur-normal) var(--ease-spring), box-shadow var(--dur-normal);
+}
+.play-card:hover:not([data-locked]) { transform: translateY(-4px) rotate(-0.4deg); box-shadow: 0 26px 40px -22px rgba(36, 59, 83, 0.75); }
+.play-card[data-game="mist"] { background: var(--grad-sky); }
+.play-card[data-game="flight"] { background: var(--grad-violet); }
+.play-card[data-game="dance"] { background: var(--grad-berry); }
+.play-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120px 120px at 85% 20%, rgba(255, 255, 255, 0.35), transparent 70%); }
+.pc-art { position: absolute; top: 8px; right: 10px; z-index: -1; font-size: 84px; line-height: 1; transform: rotate(-8deg); filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.25)); }
+.pc-name { font: 800 22px/1.1 var(--font-display); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
+.pc-desc { max-width: 24ch; font: 600 16px/1.3 var(--font-display); }
+.pc-chip { justify-self: start; margin-bottom: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.24); font: 800 14px/1 var(--font-display); }
+.play-card[data-locked] { cursor: default; filter: grayscale(0.85) brightness(0.95); }
+
+/* ---------- Hero picker ---------- */
+.hero-picker { position: fixed; inset: 0; z-index: 47; display: grid; grid-template-columns: minmax(0, 1fr); place-items: start center; padding: 16px; overflow-y: auto; background: rgba(20, 30, 50, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: fade var(--dur-moderate) ease; }
+.hp-card { display: grid; gap: 16px; width: min(760px, 100%); margin-block: auto; padding: 24px; border-radius: 32px; background: rgba(255, 255, 255, 0.94); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.5); animation: pop-in var(--dur-deliberate) var(--ease-spring); }
+.hp-card h2 { font: 800 clamp(26px, 4vw, 34px)/1.1 var(--font-display); text-wrap: balance; }
+.hp-card > p { color: var(--ink-soft); font-size: 17px; }
+.hp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.hp-option { display: grid; justify-items: center; gap: 6px; width: 100%; padding: 14px 8px 12px; border: 0; border-radius: 22px; background: #f2f6fa; cursor: pointer; font: 800 16px/1.2 var(--font-display); color: var(--ink); transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-fast); }
+.hp-option span { font-size: 58px; line-height: 1.05; }
+.hp-option:hover { transform: translateY(-3px); }
+.hp-option[aria-pressed="true"] { background: #fff5d1; box-shadow: inset 0 0 0 3px var(--sun-edge), 0 12px 22px -14px rgba(217, 165, 20, 0.8); }
+.hp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+
+/* ---------- Mini-game shell ---------- */
+.mini { position: fixed; inset: 0; z-index: 42; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #10203d; color: #fff; animation: fade var(--dur-moderate) ease; }
+.mini-top { position: relative; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px var(--safe-x); }
+.mini-title { font: 800 clamp(18px, 2.6vw, 24px)/1.15 var(--font-display); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); }
+.mini-meter { display: flex; align-items: center; gap: 10px; margin-left: auto; padding: 8px 14px; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 999px; background: rgba(255, 255, 255, 0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font: 800 16px/1 var(--font-display); }
+.mini-bar { width: clamp(80px, 16vw, 180px); height: 10px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.25); }
+.mini-bar i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ffe27a, #7fe3a8); transition: width var(--dur-normal) var(--ease-standard); }
+.mini-skip { min-height: 44px; padding: 0 14px; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: #fff; font: 700 15px/1 var(--font-display); cursor: pointer; }
+.mini-stage { position: relative; overflow: clip; touch-action: none; user-select: none; -webkit-user-select: none; }
+.mini-hint {
+  position: absolute; bottom: 20px; left: 50%; z-index: 4; display: flex; align-items: center; gap: 12px; max-width: calc(100% - 32px);
+  padding: 12px 18px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 22px; background: rgba(16, 32, 61, 0.55);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font: 700 18px/1.3 var(--font-display); pointer-events: none;
+  transform: translateX(-50%); transition: opacity var(--dur-moderate) ease;
+}
+.mini-hint span { font-size: 34px; line-height: 1; }
+.mini-hint.gone { opacity: 0; }
+.mini-done { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding: 16px; background: radial-gradient(circle at 50% 40%, rgba(255, 233, 160, 0.35), rgba(16, 32, 61, 0.75)); animation: fade var(--dur-moderate) ease; }
+.mini-done-card { display: grid; justify-items: center; gap: 10px; width: min(480px, 100%); padding: 26px 24px 22px; border-radius: 30px; background: rgba(255, 255, 255, 0.95); color: var(--ink); text-align: center; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6); animation: pop-in var(--dur-deliberate) var(--ease-spring); }
+.mini-done-card .md-art { font-size: 72px; line-height: 1; }
+.mini-done-card h2 { font: 800 28px/1.1 var(--font-display); text-wrap: balance; }
+.mini-done-card p { max-width: 34ch; color: var(--ink-soft); font: 700 17px/1.4 var(--font-display); }
+
+/* ---------- HUD hero and gentle screen changes ---------- */
+.hero-pill { font-size: 26px; }
+.app:has(#levelScreen:not([hidden])) #heroBtn { display: none; }
+#mapScreen:not([hidden]), #levelScreen:not([hidden]) .stage { animation: screen-in var(--dur-moderate) var(--ease-decelerate); }
+@keyframes screen-in { from { opacity: 0; } }
+
+/* Hero picker on phones: three per row and the confirm button always reachable */
+.hp-actions { position: sticky; bottom: -24px; margin: 0 -24px -24px; padding: 14px 24px 20px; border-radius: 0 0 32px 32px; background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.96) 35%); }
+@media (max-width: 480px) {
+  .hp-card { padding: 20px 16px; }
+  .hp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .hp-option { padding: 10px 4px; font-size: 14px; }
+  .hp-option span { font-size: 44px; }
+  .hp-actions { margin: 0 -16px -20px; padding: 12px 16px 16px; }
+}

@@ -1,0 +1,59 @@
+/* Maths cards in the Practice view. Loaded next to apex.css, before theme.css, so the grade tokens still
+   win over anything coloured here. The practice view's own ground is #f5f0e5 (voyage.css). */
+
+.world-map > #mathCards { display: none; }
+.world-map[data-view="practice"] > #mathCards { display: block; }
+
+.rc-panel {
+  --rc-card: #fffdf6;
+  --rc-edge: #d9d1bb;
+  --rc-ink: #243f43;
+  --rc-soft: #5d7a76;
+  --rc-accent: #2f6b4a;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 10px 28px 4px;
+  color: var(--rc-ink);
+}
+.rc-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+.rc-head h2 { margin: 6px 0 4px; font-size: 27px; line-height: 1.15; text-wrap: balance; }
+.rc-lede { margin: 0; max-width: 62ch; font-size: 15px; line-height: 1.5; color: var(--rc-soft); }
+.rc-panel .voyage-kicker { color: var(--rc-accent); }
+.rc-all {
+  min-height: 48px; padding: 10px 16px; border: 1px solid var(--rc-edge); border-radius: 14px;
+  background: var(--rc-card); color: var(--rc-ink); font: 800 15px/1 var(--font-ui); cursor: pointer;
+  box-shadow: 0 3px 0 #cfc5ab;
+}
+.rc-all:hover { border-color: var(--rc-accent); }
+.rc-all:active { transform: translateY(3px); box-shadow: 0 0 0 #cfc5ab; }
+.rc-panel :is(button):focus-visible { outline: 3px solid #14525d; outline-offset: 3px; }
+
+/* Cards hug their own content. Stretching them to a common height only moves the dead space around:
+   the rules are different lengths and so are the examples, so nothing lines up either way — and a card
+   with a gap in the middle of it looks broken rather than tidy. */
+.rc-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); align-items: start; margin: 0; padding: 0; list-style: none; }
+.rc-card { display: flex; flex-direction: column; border: 1px solid var(--rc-edge); border-radius: 18px; background: var(--rc-card); overflow: hidden; }
+.rc-face {
+  display: flex; flex-direction: column; gap: 6px; width: 100%; min-height: 48px; padding: 15px;
+  border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit;
+}
+.rc-face:hover { background: #fffaea; }
+.rc-icon { font-size: 28px; line-height: 1; }
+.rc-face b { font-size: 17px; line-height: 1.25; }
+.rc-rule { font-size: 14px; line-height: 1.45; color: var(--rc-soft); }
+/* The affordance is words, not a rotating chevron: it says what happens, and it reads the same to a
+   screen reader and to a child who cannot yet read an icon. */
+.rc-more { margin-top: 2px; font-size: 13px; font-weight: 800; color: var(--rc-accent); }
+.rc-body {
+  margin: 0; padding: 13px 15px; border-top: 1px dashed var(--rc-edge); background: #f7f4e8;
+  font-size: 15px; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 820px) {
+  .rc-panel { padding: 8px 16px 2px; }
+  .rc-head { align-items: flex-start; }
+  .rc-head h2 { font-size: 22px; }
+  .rc-lede { font-size: 14px; }
+  .rc-all { width: 100%; }
+  .rc-grid { grid-template-columns: 1fr; }
+}

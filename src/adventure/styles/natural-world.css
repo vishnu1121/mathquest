@@ -1,0 +1,65 @@
+/* One bright water surface; scenery belongs around the work, not over its controls. */
+.voyage-world {
+  background-color:#55cdd5;
+  background-image:url('/art/water-ripples.svg'),radial-gradient(ellipse at 50% 42%,#a0ece3 0%,#65d8dc 52%,#39bfd1 100%);
+  background-size:340px 230px,100% 100%;
+}
+.voyage-camera,.voyage-island,.voyage-island>.voyage-island-art { background:transparent; }
+.vi-wave { stroke:#e0ffff; stroke-width:3; opacity:.24; }
+.vw-heading h1 { color:#174c55; text-shadow:none; }
+.vw-heading .voyage-kicker { color:#255d64; }
+.vw-restored,.vw-fullscreen { background:#f8fcf0; color:#214f57; border-color:#8ec8c6; }
+.vw-restored i { color:#856321; }
+.voyage-world>.vw-region-switch { background:#ddf3ee; border-bottom:1px solid #92c8c8; }
+.vw-region-switch button { color:#345e63; }
+.vw-region-switch button[aria-pressed=true] { background:#fff9e9; color:#214f57; box-shadow:0 2px 6px #1b6a7020; }
+.vw-fullscreen:hover { background:#fff4cf; }
+.vw-hint { color:#194e56; text-shadow:none; background:#e6f7ed; border-radius:8px; padding:5px 10px; }
+.vw-quest { background:#fffcf0; color:#214b50; border:0; backdrop-filter:none; box-shadow:0 8px 28px #17677729; }
+.vw-quest h2 { color:#214b50; }
+.vw-quest .voyage-kicker { color:#6e582a; }
+.vw-quest p:not(.voyage-kicker) { color:#476b68; }
+.voyage-nav { background:#edf8f3; border-top:1px solid #add4ce; backdrop-filter:none; box-shadow:0 -4px 18px #1d596212; }
+.voyage-nav button { color:#365f65; }
+.voyage-nav button[aria-pressed=true] { color:#fff9e9; background:#27656d; border-color:#27656d; box-shadow:none; }
+.voyage-nav button:hover:not([aria-pressed=true]) { color:#214e55; background:#d7ece5; }
+.voyage-nav button:focus-visible,.vw-region-switch button:focus-visible,.vw-fullscreen:focus-visible { outline:3px solid #205b66; outline-offset:3px; }
+.app:has(.world-map)>.hud { max-width:none; width:100%; margin:0; background:#194c58; }
+.app:has(.world-map)>.hud .hud-pill { background:#245c68; border-color:#51818a; }
+.app:has(.world-map)>.hud .hud-title { background:transparent; }
+.title-screen .ts-art-wrap { background:#64d5da; }
+
+/* The grove is original vector artwork, stationary and excluded from the interaction layer. */
+.stage.class-stage { position:relative; isolation:isolate; background:#edf5e9; padding:32px 30px 42px; }
+.stage.class-stage::before {
+  content:""; position:fixed; inset:var(--hud-h) 0 0; z-index:-1; pointer-events:none;
+  background:url('/art/learning-grove.svg') center bottom / cover no-repeat;
+}
+.class-stage .class-workspace { position:relative; max-width:1100px; }
+.class-stage .trail-header { padding-bottom:14px; }
+.class-stage .trail-header h1 { color:#274d43; }
+.class-stage .trail-header .eyebrow { color:#46685c; }
+.class-stage .trail-band { background:#fffdf3; border-color:#c7d9bf; color:#365a4c; }
+.class-stage .cg-story-beat { background:#fff7e5; border-left:0; border:1px solid #e4dbc0; color:#594b30; }
+.class-stage .trail-task { margin-top:14px; }
+.class-stage .cg-board:not(:has(.play-world)) { background:#fffdf4; border:0; border-radius:var(--ui-card-radius); box-shadow:0 8px 28px #3b65441a; }
+.class-stage .trail-progress>span { background:#ccdac2; }
+.class-stage .trail-progress>span.found { background:#4e8464; }
+.class-stage .trail-feedback { width:fit-content; max-width:100%; background:#f8fbef; border-radius:12px; padding:12px 16px; margin-top:20px; color:#355b48; }
+.class-stage .trail-feedback.retry { color:#78511f; background:#fff4d8; }
+.class-stage .trail-help,.class-stage .cg-listen { background:#fffdf3; color:#315a49; border-color:#9db899; }
+.class-stage .trail-help:hover,.class-stage .cg-listen:hover { background:#e7f1db; }
+.class-stage .trail-actions>.btn { background:#346b53; color:#fffdf0; box-shadow:0 4px 9px #244e3826; }
+.class-stage .trail-actions>.btn:hover { background:#28583f; }
+.class-stage .trail-actions>.btn:active { transform:translateY(2px); }
+.class-stage ::selection { background:#c0e3d6; color:#173e39; }
+.class-stage input { caret-color:#29614f; }
+.class-stage .mw-scroll { scrollbar-color:#83aa92 #eef2df; scrollbar-width:thin; }
+@media(min-width:1500px) { .stage.class-stage{padding-top:42px}.class-stage .class-workspace{max-width:1120px} }
+@media(max-width:700px) {
+  .stage.class-stage{padding:24px 16px 32px}
+  .stage.class-stage::before{background-image:url('/art/learning-grove-phone.svg')}
+  .class-stage .trail-header{padding-bottom:6px}
+  .class-stage .trail-feedback{font-size:14px}
+  .vw-hint{max-width:calc(100% - 32px)}
+}

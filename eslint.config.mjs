@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "vendor/**",
+    // Plain-JS game runtime ported from the playtest prototype; covered by the browser smoke test instead.
+    "src/adventure/runtime/**",
     "next-env.d.ts",
   ]),
 ]);

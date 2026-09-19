@@ -16,8 +16,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    // Browser extensions often add attributes to <html> and <body> before React hydrates (for example
+    // data-tsenta-overlay-*). This only silences attribute mismatches on these two tags, not their children.
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

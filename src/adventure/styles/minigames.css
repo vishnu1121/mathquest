@@ -1,0 +1,195 @@
+/* Story mini-games: Mist Painter, Lantern Flight and Guardian's Dance Party */
+.mini-done-card .md-reward { color: #a87200; font: 800 18px/1 var(--font-display); }
+
+/* ---------- Mist Painter ---------- */
+.mini-mist { background: #7ec8ef; }
+.mm-scene { position: absolute; inset: 0; background: linear-gradient(180deg, #8fd6ff 0%, #c9efff 45%, #fff3d1 72%); --far: #9fdcaa; --mid: #6cc486; --near: #3fa865; --water: #58b7e8; }
+.mini-mist[data-palette="volcano"] .mm-scene { background: linear-gradient(180deg, #ffb98a, #ffe3c2 72%); --far: #e8ae88; --mid: #c9805a; --near: #9e5a3a; --water: #ff8a4c; }
+.mini-mist[data-palette="space"] .mm-scene { background: linear-gradient(180deg, #6b63d9, #cfc9ff 72%); --far: #b8b6ee; --mid: #8f8fd6; --near: #6a66b8; --water: #9d9ae0; }
+.mini-mist[data-palette="ocean"] .mm-scene { background: linear-gradient(180deg, #4fc3dc, #c9f4f2 72%); --far: #8fd9cb; --mid: #47b8a6; --near: #2e8f82; --water: #2aa7c9; }
+.mini-mist[data-palette="candy"] .mm-scene { background: linear-gradient(180deg, #ff9fcf, #ffe6f2 72%); --far: #fbc4dd; --mid: #f59ac6; --near: #e07aa9; --water: #9fd8f5; }
+.mm-sun { position: absolute; top: 8%; right: 14%; width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff7c2 0 35%, #ffd84d 60%, rgba(255, 216, 77, 0) 72%); }
+.mm-land { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mm-far { fill: var(--far); }
+.mm-mid { fill: var(--mid); }
+.mm-near { fill: var(--near); }
+.mm-river { fill: none; stroke: var(--water); stroke-width: 34; stroke-linecap: round; }
+.mm-item { position: absolute; line-height: 1; filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.18)); transform: translate(-50%, -50%); }
+.mm-wave { animation: mm-wave 1s ease-in-out 3; }
+.mm-hop { animation: mm-hop 0.6s ease-in-out 3; }
+.mm-grow { animation: mm-grow 0.7s var(--ease-spring) both; }
+.mm-jump { animation: mm-jump 0.9s ease-in-out 3; }
+.mm-flutter { animation: mm-flutter 1.6s ease-in-out infinite; }
+.mm-glow { animation: mm-glow 1.4s ease-in-out infinite; }
+.mm-mist { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; transition: opacity 1.2s ease; }
+.mm-mist.melt { opacity: 0; pointer-events: none; }
+@keyframes mm-wave { 50% { transform: translate(-50%, -50%) rotate(-14deg); } }
+@keyframes mm-hop { 50% { transform: translate(-50%, calc(-50% - 30px)); } }
+@keyframes mm-grow { from { transform: translate(-50%, -50%) scale(0.3); } }
+@keyframes mm-jump { 40% { transform: translate(-50%, calc(-50% - 50px)) rotate(-30deg); } }
+@keyframes mm-flutter { 50% { transform: translate(calc(-50% + 30px), calc(-50% - 20px)) rotate(10deg); } }
+@keyframes mm-glow { 50% { filter: drop-shadow(0 0 30px rgb(255, 214, 77)); } }
+
+/* ---------- Lantern Flight ---------- */
+/* Four legs, each with its own sky, hills and moon (the stage carries data-leg). */
+.mini-flight { background: #0f1b3d; }
+.mini-flight .mini-stage { --hill-far: #2a3d78; --hill-near: #1b2a57; }
+.mini-flight .mini-stage[data-leg="clouds"] { --hill-far: #4b5a93; --hill-near: #2d3a6d; }
+.mini-flight .mini-stage[data-leg="canyon"] { --hill-far: #7a3f5e; --hill-near: #4b2748; }
+.mini-flight .mini-stage[data-leg="harbor"] { --hill-far: #22507a; --hill-near: #143556; }
+.mf-sky { position: absolute; inset: 0; background: radial-gradient(circle at 80% 18%, #3a4f9c 0, transparent 40%), linear-gradient(180deg, #0f1b3d 0%, #243b7a 60%, #3d5aa8 100%); transition: background 1s ease; }
+.mini-stage[data-leg="clouds"] .mf-sky { background: radial-gradient(circle at 70% 20%, #4a5c9e 0, transparent 42%), linear-gradient(180deg, #141f48 0%, #33407e 60%, #6272ad 100%); }
+.mini-stage[data-leg="canyon"] .mf-sky { background: radial-gradient(circle at 75% 22%, #7a4f8f 0, transparent 40%), linear-gradient(180deg, #1d1740 0%, #4a2f6b 55%, #a0566a 100%); }
+.mini-stage[data-leg="harbor"] .mf-sky { background: radial-gradient(circle at 78% 20%, #5d7fc4 0, transparent 45%), linear-gradient(180deg, #0b1636 0%, #1f3f78 60%, #2f7aa0 100%); }
+.glow-all .mf-sky { background: radial-gradient(circle at 50% 100%, rgba(255, 214, 120, 0.55), transparent 65%), linear-gradient(180deg, #1c2d63, #4c63b6); }
+.mf-moon { position: absolute; top: 8%; right: 10%; width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #fffbe8 0 45%, #e9e3c8 62%, rgba(233, 227, 200, 0) 72%); box-shadow: 0 0 60px 20px rgba(255, 250, 220, 0.2); transition: width 1.2s ease, height 1.2s ease; }
+.mini-stage[data-leg="canyon"] .mf-moon { width: 112px; height: 112px; }
+.mini-stage[data-leg="harbor"] .mf-moon { top: 5%; width: 150px; height: 150px; }
+.mf-hills { position: absolute; right: 0; left: 0; pointer-events: none; background-repeat: repeat-x; }
+.mf-hills.far { bottom: 70px; height: 34%; opacity: 0.6; background-image: radial-gradient(ellipse 170px 120px at 170px 100%, var(--hill-far) 98%, transparent 100%); background-size: 340px 100%; }
+.mf-hills.near { bottom: 40px; height: 22%; background-image: radial-gradient(ellipse 110px 80px at 110px 100%, var(--hill-near) 98%, transparent 100%); background-size: 220px 100%; }
+.mf-gust { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: repeating-linear-gradient(170deg, transparent 0 60px, rgba(255, 255, 255, 0.08) 60px 64px); animation: mf-gust 0.8s linear infinite; }
+.mf-gust[data-lift="down"] { background: repeating-linear-gradient(10deg, transparent 0 60px, rgba(255, 255, 255, 0.08) 60px 64px); }
+.mf-gust[hidden], .mf-leg[hidden] { display: none; }
+.mf-gust b { position: absolute; top: 46%; right: var(--safe-x, 16px); padding: 8px 14px; border-radius: 999px; background: rgba(12, 22, 52, 0.78); color: #bfe6ff; font: 800 16px/1.2 var(--font-display); }
+@keyframes mf-gust { to { background-position: -64px 0; } }
+
+/* HUD: score and multiplier, the ten-frame lantern, Pip and your best, and the sky question. */
+.mf-hud { position: absolute; top: 10px; right: var(--safe-x, 16px); left: var(--safe-x, 16px); z-index: 3; display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; pointer-events: none; }
+.mf-hud > * { margin: 0; padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 16px; background: rgba(12, 22, 52, 0.66); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; }
+.mf-score { display: grid; grid-template-columns: auto auto; align-items: baseline; column-gap: 10px; }
+.mf-score span { grid-column: 1 / -1; color: #bcd0ff; font: 800 14px/1.1 var(--font-display); letter-spacing: 0.06em; }
+.mf-score b { font: 850 26px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.mf-mult { color: #ffe27a; font: 850 18px/1 var(--font-display); font-style: normal; }
+.mf-mult[data-hot="true"] { color: #ffb14a; text-shadow: 0 0 10px rgba(255, 177, 74, 0.8); }
+.mf-lantern { display: grid; align-content: center; gap: 5px; }
+.mf-frame { display: grid; grid-template-columns: repeat(5, 16px); gap: 3px; }
+.mf-frame i { height: 16px; border-radius: 4px; background: rgba(255, 255, 255, 0.18); }
+.mf-frame i.on { background: #ffe27a; box-shadow: 0 0 8px rgba(255, 226, 122, 0.9); }
+.mf-lantern.full .mf-frame i { animation: mf-full 0.7s ease; }
+.mf-lantern p { margin: 0; font: 800 14px/1.2 var(--font-display); }
+.mf-lantern p b { color: #ffe27a; font-size: 18px; font-variant-numeric: tabular-nums; }
+.mf-rivals { display: grid; align-content: center; gap: 4px; font: 700 14px/1.2 var(--font-display); }
+.mf-rivals b { color: #ffe27a; font-variant-numeric: tabular-nums; }
+.mf-ask { flex: 1 1 260px; display: flex; align-items: center; color: #fff4c7; font: 800 18px/1.3 var(--font-display); }
+.mf-ask:not([data-on]) { visibility: hidden; }
+.mf-ask[data-on="question"] { border-color: #ffe27a; }
+.mf-ask[data-on="right"] { border-color: #7fe3a8; color: #c9f7da; }
+.mf-ask[data-on="wrong"], .mf-ask[data-on="missed"] { border-color: #f7c89a; color: #ffe2c4; }
+@keyframes mf-full { 40% { background: #7fe3a8; transform: scale(1.2); } }
+
+.mf-leg { position: absolute; top: 45%; left: 50%; z-index: 4; margin: 0; padding: 14px 24px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 22px; background: rgba(12, 22, 52, 0.84); color: #fff4c7; font: 850 clamp(22px, 4vw, 34px)/1.2 var(--font-display); text-align: center; transform: translate(-50%, -50%); pointer-events: none; }
+.mf-intro { position: absolute; top: 50%; left: 50%; z-index: 4; display: grid; gap: 10px; width: min(540px, calc(100% - 32px)); padding: 20px 22px; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 26px; background: rgba(12, 22, 52, 0.86); color: #fff; transform: translate(-50%, -46%); pointer-events: none; }
+.mini-stage.flying .mf-intro { display: none; }
+.mf-intro-kicker { color: #ffe27a; font: 800 14px/1 var(--font-display); letter-spacing: 0.08em; }
+.mf-intro h2 { font: 850 clamp(22px, 3.4vw, 30px)/1.15 var(--font-display); }
+.mf-intro ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; counter-reset: mfleg; }
+.mf-intro ol li { padding: 5px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); font: 700 14px/1.2 var(--font-display); counter-increment: mfleg; }
+.mf-intro ol li::before { content: counter(mfleg) ". "; color: #ffe27a; }
+.mf-intro ul { display: grid; gap: 6px; margin: 0; padding-left: 20px; font: 600 16px/1.4 var(--font-display); }
+.mf-intro b { color: #ffe27a; }
+.mf-intro-goal { color: #fff4c7; font: 800 16px/1.3 var(--font-display); }
+.mf-stars {
+  position: absolute; inset: 0; opacity: 0.8; animation: mf-scroll 30s linear infinite;
+  background-image: radial-gradient(2px 2px at 10% 20%, #fff 50%, transparent 51%), radial-gradient(2px 2px at 40% 70%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 70% 40%, #fff 50%, transparent 51%), radial-gradient(2px 2px at 90% 85%, #fff 50%, transparent 51%);
+  background-size: 400px 300px;
+}
+.mf-stars.far { opacity: 0.45; background-size: 260px 200px; animation-duration: 60s; }
+.mf-homes { position: absolute; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; justify-content: space-around; height: 110px; padding-bottom: 8px; background: linear-gradient(180deg, transparent, rgba(10, 20, 45, 0.6)); }
+.mf-homes span { position: relative; font-size: 56px; line-height: 1; filter: grayscale(0.7) brightness(0.6); transition: filter 0.6s ease; }
+.mf-homes span i { position: absolute; top: -18px; right: -10px; font-size: 22px; font-style: normal; animation: mf-zzz 2s ease-in-out infinite; }
+.mf-homes span.lit { filter: drop-shadow(0 0 18px rgba(255, 214, 77, 0.9)); }
+.mf-homes span.lit i { display: none; }
+.mf-world { position: absolute; inset: 0; }
+.mf-fly, .mf-cloud, .mf-star { position: absolute; top: 0; left: 0; line-height: 1; }
+.mf-fly { margin: -20px 0 0 -20px; font-size: 40px; filter: drop-shadow(0 0 14px rgba(255, 220, 90, 0.95)); }
+/* Each firefly shows how many lights it carries. */
+.mf-fly b { position: absolute; top: -12px; right: -24px; padding: 3px 7px; border-radius: 999px; background: #fff4c7; color: #1b2a57; font: 850 14px/1 var(--font-display); }
+.mf-fly.golden { font-size: 50px; filter: drop-shadow(0 0 22px rgba(255, 200, 60, 1)); }
+.mf-fly.golden b { background: #ffd84d; }
+.mf-star { margin: -22px 0 0 -22px; font-size: 46px; filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.85)); }
+.mf-cloud { margin: -42px 0 0 -42px; font-size: 84px; opacity: 0.92; }
+/* A sky question: three glowing rings in a column. Right and wrong differ in shape and words, not only color. */
+.mf-gate { position: absolute; top: 0; left: 0; width: 0; height: 100%; }
+.mf-ring { position: absolute; left: 0; display: grid; place-items: center; width: 96px; height: 96px; margin: -48px 0 0 -48px; border: 6px solid #ffe27a; border-radius: 50%; background: rgba(255, 244, 200, 0.08); box-shadow: 0 0 22px 6px rgba(255, 226, 122, 0.5), inset 0 0 16px rgba(255, 226, 122, 0.45); transition: transform 0.35s ease, opacity 0.35s ease; }
+.mf-ring b { padding: 5px 11px; border-radius: 999px; background: #1b2a57; color: #fff4c7; font: 850 24px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.mf-ring.right { border-color: #7fe3a8; transform: scale(1.35); opacity: 0; }
+.mf-ring.wrong { border-style: dashed; opacity: 0.4; }
+.mf-hoot { position: absolute; top: 0; left: 0; z-index: 2; display: grid; place-items: center; margin: -36px 0 0 -36px; }
+.mf-owl { font-size: 64px; line-height: 1; animation: mf-flap 0.35s ease-in-out infinite; }
+.mf-lamp { position: absolute; bottom: -26px; left: 50%; font-size: 30px; filter: drop-shadow(0 0 16px rgba(255, 190, 80, 0.95)); transform: translateX(-50%); }
+.mf-hoot.boing .mf-owl { animation: mf-boing 0.5s ease; }
+/* A ×3 chain or better: the lantern blazes and leaves a glowing trail. */
+.mf-hoot.power .mf-lamp { filter: drop-shadow(0 0 22px #ffd84d) drop-shadow(0 0 40px #ff9d2e); }
+.mf-hoot.power::after { content: ""; position: absolute; top: 58%; right: 62%; z-index: -1; width: 90px; height: 10px; border-radius: 999px; background: linear-gradient(90deg, transparent, rgba(255, 216, 77, 0.85)); }
+@keyframes mf-scroll { to { background-position: -400px 0; } }
+@keyframes mf-zzz { 50% { transform: translateY(-6px); opacity: 0.6; } }
+@keyframes mf-flap { 50% { transform: scaleY(0.9) translateY(3px); } }
+@keyframes mf-boing { 30% { transform: scale(1.3, 0.7); } 60% { transform: scale(0.9, 1.1); } }
+html[data-calm] .mf-gust, html[data-calm] .mf-lantern.full .mf-frame i { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .mf-gust, .mf-lantern.full .mf-frame i { animation: none; }
+  .mf-ring { transition: none; }
+}
+@media (max-width: 600px) {
+  .mf-hud { gap: 6px; }
+  .mf-hud > * { padding: 6px 9px; }
+  .mf-score b { font-size: 22px; }
+  .mf-ask { flex-basis: 100%; font-size: 16px; }
+  .mf-ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+  .mf-ring b { font-size: 20px; }
+  .mf-homes span { font-size: 42px; }
+  .mf-intro { padding: 16px; }
+  .mf-intro ul { font-size: 15px; }
+}
+
+/* ---------- Guardian's Dance Party ---------- */
+.mini-dance { background: #2a1450; }
+.mini-dance .mini-stage { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: radial-gradient(circle at 50% 30%, #7a3fbf 0, #3a1c6e 55%, #1d0f3d 100%); }
+.md-floor { position: absolute; right: 0; bottom: 0; left: 0; height: 42%; opacity: 0.9; background: repeating-conic-gradient(from 45deg, rgba(255, 255, 255, 0.09) 0 25%, rgba(255, 255, 255, 0.02) 0 50%) 0 0 / 80px 80px; transform: perspective(500px) rotateX(45deg); transform-origin: bottom; }
+.md-lights i { position: absolute; top: -20%; width: 120px; height: 140%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 70%); transform-origin: top center; animation: md-sweep 4s ease-in-out infinite; }
+.md-lights i:nth-child(1) { left: 6%; animation-delay: 0s; }
+.md-lights i:nth-child(2) { left: 26%; animation-delay: -0.8s; background: linear-gradient(180deg, rgba(255, 150, 200, 0.22), transparent 70%); }
+.md-lights i:nth-child(3) { left: 46%; animation-delay: -1.6s; }
+.md-lights i:nth-child(4) { left: 66%; animation-delay: -2.4s; background: linear-gradient(180deg, rgba(150, 220, 255, 0.22), transparent 70%); }
+.md-lights i:nth-child(5) { left: 86%; animation-delay: -3.2s; }
+.party .md-lights i { animation-duration: 1.2s; }
+.md-lights { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.md-top { position: relative; z-index: 2; display: grid; align-content: start; justify-items: center; gap: 10px; padding: 18px 16px 0; }
+.md-guardian { font-size: clamp(90px, 16vh, 150px); line-height: 1; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.35)); }
+.md-guardian.move0 { animation: md-hop 0.45s ease; }
+.md-guardian.move1 { animation: md-lean-l 0.45s ease; }
+.md-guardian.move2 { animation: md-lean-r 0.45s ease; }
+.md-guardian.move3 { animation: md-spin 0.5s ease; }
+.party .md-guardian { animation: md-bop 0.5s ease-in-out infinite; }
+.md-say { padding: 10px 18px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 999px; background: rgba(255, 255, 255, 0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font: 800 clamp(17px, 2.4vw, 22px)/1.25 var(--font-display); text-align: center; }
+.md-crowd { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: center; gap: 18px; min-height: 80px; }
+.md-crowd span { font-size: 58px; line-height: 1; animation: md-bop 0.6s ease-in-out infinite; }
+.md-crowd span.spin { animation: md-spin 0.6s ease; }
+.md-pads { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; width: min(760px, 100%); margin: 0 auto; padding: 12px 16px 28px; }
+.md-pad { position: relative; display: grid; place-items: center; gap: 4px; min-height: 110px; aspect-ratio: 1; border: 0; color: #fff; cursor: pointer; box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.35), 0 8px 0 rgba(0, 0, 0, 0.35); touch-action: manipulation; }
+.md-pad.p0 { border-radius: 50%; background: linear-gradient(160deg, #4fd18a, #1e8f55); }
+.md-pad.p1 { border-radius: 22px; background: linear-gradient(160deg, #54b3f5, #1f6fb8); }
+.md-pad.p2 { border-radius: 40px 40px 14px 14px; background: linear-gradient(160deg, #ffcf4d, #c98a0a); }
+.md-pad.p3 { border-radius: 34px 12px 34px 12px; background: linear-gradient(160deg, #ff7aa2, #c43a67); }
+.md-emoji { font-size: clamp(40px, 7vw, 60px); line-height: 1; }
+.md-shape { font: 800 26px/1 var(--font-display); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3); }
+.md-pad kbd { position: absolute; top: 10px; right: 14px; font: 800 14px/1 var(--font-display); opacity: 0.85; }
+.md-pad.hit { animation: md-hit 0.35s ease; }
+.md-pad:disabled { cursor: default; opacity: 0.8; }
+@keyframes md-sweep { 50% { transform: rotate(18deg); } }
+@keyframes md-hop { 50% { transform: translateY(-28px) scale(1.05); } }
+@keyframes md-lean-l { 50% { transform: rotate(-16deg); } }
+@keyframes md-lean-r { 50% { transform: rotate(16deg); } }
+@keyframes md-spin { to { transform: rotate(360deg); } }
+@keyframes md-bop { 50% { transform: translateY(-12px); } }
+@keyframes md-hit { 40% { transform: scale(1.1); filter: brightness(1.35); box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.35), 0 8px 0 rgba(0, 0, 0, 0.35); } }
+@media (max-width: 600px) {
+  .md-pads { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 380px; }
+  .md-pad { min-height: 96px; }
+  .md-crowd span { font-size: 44px; }
+}
+
+/* Calm mode keeps the games readable and still */
+html[data-calm] .mf-stars, html[data-calm] .md-lights i, html[data-calm] .md-crowd span, html[data-calm] .mm-flutter,
+html[data-calm] .mm-glow, html[data-calm] .mf-owl, html[data-calm] .mf-homes span i, html[data-calm] .party .md-guardian { animation: none !important; }

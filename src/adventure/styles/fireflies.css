@@ -1,0 +1,77 @@
+/* Level 2: Firefly Tens */
+.firefly-stage { background: linear-gradient(180deg, #2c3f7a 0%, #4661aa 52%, #7e98d6 100%); }
+.glade { position: relative; height: 100%; overflow: hidden; }
+.glade::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background:
+    radial-gradient(2px 2px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 34% 9%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 58% 22%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 76% 12%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 90% 30%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 46% 36%, #fff 50%, transparent 51%);
+}
+.glade::after {
+  content: ""; position: absolute; inset: auto 0 0; height: 180px; pointer-events: none;
+  background:
+    radial-gradient(70% 120px at 20% 100%, #1f5a45 0 98%, transparent 100%),
+    radial-gradient(60% 110px at 85% 100%, #266b50 0 98%, transparent 100%);
+}
+
+.glade-card {
+  position: absolute; top: 12px; left: 16px; z-index: 3; display: grid; gap: 4px;
+  max-width: min(460px, calc(100% - 112px)); padding: 14px 18px; border-radius: 24px;
+  background: var(--surface); box-shadow: var(--lift);
+}
+.glade-goal { font: 800 clamp(19px, 2.4vw, 24px)/1.25 var(--font-display); text-wrap: balance; }
+.glade-goal b { color: #a87200; font-size: 1.2em; }
+.glade-sub { color: var(--ink-soft); font: 700 16px/1.3 var(--font-display); }
+
+.swarm { position: absolute; inset: 96px 0 150px; z-index: 2; }
+.fly { position: absolute; top: 0; left: 0; width: 76px; height: 76px; margin: -38px 0 0 -38px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.fly-inner {
+  display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #fffbe0 0 30%, #ffe066 46%, rgba(255, 214, 77, 0.35) 62%, rgba(255, 214, 77, 0) 72%);
+  animation: flicker 2.2s ease-in-out infinite; transition: transform 0.2s var(--ease-spring);
+}
+.fly:nth-child(even) .fly-inner { animation-delay: -1.1s; }
+.fly-num { font: 800 29px/1 var(--font-display); color: var(--ink); text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7); }
+.fly.picked .fly-inner {
+  transform: scale(1.2); animation: none;
+  background: radial-gradient(circle at 50% 45%, #fff 0 32%, #ffd23f 52%, rgba(255, 201, 51, 0.5) 64%, rgba(255, 201, 51, 0) 74%);
+  box-shadow: 0 0 0 4px #fff, 0 0 32px 12px rgba(255, 220, 90, 0.8);
+}
+.fly.nope .fly-inner { animation: nope 0.42s ease; }
+.fly.hinted .fly-inner { animation: hinted 0.6s ease-in-out 4; }
+
+.beam {
+  position: absolute; top: 0; left: 0; height: 6px; margin-top: -3px; border-radius: 3px; transform-origin: 0 50%;
+  background: linear-gradient(90deg, #fff6c9, #ffd23f, #fff6c9); box-shadow: 0 0 16px 4px rgba(255, 220, 90, 0.85);
+}
+.orb {
+  position: absolute; top: 0; left: 0; display: grid; place-items: center; width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fff, #ffd23f 55%, #e6a100);
+  box-shadow: 0 0 30px 12px rgba(255, 214, 77, 0.7); font: 800 26px/1 var(--font-display); color: var(--ink); pointer-events: none;
+}
+
+.lantern { position: absolute; bottom: 18px; left: 50%; z-index: 2; display: grid; justify-items: center; transform: translateX(-50%); }
+.lantern-cap { width: 130px; height: 22px; border-radius: 12px 12px 4px 4px; background: var(--trunk); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2); }
+.lantern-glass { display: flex; gap: 10px; padding: 14px 18px; border: 4px solid var(--trunk); border-radius: 22px; background: rgba(255, 255, 255, 0.16); transition: box-shadow 0.4s; }
+.slot { width: 42px; height: 42px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.35); transition: background 0.3s, box-shadow 0.3s; }
+.slot.lit { background: radial-gradient(circle at 40% 35%, #fff, #ffd23f 55%, #e6a100); box-shadow: 0 0 22px 6px rgba(255, 214, 77, 0.75); }
+.lantern.glow .lantern-glass { animation: lantern-glow 0.5s ease; }
+.lantern.full .lantern-glass { box-shadow: 0 0 70px 24px rgba(255, 214, 77, 0.6); }
+
+@keyframes flicker { 50% { opacity: 0.82; transform: scale(0.95); } }
+@keyframes nope { 20% { transform: translateX(-9px) rotate(-8deg); } 40% { transform: translateX(9px) rotate(8deg); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+@keyframes hinted { 50% { transform: scale(1.28); box-shadow: 0 0 0 5px #fff; } }
+@keyframes lantern-glow { 50% { transform: scale(1.08); } }
+
+@media (max-width: 600px) {
+  .glade-card { max-width: calc(100% - 112px); padding: 12px 14px; }
+  .swarm { inset: 110px 0 130px; }
+  .fly { width: 66px; height: 66px; margin: -33px 0 0 -33px; }
+  .fly-num { font-size: 26px; }
+  .lantern-glass { gap: 8px; padding: 12px 14px; }
+  .slot { width: 32px; height: 32px; }
+}

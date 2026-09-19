@@ -1,0 +1,170 @@
+/* ===========================================================================
+   Grade themes: one token set per class, applied by `data-class` on <html>.
+   Every screen reads these tokens instead of hard-coded colours, so choosing a
+   class re-themes the whole interface without touching a single screen.
+
+   Two palettes live here and must not be mixed:
+     --ui-*     the interface: navigation, buttons, cards, answer states.
+                Controlled, matures from Kindergarten to Grade 5.
+     --world-*  the game world: skies, hills, water, scenery. Free to be rich,
+                because the richness belongs to the world, not the chrome.
+
+   The interface matures as the child does: brighter and rounder at K, calmer
+   and squarer by Grade 5. Radius drops 28px → 12px across the six classes.
+   =========================================================================== */
+
+:root {
+  /* Kindergarten is the default, because a save with no class chosen is new. */
+  --ui-primary: #4c8dff;
+  --ui-primary-hover: #3f7de8;
+  --ui-primary-pressed: #3369c9;
+  --ui-secondary: #68c9a5;
+  --ui-accent: #ffd166;
+  --ui-reward: #ffd166;
+  --ui-background: #fff9ed;
+  --ui-surface: #ffffff;
+  --ui-surface-alt: #fff3dc;
+  --ui-text: #24324a;
+  --ui-text-soft: #5a6a85;
+  --ui-border: #e6d8bd;
+  --ui-success: #2f9e6d;
+  --ui-warning: #c97a00;
+  --ui-error: #ff6b6b;
+  --ui-disabled: #c3ccd9;
+  --ui-shadow: 24 50 74;
+  /* White on K's #4C8DFF is 3.2:1 — fine for large bold text, short of AA for the rest. Anything that
+     carries white text fills with the deeper shade of the same hue instead, which their own palette rule
+     asks for ("subtle shifts inside the same color family"). Grades 2–5 clear 4.2:1 on the base primary. */
+  --ui-accent-edge: #e0ac1d; --ui-accent-hover: #f7c64f;
+  --ui-primary-fill: #3369c9;
+  --ui-card-radius: 26px;
+  --ui-button-radius: 20px;
+  /* A game button has a solid edge it sits on, not a web drop shadow. */
+  --ui-edge: 5px;
+}
+
+html[data-class="K"] {
+  --ui-accent-edge: #e0ac1d; --ui-accent-hover: #f7c64f;
+  --ui-primary-fill: #3369c9;
+  --ui-primary: #4c8dff; --ui-primary-hover: #3f7de8; --ui-primary-pressed: #3369c9;
+  --ui-secondary: #68c9a5; --ui-accent: #ffd166; --ui-reward: #ffd166;
+  --ui-background: #fff9ed; --ui-surface: #ffffff; --ui-surface-alt: #fff3dc;
+  --ui-text: #24324a; --ui-text-soft: #5a6a85; --ui-border: #e6d8bd;
+  --ui-success: #2f9e6d; --ui-warning: #c97a00; --ui-error: #ff6b6b; --ui-disabled: #c3ccd9;
+  --ui-shadow: 36 50 74;
+  --ui-card-radius: 26px; --ui-button-radius: 20px; --ui-edge: 5px;
+}
+html[data-class="1"] {
+  --ui-accent-edge: #d96b3e; --ui-accent-hover: #f57d4d;
+  --ui-primary-fill: #4d6ce4;
+  --ui-primary: #5b7cfa; --ui-primary-hover: #4d6ce4; --ui-primary-pressed: #405cc4;
+  --ui-secondary: #52c7a5; --ui-accent: #ff8a5b; --ui-reward: #f6c453;
+  --ui-background: #f6faff; --ui-surface: #ffffff; --ui-surface-alt: #eaf2ff;
+  --ui-text: #202a44; --ui-text-soft: #55617c; --ui-border: #d3e0f2;
+  --ui-success: #2c9a6a; --ui-warning: #c07421; --ui-error: #ef5f5f; --ui-disabled: #bfc8d7;
+  --ui-shadow: 32 44 70;
+  --ui-card-radius: 22px; --ui-button-radius: 18px; --ui-edge: 5px;
+}
+html[data-class="2"] {
+  --ui-accent-edge: #d99026; --ui-accent-hover: #f2ab3f;
+  --ui-primary-fill: #4776e6;
+  --ui-primary: #4776e6; --ui-primary-hover: #3b66cf; --ui-primary-pressed: #3156b0;
+  --ui-secondary: #45c4b0; --ui-accent: #ffb84d; --ui-reward: #ffb84d;
+  --ui-background: #f7f9fc; --ui-surface: #ffffff; --ui-surface-alt: #eef3fa;
+  --ui-text: #1f2a44; --ui-text-soft: #52607a; --ui-border: #d5dfec;
+  --ui-success: #2a9466; --ui-warning: #b96d1f; --ui-error: #f36f56; --ui-disabled: #bcc5d3;
+  --ui-shadow: 28 40 66;
+  --ui-card-radius: 20px; --ui-button-radius: 16px; --ui-edge: 4px;
+}
+html[data-class="3"] {
+  --ui-accent-edge: #cf8329; --ui-accent-hover: #e8983b;
+  --ui-primary-fill: #6558d3;
+  --ui-primary: #6558d3; --ui-primary-hover: #574abd; --ui-primary-pressed: #493ea1;
+  --ui-secondary: #3eb8a5; --ui-accent: #f5a547; --ui-reward: #f5a547;
+  --ui-background: #f8f7fc; --ui-surface: #ffffff; --ui-surface-alt: #f0eef9;
+  --ui-text: #27243d; --ui-text-soft: #585472; --ui-border: #ddd8ec;
+  --ui-success: #2a8f66; --ui-warning: #b06a1d; --ui-error: #e96f76; --ui-disabled: #bbb7c9;
+  --ui-shadow: 30 26 52;
+  --ui-card-radius: 18px; --ui-button-radius: 14px; --ui-edge: 4px;
+}
+html[data-class="4"] {
+  --ui-accent-edge: #c96436; --ui-accent-hover: #e27548;
+  --ui-primary-fill: #5865d8;
+  --ui-primary: #5865d8; --ui-primary-hover: #4a56c2; --ui-primary-pressed: #3e49a6;
+  --ui-secondary: #28a9a1; --ui-accent: #ef8354; --ui-reward: #e8b84a;
+  --ui-background: #f6f7fb; --ui-surface: #ffffff; --ui-surface-alt: #eef0f8;
+  --ui-text: #22283b; --ui-text-soft: #535a70; --ui-border: #d8dbe8;
+  --ui-success: #23855f; --ui-warning: #a76220; --ui-error: #d95f57; --ui-disabled: #b8bcca;
+  --ui-shadow: 24 28 46;
+  --ui-card-radius: 16px; --ui-button-radius: 12px; --ui-edge: 3px;
+}
+html[data-class="5"] {
+  --ui-accent-edge: #bf6e2c; --ui-accent-hover: #d8803a;
+  --ui-primary-fill: #4d5bd4;
+  --ui-primary: #4d5bd4; --ui-primary-hover: #414ebd; --ui-primary-pressed: #3743a1;
+  --ui-secondary: #159d91; --ui-accent: #e58c46; --ui-reward: #e58c46;
+  --ui-background: #f5f6fa; --ui-surface: #ffffff; --ui-surface-alt: #edeff6;
+  --ui-text: #202535; --ui-text-soft: #4f566a; --ui-border: #d6d9e6;
+  --ui-success: #1d7d58; --ui-warning: #9d5c1e; --ui-error: #d96773; --ui-disabled: #b5b9c7;
+  --ui-shadow: 20 24 42;
+  --ui-card-radius: 14px; --ui-button-radius: 11px; --ui-edge: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   The legacy names every existing stylesheet already uses now resolve to the
+   grade tokens. That is the whole re-theme: no screen had to be rewritten, and
+   a class switch moves the entire interface at once.
+   World colours (--sky-top, --hill-*, --canopy, --trunk, --river) are NOT
+   remapped: the world keeps its own palette, as it should.
+   --------------------------------------------------------------------------- */
+:root {
+  --mint: var(--ui-background);
+  --ink: var(--ui-text);
+  --ink-soft: var(--ui-text-soft);
+  --line: var(--ui-border);
+  --surface: var(--ui-surface);
+  --sky: var(--ui-primary);
+  --sky-deep: var(--ui-primary-pressed);
+  --sky-soft: var(--ui-surface-alt);
+  --leaf: var(--ui-secondary);
+  --leaf-deep: var(--ui-success);
+  --sun: var(--ui-accent);
+  --sun-edge: var(--ui-accent-edge);
+  --coral: var(--ui-error);
+  --shadow-rgb: var(--ui-shadow);
+  --lift: 0 1px 0 rgb(var(--ui-shadow) / 0.05), 0 14px 32px -14px rgb(var(--ui-shadow) / 0.28);
+}
+
+/* ---------------------------------------------------------------------------
+   Game chrome. A button a child taps in a game sits on a solid edge and presses
+   into it; it is not a flat web rectangle with a hover tint.
+   --------------------------------------------------------------------------- */
+/* The primary action is the accent colour with dark ink on it — high contrast at every grade, and the
+   solid bottom edge is what makes it read as a game control rather than a web button. */
+.btn {
+  border-radius: var(--ui-button-radius);
+  box-shadow: 0 var(--ui-edge) 0 var(--ui-accent-edge);
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.1s ease, background-color 0.15s ease;
+}
+.btn:active:not(:disabled) { transition-duration: 0.04s; }
+.btn:hover:not(:disabled) { background: var(--ui-accent-hover); }
+/* Sinks where you push it and tips towards your finger. --tilt-x/--tilt-y come from runtime/tactile.js;
+   with no pointer (keyboard, assistive tech, reduced motion) they are unset and the press stays square. */
+.btn:active:not(:disabled) {
+  transform: translateY(var(--ui-edge)) perspective(560px)
+             rotateX(calc(var(--tilt-x, 0) * 5deg)) rotateY(calc(var(--tilt-y, 0) * 5deg));
+  box-shadow: 0 0 0 var(--ui-accent-edge);
+}
+.btn.secondary { box-shadow: 0 var(--ui-edge) 0 var(--ui-border); }
+.btn.secondary:hover:not(:disabled) { background: var(--ui-surface-alt); }
+.btn.secondary:active:not(:disabled) { box-shadow: 0 0 0 var(--ui-border); }
+/* Anything that carries white text uses the fill shade, which clears AA at every grade. */
+.hud, .voyage-nav, .cp-grid [aria-pressed="true"] { --on-primary: #fff; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: background-color 0.15s ease; } .btn:active:not(:disabled) { transform: none; } }
+html[data-calm] .btn { transition: background-color 0.15s ease; }
+html[data-calm] .btn:active:not(:disabled) { transform: none; }
+
+/* Cards follow the same maturity curve as the buttons. */
+.story-card, .book-card, .shop-card, .ch-game, .gb-game, .result-card, .voyage-dialog {
+  border-radius: var(--ui-card-radius);
+}

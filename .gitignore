@@ -35,3 +35,9 @@ next-env.d.ts
 
 # local agent settings
 .claude/settings.local.json
+
+# local agent skills and settings (third-party files, not part of the product)
+.claude/
+
+# stray browser/debug logs
+debug.log

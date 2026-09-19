@@ -1,0 +1,129 @@
+/* v2: world maker, AI states, world palettes and the new drag, riddle and Teach Pip interactions */
+
+/* ---------- World palettes ---------- */
+#app[data-palette="volcano"] { --sky-top: #ffd6b0; --sky-bottom: #fff0d9; --hill-near: #c9805a; --hill-far: #e8ae88; }
+#app[data-palette="space"] { --sky-top: #c9c6ff; --sky-bottom: #eef0ff; --hill-near: #8f8fd6; --hill-far: #b8b6ee; }
+#app[data-palette="ocean"] { --sky-top: #b4ecf2; --sky-bottom: #e8fbf6; --hill-near: #47b8a6; --hill-far: #8fd9cb; }
+#app[data-palette="candy"] { --sky-top: #ffd3ec; --sky-bottom: #fff3e0; --hill-near: #f59ac6; --hill-far: #fbc4dd; }
+
+#app[data-palette="volcano"] .frog-stage, #app[data-palette="volcano"] .duel-stage { background: linear-gradient(180deg, #ffe0c2, #ffd9b3 45%, #f3b48a); }
+#app[data-palette="space"] .frog-stage, #app[data-palette="space"] .duel-stage { background: linear-gradient(180deg, #d9d6ff, #eceaff 45%, #cfd0f5); }
+#app[data-palette="ocean"] .frog-stage, #app[data-palette="ocean"] .duel-stage { background: linear-gradient(180deg, #c8f3f7, #e6fbf7 45%, #bfeee2); }
+#app[data-palette="candy"] .frog-stage, #app[data-palette="candy"] .duel-stage { background: linear-gradient(180deg, #ffe0f1, #fff1e6 45%, #ffd8ea); }
+
+#app[data-palette="volcano"] .river { background: linear-gradient(180deg, #ffb36b, #ff7a3d 50%, #e0552b); }
+#app[data-palette="volcano"] .pad:not(.ten) { background: radial-gradient(circle at 35% 30%, #b9a79a, #7d6a5d 60%, #5b4a3f); box-shadow: 0 5px 0 rgba(60, 40, 30, 0.45); }
+#app[data-palette="space"] .river { background: linear-gradient(180deg, #5b55b8, #3b3690 50%, #2a2670); }
+#app[data-palette="space"] .pad:not(.ten) { background: radial-gradient(circle at 35% 30%, #c9c6e6, #908cb8 60%, #6c6896); }
+#app[data-palette="ocean"] .river { background: linear-gradient(180deg, #5fd0e6, #2aa7c9 50%, #1b7fa6); }
+#app[data-palette="ocean"] .pad:not(.ten) { background: radial-gradient(circle at 35% 30%, #ffb9a3, #f07b62 60%, #cf5a43); }
+#app[data-palette="candy"] .river { background: linear-gradient(180deg, #ffc1e0, #ff9fcf 50%, #f07fb6); }
+#app[data-palette="candy"] .pad:not(.ten) { background: radial-gradient(circle at 35% 30%, #a6e6fb, #5fbde0 60%, #3a98c0); }
+
+#app[data-palette="volcano"] .firefly-stage { background: linear-gradient(180deg, #3b1f2b, #6b2f35 55%, #a84a3c); }
+#app[data-palette="space"] .firefly-stage { background: linear-gradient(180deg, #120f3a, #2b2575 55%, #5a4fb0); }
+#app[data-palette="ocean"] .firefly-stage { background: linear-gradient(180deg, #06334f, #0d5d80 55%, #1f8fb0); }
+#app[data-palette="candy"] .firefly-stage { background: linear-gradient(180deg, #5a2a6e, #8f3f8f 55%, #cf6fae); }
+
+/* ---------- Make your world ---------- */
+.quest { display: grid; gap: 12px; padding: 16px 18px; border-radius: 28px; background: var(--surface); box-shadow: var(--lift); }
+.quest-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.quest-owl { font-size: 40px; line-height: 1; }
+.quest-owl.thinking, .hoot-btn.thinking { animation: think 0.9s ease-in-out infinite; }
+.quest-copy { flex: 1 1 240px; min-width: 0; }
+.quest-copy h2 { font: 800 22px/1.15 var(--font-display); }
+.quest-copy p { color: var(--ink-soft); font-size: 16px; }
+.ai-badge { padding: 6px 12px; border-radius: 999px; background: var(--line); color: var(--ink-soft); font: 800 14px/1.2 var(--font-display); white-space: nowrap; }
+.ai-badge[data-state="on"] { background: var(--sun-soft); color: #7a5600; }
+.quest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 16px; border: 0; border-radius: 999px;
+  background: var(--mint); box-shadow: inset 0 0 0 2px var(--line); font: 800 16px/1 var(--font-display); cursor: pointer;
+  transition: transform 0.15s var(--ease-spring);
+}
+.chip:hover { transform: translateY(-2px); }
+.chip[aria-pressed="true"] { background: var(--leaf-soft); box-shadow: inset 0 0 0 3px var(--leaf); }
+.quest-own, .teach-own { display: flex; flex-wrap: wrap; gap: 10px; }
+.quest-own input, .teach-own input {
+  flex: 1 1 220px; min-width: 0; min-height: 56px; padding: 0 16px; border: 0; border-radius: 18px;
+  background: var(--mint); box-shadow: inset 0 0 0 2px var(--line); color: var(--ink); font: 700 17px/1 var(--font-display);
+}
+.quest-own input:disabled, .teach-own input:disabled { opacity: 0.6; }
+.quest-own .btn, .teach-own .btn { min-height: 56px; padding-inline: 20px; font-size: 18px; }
+.hoot-bubble.ai::before { content: "✨ Hoot noticed"; display: block; margin-bottom: 4px; color: #a87200; font: 800 12px/1 var(--font-display); }
+@keyframes think { 50% { transform: translateY(-4px) rotate(-8deg); } }
+
+/* ---------- Frog Hop: slingshot, gems, ripples ---------- */
+.frog { pointer-events: auto; cursor: grab; touch-action: none; }
+.frog.dragging { cursor: grabbing; }
+.frog.dragging .frog-body { transform: scale(1.15, 0.82); }
+.aim-label {
+  position: absolute; top: 56%; z-index: 5; padding: 4px 12px; border-radius: 999px; background: var(--surface); box-shadow: var(--lift);
+  font: 800 20px/1.2 var(--font-display); white-space: nowrap; pointer-events: none; transform: translate(-50%, -290%);
+}
+.aim-label.big { background: var(--sun); }
+.aim-dots { position: absolute; top: 56%; z-index: 2; height: 0; border-top: 5px dotted rgba(255, 255, 255, 0.95); pointer-events: none; transform: translateY(calc(var(--pad) * -0.75)); }
+.pad.aim { box-shadow: 0 0 0 5px #fff, 0 0 22px 8px rgba(255, 255, 255, 0.8); }
+.gem { position: absolute; bottom: 70%; left: 50%; font-size: calc(var(--pad) * 0.42); line-height: 1; pointer-events: none; animation: gem-bob 1.4s ease-in-out infinite; transform: translateX(-50%); }
+.water-ripple { position: absolute; z-index: 1; width: 46px; height: 46px; margin: -23px 0 0 -23px; border: 3px solid rgba(255, 255, 255, 0.85); border-radius: 50%; pointer-events: none; animation: ripple 0.7s ease-out forwards; }
+.drag-tip { justify-self: center; color: var(--ink-soft); font: 700 15px/1.3 var(--font-display); }
+@keyframes gem-bob { 50% { transform: translate(-50%, -7px); } }
+
+/* ---------- Firefly Tens: light threads, chains, glow ---------- */
+.swarm { touch-action: none; }
+.thread-layer { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.thread-layer polyline { fill: none; stroke: #fff6c9; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(255, 220, 90, 0.9)); }
+.fly.chained .fly-inner { transform: scale(1.18); box-shadow: 0 0 0 4px #fff, 0 0 30px 10px rgba(255, 220, 90, 0.8); animation: none; }
+.chain-sum { position: absolute; top: 0; left: 0; z-index: 4; padding: 4px 12px; border-radius: 999px; background: var(--surface); font: 800 20px/1.2 var(--font-display); white-space: nowrap; pointer-events: none; }
+.chain-sum.over { background: var(--coral-soft); color: var(--coral-deep); }
+.chain-sum.ten { background: var(--sun); }
+.glade-light { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 100%, rgba(255, 226, 140, 0.6), transparent 70%); opacity: var(--light, 0); transition: opacity 0.8s ease; }
+.bloom { position: absolute; bottom: 10px; z-index: 1; font-size: 34px; line-height: 1; pointer-events: none; animation: bloom 0.6s var(--ease-spring) both; }
+@keyframes bloom { from { transform: translateY(24px) scale(0); } }
+
+/* ---------- Guardian Duel: dragging cards, riddles, Teach Pip ---------- */
+.card { touch-action: none; }
+.card.lifted { opacity: 0.2; }
+.drag-card {
+  position: absolute; top: 0; left: 0; display: grid; place-items: center; width: 88px; height: 118px; border-radius: 18px;
+  background: linear-gradient(160deg, #2f8fd0, var(--sky-deep)); color: #fff; font: 800 36px/1 var(--font-display);
+  box-shadow: 0 22px 30px -10px rgba(0, 0, 0, 0.45); pointer-events: none;
+}
+.spell-slot.hover { box-shadow: 0 0 0 5px var(--sun), 0 0 20px 6px rgba(255, 201, 51, 0.6); }
+
+.riddle { position: absolute; inset: 0; z-index: 8; display: grid; grid-template-rows: auto 1fr; gap: 8px; padding: 12px 16px 16px; background: rgba(36, 59, 83, 0.58); animation: fade 0.25s; }
+.duel:has(.riddle) .duel-speech, .duel:has(.pip-event:not([hidden])) .duel-speech { visibility: hidden; }
+/* Keep overlay cards inside narrow screens: without a bounded column, long text widens the grid track. */
+.pip-event, .riddle, .result { grid-template-columns: minmax(0, 1fr); }
+.pip-event { overflow-y: auto; place-items: start center; }
+.pip-card { margin-block: auto; }
+.riddle-card { justify-self: center; display: grid; gap: 6px; width: min(580px, calc(100% - 88px)); padding: 14px 20px; border-radius: 26px; background: var(--surface); box-shadow: var(--lift); text-align: center; }
+.riddle-tag { color: var(--coral-deep); font: 800 14px/1.2 var(--font-display); }
+.riddle-tag .by-ai { color: #a87200; }
+.riddle-text { font: 700 clamp(18px, 2.4vw, 22px)/1.4 var(--font-display); text-wrap: balance; }
+.riddle-text.loading { color: var(--ink-soft); }
+.riddle-field { position: relative; min-height: 0; overflow: hidden; }
+.riddle-bubble { position: absolute; top: 0; left: 0; width: 100px; height: 100px; margin: -50px 0 0 -50px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.rb-num {
+  display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #d6ecfb 55%, #8cc3e8); box-shadow: inset 0 -6px 0 rgba(28, 110, 164, 0.25), 0 10px 20px -8px rgba(36, 59, 83, 0.5);
+  color: var(--ink); font: 800 32px/1 var(--font-display); font-variant-numeric: tabular-nums;
+}
+.riddle-bubble.nope .rb-num { animation: nope 0.42s ease; }
+
+.teach { display: grid; gap: 10px; width: 100%; }
+.teach-chips { display: grid; gap: 8px; }
+.teach-chips .chip { justify-content: flex-start; min-height: 52px; padding: 8px 16px; border-radius: 18px; font-size: 16px; line-height: 1.3; text-align: left; }
+.pip-reply { padding: 12px 16px; border-radius: 20px 20px 20px 6px; background: var(--coral-soft); font: 700 17px/1.4 var(--font-display); text-align: left; }
+.pip-reply.thinking { color: var(--ink-soft); }
+.pip-reply .by-ai { display: block; margin-bottom: 4px; color: #a87200; font: 800 12px/1 var(--font-display); }
+
+@media (max-width: 600px) {
+  .quest { padding: 14px; }
+  .quest-copy h2 { font-size: 20px; }
+  .quest-own .btn { flex: 1 1 auto; }
+  .riddle-card { width: calc(100% - 88px); justify-self: start; }
+  .riddle-bubble { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+  .rb-num { font-size: 27px; }
+  .drag-card { width: 64px; height: 90px; font-size: 26px; }
+}

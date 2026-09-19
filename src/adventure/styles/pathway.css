@@ -1,0 +1,286 @@
+/* The atlas and its hands-on worlds. All illustrations are source SVG/CSS. */
+.learning-atlas { display: grid; gap: 24px; color: #304c3c; }
+.atlas-welcome { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-top: 8px; }
+.atlas-welcome h2 { margin: 9px 0 10px; font: 800 clamp(27px, 3vw, 39px)/1.1 var(--font-display); letter-spacing: -1.3px; }
+.atlas-welcome p:not(.eyebrow) { max-width: 65ch; color: #586950; font-size: 16px; line-height: 1.5; }
+.atlas-passport { flex: none; width: 130px; height: 130px; display: grid; place-content: center; justify-items: center; gap: 3px; border-radius: 35% 40% 38% 35%; background: #f3e7ba; border: 1px dashed #b09852; transform: rotate(5deg); }
+.atlas-passport > span:first-child { font-size: 26px; color: #8d7037; }
+.atlas-passport b { font-size: 30px; line-height: 1; }
+.atlas-passport small { font-size: 17px; font-weight: 500; }
+.atlas-passport > span:last-child { font-size: 13px; }
+.atlas-next { display: flex; align-items: center; gap: 22px; padding: 19px 24px; border: 1px solid #cdddc5; background: #e9f0df; border-radius: 24px; }
+.atlas-owl { width: 69px; flex: none; }
+.atlas-owl svg { width: 100%; height: auto; display: block; }
+.atlas-next h3 { margin: 6px 0; font: 750 22px/1.2 var(--font-display); letter-spacing: -.5px; }
+.atlas-next h3 span { font: 500 15px/1.5 var(--font-display); letter-spacing: 0; }
+.atlas-next p:not(.eyebrow) { color: #4c6547; font-size: 14px; line-height: 1.5; }
+.atlas-next .btn { margin-left: auto; flex: none; gap: 20px; min-height: 52px; font-size: 17px; }
+.atlas-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+.atlas-card { position: relative; display: flex; flex-direction: column; align-items: stretch; padding: 23px 21px 17px; min-width: 0; min-height: 340px; border: 1px solid var(--trail-line, #d1ddc6); border-radius: 24px; background: var(--trail-wash, #eaf0df); color: var(--trail-ink, #3f6344); text-align: left; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.atlas-card:hover { transform: translateY(-5px) rotate(-.4deg); box-shadow: 0 10px 0 -5px var(--trail-line, #d1ddc6); }
+.atlas-card:focus-visible { outline: 3px solid #355f4c; outline-offset: 4px; }
+.atlas-subject { font: 750 12px/1.4 var(--font-display); text-transform: uppercase; letter-spacing: 1.1px; }
+.atlas-art { display: block; height: 112px; width: 100%; margin: 7px 0 9px; color: var(--trail-accent, #50785d); }
+.atlas-card strong { font: 800 22px/1.15 var(--font-display); letter-spacing: -.65px; }
+.atlas-description { margin-top: 9px; font-size: 14px; line-height: 1.5; }
+.atlas-builds { font-size: 12px; margin-top: 12px; opacity: .9; }
+.atlas-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 650; border-top: 1px solid var(--trail-line, #d1ddc6); margin-top: auto; padding-top: 14px; }
+.atlas-description + .atlas-card-bottom { margin-top: 15px; }
+.atlas-builds + .atlas-card-bottom { margin-top: 15px; }
+.atlas-card-bottom b { font-size: 22px; }
+.atlas-forest-art { display: flex; justify-content: center; align-items: end; gap: 9px; height: 128px; padding-block: 14px 18px; font-size: 61px; }
+.atlas-forest-art i { align-self: start; font-style: normal; font-size: 28px; color: #a88a36; }
+.atlas-lilac, [data-color="lilac"] { --trail-wash: #eeebf6; --trail-line: #d7cfe9; --trail-ink: #514466; --trail-accent: #826ca8; }
+.atlas-peach, [data-color="peach"] { --trail-wash: #f7edda; --trail-line: #e6d6b7; --trail-ink: #705329; --trail-accent: #b88845; }
+.atlas-mint, [data-color="mint"] { --trail-wash: #e7f1e8; --trail-line: #cadfcf; --trail-ink: #3b624d; --trail-accent: #558b6c; }
+.atlas-rose, [data-color="rose"] { --trail-wash: #f7e9e3; --trail-line: #e9cfc3; --trail-ink: #7a4a40; --trail-accent: #bc7966; }
+.atlas-blue, [data-color="blue"] { --trail-wash: #e6eef7; --trail-line: #cbd9e8; --trail-ink: #425f7b; --trail-accent: #678cac; }
+.atlas-sand, [data-color="sand"] { --trail-wash: #f1eedb; --trail-line: #ddd7b6; --trail-ink: #626038; --trail-accent: #919052; }
+.atlas-indigo, [data-color="indigo"] { --trail-wash: #eaeaf5; --trail-line: #d0d0e5; --trail-ink: #4e5278; --trail-accent: #7c80b3; }
+.atlas-bonuses { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; }
+.expedition-card { display: flex; align-items: center; gap: 22px; padding: 26px; border: 1px solid #cfdbca; border-radius: 23px; background: #315b49; color: #fff9e8; text-align: left; cursor: pointer; }
+.expedition-card > span:nth-child(2) { display: grid; gap: 6px; }
+.expedition-card strong { font: 750 25px/1.2 var(--font-display); letter-spacing: -.6px; }
+.expedition-card .eyebrow { color: #e9e6c7; font-size: 12px; }
+.expedition-card span span:last-child { font-size: 14px; line-height: 1.5; color: #e8edd9; }
+.expedition-mark { font-size: 58px; line-height: 1; color: #e6c971; }
+.expedition-card > b { margin-left: auto; font-size: 25px; }
+.souvenir-book { padding: 23px; border: 1px solid #dedfcb; border-radius: 23px; background: #fffcef; }
+.souvenir-book summary { cursor: pointer; min-height: 48px; font-size: 17px; font-weight: 700; line-height: 1.6; }
+.souvenir-book summary > span { margin-right: 5px; }
+.souvenir-book summary b { float: right; font-size: 14px; }
+.souvenir-book > p { margin-top: 10px; font-size: 14px; line-height: 1.5; color: #617054; }
+.souvenir-book > div { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 15px; }
+.souvenir { display: grid; justify-items: center; gap: 6px; padding: 15px 8px; border: 1px dashed #d7ddc8; border-radius: 15px; text-align: center; }
+.souvenir i { font-style: normal; font-size: 31px; filter: grayscale(1); opacity: .5; }
+.souvenir.collected { background: #edf2d9; border-style: solid; }
+.souvenir.collected i { filter: none; opacity: 1; }
+.souvenir b { font-size: 13px; }
+.souvenir small { color: #627052; font-size: 12px; line-height: 1.4; }
+.map-screen:has(.learning-atlas) .journey-layout { margin-top: 20px; scroll-margin-top: 20px; }
+
+/* Shared game workbench: broad touch targets, a persistent goal, and room to think. */
+.stage.trail-stage { height: auto; min-height: calc(100dvh - var(--hud-h)); overflow: visible; padding: 28px 30px 38px; background: var(--trail-wash); color: var(--trail-ink); }
+.trail-stage > .scenery { display: none; }
+.trail-workspace { max-width: 920px; margin: auto; }
+.trail-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding-right: 70px; }
+.trail-header h1 { font: 800 clamp(26px, 3vw, 37px)/1.15 var(--font-display); letter-spacing: -1px; margin-top: 6px; }
+.trail-stage .eyebrow { color: var(--trail-ink); font-size: 12px; }
+.trail-band { font-size: 13px; font-weight: 650; padding: 9px 12px; border: 1px solid var(--trail-line); border-radius: 30px; white-space: nowrap; background: #fffaf099; }
+.trail-progress { display: flex; align-items: center; width: min(340px, 80%); margin: 23px 0; gap: 9px; }
+.trail-progress span { flex: 1; display: grid; place-items: center; height: 8px; background: var(--trail-line); border-radius: 10px; font-size: 0; }
+.trail-progress span.found { background: var(--trail-accent); }
+.trail-task { display: flex; align-items: center; gap: 17px; margin-bottom: 21px; }
+#trailMascot { flex: none; display: grid; place-items: center; width: 65px; height: 65px; border-radius: 20px; background: #fffaf0aa; font-size: 39px; transform: rotate(-5deg); }
+.trail-task h2 { font: 700 clamp(19px, 2vw, 25px)/1.35 var(--font-display); margin-top: 5px; letter-spacing: -.35px; }
+#trailPrompt:focus { outline: none; }
+.trail-board { position: relative; min-height: 290px; padding: 28px; border-radius: 27px; border: 1px solid var(--trail-line); background: #fffdf4; box-shadow: 0 5px 0 var(--trail-line); }
+.trail-board button, .trail-board input { font-family: var(--font-display); }
+.trail-board button { cursor: pointer; }
+.trail-board button:disabled { cursor: default; opacity: .5; }
+.trail-board :focus-visible, .trail-actions :focus-visible, .trail-bottom :focus-visible { outline: 3px solid var(--trail-ink); outline-offset: 4px; }
+.model-caption { text-align: center; font-size: 15px; line-height: 1.5; margin-top: 20px; color: var(--trail-ink); }
+.trail-feedback { margin-top: 21px; min-height: 58px; padding: 15px 18px; font-size: 16px; line-height: 1.5; border: 1px solid transparent; border-radius: 16px; }
+.trail-feedback.supportive { background: #fff8e5; border-color: #e4cea0; color: #715322; }
+.trail-feedback.discovered { background: #e6f0d9; border-color: #bacc9f; color: #3b5a30; }
+.trail-feedback.discovered::before { content: "✓ "; font-weight: 800; }
+.trail-feedback.supportive::before { content: "✦ "; }
+.trail-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 15px; }
+.trail-actions .btn { min-height: 55px; font-size: 18px; }
+.trail-help { min-height: 48px; padding: 10px 15px; border: 1px solid var(--trail-line); border-radius: 15px; color: var(--trail-ink); background: #fffaf0a8; font: 650 15px/1.4 var(--font-display); cursor: pointer; }
+.trail-help:disabled { opacity: .45; cursor: default; }
+.trail-bottom { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 21px; font-size: 13px; line-height: 1.5; }
+.trail-bottom button { flex: none; min-height: 48px; border: 0; background: none; text-decoration: underline; color: var(--trail-ink); font: 600 13px/1.5 var(--font-display); cursor: pointer; }
+.trail-undo { display: block; margin: 15px auto 0; min-height: 48px; padding: 8px 18px; background: #f1efdf; color: var(--trail-ink); border: 1px solid #dbddc6; border-radius: 13px; font-size: 14px; }
+.number-dial { display: grid; justify-content: center; gap: 10px; margin: 21px auto 0; text-align: center; }
+.number-dial label { font-size: 15px; font-weight: 700; }
+.number-dial > div { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.number-dial input { width: 77px; height: 53px; padding: 4px; border: 2px solid var(--trail-line); border-radius: 13px; background: white; color: var(--trail-ink); font-size: 27px; font-weight: 750; text-align: center; appearance: textfield; }
+.number-dial input::-webkit-inner-spin-button { appearance: none; }
+.number-dial button { width: 50px; height: 50px; border-radius: 14px; border: 1px solid var(--trail-line); background: var(--trail-wash); color: var(--trail-ink); font: 700 24px/1 var(--font-display); }
+.number-dial button[data-n="5"] { font-size: 18px; }
+
+/* Starfall Station — subtraction as taking away and finding a difference. */
+.star-station { max-width: 660px; margin: auto; }
+.station-orbit { height: 58px; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px dashed #d7c9e7; color: #a38abb; font-size: 26px; margin-bottom: 25px; }
+.station-orbit span { font-size: 55px; color: #c0a5d2; transform: rotate(-20deg); }
+.star-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.station-star { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid #e6cd83; border-radius: 18px; background: #fff1b8; color: #87621c; font-size: 34px; box-shadow: 0 4px 0 #e0c47c; transition: transform .2s; }
+.station-star.sent { background: #f0eafa; color: #79628f; border-color: #d5c9e3; box-shadow: none; transform: scale(.86); }
+/* Moonflowers — editable arrays, with equal groups kept visible. */
+.garden-sign { display: flex; align-items: center; justify-content: center; gap: 12px; color: #78542d; font-size: 12px; letter-spacing: 1px; }
+.garden-sign b { font-size: 17px; letter-spacing: 0; padding: 9px 14px; border-radius: 13px; background: #f5e7bf; }
+.garden-array { display: grid; gap: 7px; justify-content: center; min-height: 110px; align-content: center; margin: 22px 0; }
+.garden-row { display: flex; justify-content: center; gap: 12px; padding: 5px 14px; border-radius: 20px; background: #e7edda; border-bottom: 3px solid #b2c48e; }
+.garden-row span { font-size: 35px; line-height: 1.1; color: #ad7934; text-shadow: 0 2px #e8ca79; }
+.garden-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px 28px; }
+.garden-controls > div { display: flex; align-items: center; gap: 9px; }
+.garden-controls span { max-width: 85px; font-size: 14px; font-weight: 700; }
+.garden-controls button { width: 48px; height: 48px; border: 1px solid #dfd0b2; background: #f5eddb; border-radius: 14px; color: #775a30; font-size: 25px; }
+.garden-controls output { min-width: 24px; text-align: center; font-size: 26px; font-weight: 750; }
+/* Panda Picnic — equitable sharing with a reversible action for every berry. */
+.picnic-basket { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 10px; }
+.picnic-basket > span { font-size: 49px; }
+.picnic-basket > div { display: grid; gap: 3px; font-size: 14px; }
+.picnic-basket b { font: 800 25px/1.2 var(--font-display); }
+.picnic-pandas { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-top: 15px; }
+.panda-place { width: 132px; display: grid; justify-items: center; }
+.panda-face { font-size: 61px; line-height: 1.3; }
+.panda-place > button:not(.take-berry) { width: 100%; padding: 9px; border-radius: 17px 17px 32px 32px; border: 2px solid #96b6a0; background: #eaf3e6; color: #3c644b; }
+.panda-bowl { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 2px 5px; min-height: 44px; }
+.panda-bowl i { font-style: normal; color: #ad5163; font-size: 24px; }
+.panda-bowl > span { font-size: 30px; }
+.panda-place b { font-size: 14px; }
+.take-berry { min-height: 48px; padding: 6px 2px; border: 0; background: transparent; color: #44694d; font-size: 12px; }
+/* Fraction café — the denominator always represents equal-sized pieces. */
+.cafe-order { display: flex; align-items: center; justify-content: center; gap: 17px; }
+.cafe-order > span:first-child { letter-spacing: 1.5px; font-size: 12px; }
+.cafe-order > span:last-child { font-size: 15px; }
+.cafe-order b { display: grid; justify-items: center; font: 800 26px/1 var(--font-display); }
+.cafe-order i { height: 2px; width: 27px; background: #9e6850; margin: 4px 0; }
+.fraction-pizza { display: block; width: min(310px, 100%); height: auto; margin: 10px auto; overflow: visible; filter: drop-shadow(0 8px 0 #dbb77a); }
+.pizza-slice { cursor: pointer; outline: none; }
+.pizza-slice path { fill: #f1d298; stroke: #fffdf4; stroke-width: 3; transition: fill .2s; }
+.pizza-slice circle { fill: #bd6c55; pointer-events: none; }
+.pizza-slice.served path { fill: #99b991; }
+.pizza-slice.served circle { fill: #496e43; }
+.pizza-slice:focus path { stroke: #5b473d; stroke-width: 6; }
+.fraction-cake { display: flex; width: min(530px, 100%); margin: 38px auto; min-height: 135px; gap: 4px; }
+.fraction-cake button { flex: 1; min-width: 0; border: 2px solid #b58072; border-radius: 8px; background: #f3cdbb; color: #8c5548; font-size: 26px; box-shadow: 0 9px 0 #d8aa79; }
+.fraction-cake button[aria-pressed="true"] { background: #acc59c; color: #44613b; }
+/* Pattern Express — numbers and shape rhythms have distinct, accessible symbols. */
+.pattern-train { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; padding: 35px 0; }
+.train-engine { font-size: 54px; line-height: 1; }
+.train-car { display: grid; place-items: center; position: relative; min-width: 55px; height: 65px; padding: 0 9px; border-radius: 12px 12px 9px 9px; background: #d4e4ed; border: 2px solid #9ab1c2; color: #3f5d71; font: 750 25px/1 var(--font-display); }
+.train-car::after { content: "●　●"; position: absolute; top: calc(100% - 2px); font-size: 16px; white-space: nowrap; color: #537382; }
+.train-missing { background: #fcf9e9; border-style: dashed; }
+[data-tone="0"] { color: #815c27; background: #f4dfad; }
+[data-tone="1"] { color: #467362; background: #d8e9dc; }
+[data-tone="2"] { color: #775484; background: #e4d9ee; }
+.pattern-tickets { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 18px; }
+.pattern-tickets button { width: 62px; height: 59px; border: 2px solid #a3b5c7; border-radius: 12px; color: #3f5b78; font-size: 27px; box-shadow: 0 4px 0 #c3d0db; }
+/* Tiny Town — a scaled model, with a movable zero and explicitly labelled units. */
+.ruler-scene { position: relative; height: 215px; width: 100%; overflow: hidden; background: linear-gradient(#ecf1de 0 59%, #d5e6e1 59% 82%, #eaf0de 82%); border-radius: 19px; }
+.ruler-cloud { position: absolute; top: 0; right: 20%; font-size: 66px; color: #fffdf2; }
+.tiny-bridge { position: absolute; top: 77px; height: 60px; border: 5px solid #ad8e58; border-top: 9px solid #a48042; border-radius: 5px; background: repeating-linear-gradient(90deg, #e2c898 0 15px, #c5a971 15px 17px); display: grid; place-items: center; }
+.tiny-bridge span { font-size: 11px; letter-spacing: 1px; color: #574629; background: #f9e7ba; padding: 2px 5px; }
+.ruler-strip { position: absolute; top: 147px; display: flex; width: 81.25%; height: 43px; background: #ead79d; border-radius: 5px; border-bottom: 3px solid #c6ad6e; }
+.ruler-strip span { position: relative; flex: 1; min-width: 0; border-left: 1px solid #8c753e; padding-top: 17px; transform: translateX(-.5px); font: 650 12px/1 var(--font-display); color: #655024; text-align: left; }
+.ruler-slider { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 16px auto 0; font-size: 14px; }
+.ruler-slider input { min-height: 48px; width: min(260px, 100%); accent-color: #798151; }
+.ruler-slider > span { font-size: 12px; }
+.fence-scene { position: relative; width: min(390px, 83%); display: grid; justify-items: center; margin: 20px auto; gap: 10px; }
+.fence-garden { display: grid; place-items: center; width: 100%; aspect-ratio: var(--garden-ratio); max-height: 205px; border: 9px dashed #b99962; border-radius: 7px; background: #dfebcb; font-size: 30px; }
+.fence-horizontal { font-size: 20px; font-weight: 700; }
+.fence-vertical { position: absolute; left: calc(100% + 12px); top: 46%; white-space: nowrap; font-size: 19px; font-weight: 700; }
+/* A real pegboard: accepted shapes are checked for crossings, angles and equal sides. */
+.shape-blueprint { display: flex; justify-content: center; gap: 13px; align-items: center; font-size: 14px; }
+.shape-blueprint b { font-size: 22px; text-transform: capitalize; }
+.constellation-board { position: relative; width: min(340px, 100%); aspect-ratio: 1; margin: 22px auto; border: 1px solid #d0d3e6; border-radius: 28px; background: #eeedf6; background-image: radial-gradient(#bac0d2 1px, transparent 1px); background-size: 17px 17px; }
+.constellation-board svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.constellation-board polyline { fill: none; stroke: #7d77ad; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.constellation-fill { fill: #a9a1c947; stroke: #7d77ad; stroke-width: 3; stroke-dasharray: 5 5; }
+.constellation-example { fill: none; stroke: #8ba781; stroke-width: 5; stroke-dasharray: 7 7; }
+.constellation-peg { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: #fffdf2; box-shadow: 0 3px 0 #cfcee1; color: #737397; font: 750 23px/1 var(--font-display); }
+.constellation-peg[aria-pressed="true"] { color: #fffdf4; background: #75729c; box-shadow: 0 3px 0 #565179; }
+
+@media (max-width: 1050px) {
+  .atlas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atlas-card { min-height: 320px; }
+  .atlas-bonuses { grid-template-columns: 1fr; }
+  .atlas-next { flex-wrap: wrap; }
+  .atlas-next > div { flex: 1; min-width: 230px; }
+  .atlas-next .btn { margin-left: 91px; }
+}
+@media (max-width: 600px) {
+  .learning-atlas { gap: 18px; }
+  .atlas-welcome { gap: 12px; }
+  .atlas-welcome h2 { font-size: 27px; }
+  .atlas-welcome .eyebrow { font-size: 11px; letter-spacing: 1px; }
+  .atlas-welcome p:not(.eyebrow) { font-size: 14px; }
+  .atlas-passport { width: 80px; height: 100px; border-radius: 25px; }
+  .atlas-passport b { font-size: 25px; }
+  .atlas-passport > span:last-child { font-size: 10px; }
+  .atlas-next { padding: 18px; gap: 13px; }
+  .atlas-owl { width: 49px; }
+  .atlas-next > div { min-width: 190px; }
+  .atlas-next h3 { font-size: 21px; }
+  .atlas-next h3 span { display: block; font-size: 14px; }
+  .atlas-next .eyebrow { font-size: 10px; letter-spacing: 1px; }
+  .atlas-next .btn { width: 100%; margin-left: 0; justify-content: space-between; }
+  .atlas-grid { gap: 12px; }
+  .atlas-card { min-height: 318px; padding: 17px 13px 13px; border-radius: 21px; }
+  .atlas-subject { font-size: 10px; letter-spacing: .6px; }
+  .atlas-art { height: 88px; margin: 10px 0; }
+  .atlas-forest-art { height: 108px; font-size: 38px; gap: 2px; }
+  .atlas-forest-art i { font-size: 20px; }
+  .atlas-card strong { font-size: 20px; }
+  .atlas-description { font-size: 13px; line-height: 1.45; }
+  .atlas-builds { font-size: 11px; }
+  .atlas-card-bottom { font-size: 11px; line-height: 1.4; }
+  .atlas-card-bottom b { font-size: 21px; }
+  .expedition-card { padding: 22px 18px; gap: 14px; }
+  .expedition-mark { font-size: 40px; }
+  .expedition-card strong { font-size: 22px; }
+  .expedition-card span span:last-child { font-size: 13px; }
+  .stage.trail-stage { padding: 22px 16px 26px; }
+  .trail-header { padding-right: 59px; align-items: start; flex-direction: column; gap: 11px; }
+  .trail-header h1 { font-size: 27px; }
+  .trail-header .eyebrow { font-size: 11px; }
+  .trail-band { font-size: 12px; padding: 6px 10px; }
+  .trail-progress { margin: 20px 0; }
+  .trail-task { align-items: start; gap: 12px; }
+  #trailMascot { width: 44px; height: 48px; border-radius: 14px; font-size: 29px; }
+  .trail-task h2 { font-size: 19px; }
+  .trail-task .eyebrow { font-size: 11px; }
+  .trail-board { padding: 20px 13px; border-radius: 22px; }
+  .trail-actions { flex-wrap: wrap; gap: 13px; }
+  .trail-actions .btn { width: 100%; min-height: 55px; font-size: 17px; }
+  .trail-help { width: 100%; }
+  .trail-bottom { flex-direction: column-reverse; gap: 3px; font-size: 12px; }
+  .trail-feedback { padding: 13px; font-size: 15px; }
+  .level-screen:has(.trail-stage) .hoot { top: 18px; right: 16px; }
+  .level-screen:has(.trail-stage) .hoot-btn { width: 49px; height: 49px; }
+  .level-screen:has(.trail-stage) .hoot-bubble { width: min(315px, calc(100vw - 32px)); }
+  .star-grid { gap: 10px; }
+  .station-star { width: 49px; height: 49px; font-size: 29px; border-radius: 14px; }
+  .number-dial > div { gap: 6px; }
+  .number-dial input { width: 65px; }
+  .number-dial button { width: 48px; }
+  .garden-row { gap: 7px; padding: 5px 9px; }
+  .garden-row span { font-size: 27px; }
+  .garden-controls { gap: 12px; }
+  .garden-controls > div { width: 100%; justify-content: center; }
+  .garden-controls span { width: 100px; max-width: none; }
+  .picnic-pandas { gap: 12px; }
+  .panda-place { width: 113px; }
+  .panda-face { font-size: 47px; }
+  .panda-bowl { min-height: 40px; }
+  .pattern-train { gap: 7px; padding: 20px 0 30px; row-gap: 22px; }
+  .train-car { min-width: 43px; height: 52px; padding: 0 5px; font-size: 22px; }
+  .train-engine { font-size: 39px; }
+  .pattern-tickets { gap: 10px; }
+  .pattern-tickets button { width: 51px; height: 55px; font-size: 25px; }
+  .ruler-scene { height: 204px; }
+  .ruler-strip span { font-size: 10px; }
+  .ruler-slider { flex-direction: column; gap: 0; }
+  .fence-garden { font-size: 21px; border-width: 6px; }
+  .fence-vertical { left: calc(100% + 6px); font-size: 16px; }
+  .fence-horizontal { font-size: 18px; }
+  .shape-blueprint { flex-direction: column; gap: 5px; }
+  .constellation-board { width: 100%; }
+  .model-caption { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-card, .station-star, .pizza-slice path { transition: none; }
+  .atlas-card:hover { transform: none; }
+}
+[data-calm] .atlas-card, [data-calm] .station-star { transition: none; }
+.constellation-peg[data-anchor="true"] { outline: 3px solid #c7a353; outline-offset: 4px; }
+.atlas-subject, .atlas-builds, .atlas-card-bottom, .atlas-passport > span:last-child,
+.atlas-next .eyebrow, .atlas-welcome .eyebrow, .expedition-card .eyebrow,
+.souvenir b, .souvenir small, .trail-stage .eyebrow, .trail-band,
+.trail-bottom, .trail-bottom button, .take-berry, .ruler-slider > span,
+.ruler-strip span, .tiny-bridge span, .cafe-order > span:first-child { font-size: 14px; }
+.atlas-description, .expedition-card span span:last-child { font-size: 14px; }
+.atlas-passport > span:last-child { text-align: center; line-height: 1.2; }

@@ -1,0 +1,361 @@
+/* ===========================================================================
+   The app's chrome edges, blended into the world.
+
+   Three joins used to be drawn as lines: a dark teal top bar, a #92c8c8 rule
+   under the chapter tabs, and a #add4ce rule over the bottom nav. The colours
+   on either side of all three already matched; the lines were the only thing
+   saying "two panels". They are gone, and the chrome now reads as one surface
+   that the water simply starts and stops inside.
+
+   The bar used to be a dark teal slab (#194c58) dropped on top of a pale
+   world: chrome that announced itself instead of belonging. Here it becomes
+   the same pale shelf as everything it sits above — the region tabs (#ddf3ee),
+   the class stage (#edf5e9) and the paper (#f8f7ef) — so the eye reads one
+   continuous surface from the logo down to the water.
+
+   Blending a bar is easy; keeping its controls legible afterwards is the
+   work. Two devices do that, and they carry meaning:
+     · anything you can press wears a solid plinth under it, like every other
+       game button in the app, and sinks into that plinth when tapped.
+     · anything that only reports a number (the world name, the coin count)
+       stays flat. Flat means "read me", plinth means "press me".
+   The plinth clears 3:1 against the bar, so the boundary is a real edge and
+   not a suggestion.
+
+   Loaded last, after natural-world.css and voyage.css, which paint the dark
+   bar behind `.app:has(.world-map) > .hud` — (0,3,0), and (0,4,0) for the
+   pills and the brand. Every selector here is anchored on the shell's #app
+   id so it outranks them outright rather than relying on file order.
+   =========================================================================== */
+
+#app > .hud {
+  /* A 3% shift inside one family: paper at the top, and at the bottom a shelf
+     colour that sits between the two surfaces this bar actually meets — the
+     region tabs (#ddf3ee) and the class stage (#edf5e9) — so neither seam is
+     visible. No border and no shadow: a line drawn under a bar that is meant
+     to disappear is exactly the thing being removed. */
+  --hud-ink: #29413a;
+  --hud-ink-soft: #55695f;
+  --hud-divider: #c9d8cd;
+  /* A key: warm paper face, soft rim, forest plinth. */
+  --hud-key: #fffdf6;
+  --hud-key-hover: #f3f9ee;
+  --hud-key-rim: #bcd2c6;
+  /* Water teal, not the old sage: the chrome now sits between sky and sea at both ends,
+     and a green edge under a button on a blue bar was the last thing still borrowed
+     from the cream design. Measured at 3.67:1 on the bar behind the buttons. */
+  --hud-key-edge: #3f7f8c;
+  /* A readout: warm, flat, no plinth. */
+  --hud-read: #fbf0d4;
+  --hud-read-rim: #e8d6a4;
+
+  /* The bar was near-white, so white clouds vanished into it. It is a sky now: a pale aqua at the
+     top easing to the same shelf colour at the bottom, which keeps the join seamless and turns the
+     strip below into horizon haze. Same family top to bottom, and the clouds finally have a ground. */
+  --hud-base: linear-gradient(180deg, #c6e7ef 0%, #d6efec 54%, #e5f3ed 100%);
+  /* One warm light, low and off to the left, as if the afternoon sun were just off-frame.
+     It is the only thing in the bar that is not flat, and it is under 10% of the area. */
+  background-image: radial-gradient(122% 150% at 12% -62%, rgb(255 246 214 / 0.92) 0%, rgb(255 246 214 / 0) 54%), var(--hud-base);
+  /* Explicit, not incidental: `background-image` alone leaves natural-world.css's `background:#194c58`
+     sitting underneath as the background-COLOR. The gradient hides it today, but the first layer that
+     is ever given any transparency would let the old dark slab back through. */
+  background-color: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+  color: var(--hud-ink);
+}
+
+/* Measured, not guessed: the bar's last stop is the exact colour of whatever it
+   meets. On the map that is the region-tab band (#ddf3ee); in a level it is the
+   class stage (#edf5e9). A pixel column across the edge shows no step at all. */
+#app:has(#mapScreen:not([hidden])) > .hud { --hud-base: linear-gradient(180deg, #c6e7ef 0%, #d3eeee 52%, #ddf3ee 100%); }
+#app:has(#levelScreen:not([hidden])) > .hud { --hud-base: linear-gradient(180deg, #c9e8ee 0%, #dcefe9 50%, #edf5e9 100%); }
+/* On the map the world's name is already the headline directly below, in full size. Repeating it
+   in the bar was the only thing there, and it was saying nothing twice. In a level the same slot
+   carries the chapter name, which is the one breadcrumb back, so it stays. */
+#app:has(#mapScreen:not([hidden])) > .hud .hud-title { display: none; }
+/* Three level screens are deliberately dark scenes. Blending into those is not
+   possible and not wanted — the bar is chrome above a scene — but a soft cast
+   shadow stops it reading as a sticker laid on top. */
+#app:has(:is(.arena-stage, .frontier-stage, .voyage-stage)) > .hud { box-shadow: 0 10px 22px -16px rgb(12 28 34 / 0.85); }
+
+/* ---------------------------------------------------------------------------
+   Sky.
+
+   Blending the bar left a wide flat pale band across the top of the screen. The
+   honest fix is not to put objects in it but to admit what it is: the sky above
+   an island. Two hand-drawn cloud tiles cross it at different speeds — one rate
+   alone reads as a sliding texture, two read as distance.
+
+   Clipped to the bar and kept well clear of its bottom edge, because a cloud cut
+   off along that edge would redraw the very line this file spent its time
+   removing. Transform-animated inside an overflow box rather than an animated
+   background-position, so the drift is composited and the bar never repaints;
+   the clipping lives on this layer alone, so keyboard focus rings on the bar's
+   buttons are never cropped.
+   --------------------------------------------------------------------------- */
+#app > .hud .hud-sky {
+  position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+}
+#app > .hud .hud-sky i {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  background-repeat: repeat-x;
+}
+/* Each layer is one tile wider than the bar and travels exactly one tile, so the loop is seamless
+   at any width rather than snapping back on a screen the tile does not divide into. */
+#app > .hud .hs-near {
+  width: calc(100% + 900px); background-size: 900px 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='88'%3E%3Cg fill='white' opacity='.8'%3E%3Cellipse cx='112' cy='43' rx='44' ry='13'/%3E%3Cellipse cx='98' cy='36' rx='27' ry='12'/%3E%3Cellipse cx='138' cy='33' rx='32' ry='14'/%3E%3Cellipse cx='170' cy='41' rx='25' ry='10'/%3E%3Cellipse cx='400' cy='37' rx='34' ry='11'/%3E%3Cellipse cx='390' cy='30' rx='21' ry='10'/%3E%3Cellipse cx='420' cy='29' rx='25' ry='11'/%3E%3Cellipse cx='444' cy='36' rx='20' ry='9'/%3E%3Cellipse cx='690' cy='45' rx='40' ry='12'/%3E%3Cellipse cx='676' cy='38' rx='24' ry='11'/%3E%3Cellipse cx='712' cy='36' rx='29' ry='13'/%3E%3Cellipse cx='740' cy='43' rx='22' ry='10'/%3E%3C/g%3E%3C/svg%3E");
+  animation: hud-drift-near 110s linear infinite;
+}
+#app > .hud .hs-far {
+  width: calc(100% + 1260px); background-size: 1260px 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1260' height='88'%3E%3Cg fill='white' opacity='.52'%3E%3Cellipse cx='95' cy='28' rx='30' ry='9'/%3E%3Cellipse cx='82' cy='23' rx='18' ry='8'/%3E%3Cellipse cx='114' cy='22' rx='20' ry='9'/%3E%3Cellipse cx='390' cy='32' rx='26' ry='8'/%3E%3Cellipse cx='405' cy='26' rx='18' ry='8'/%3E%3Cellipse cx='700' cy='25' rx='28' ry='9'/%3E%3Cellipse cx='686' cy='21' rx='17' ry='8'/%3E%3Cellipse cx='718' cy='20' rx='18' ry='8'/%3E%3Cellipse cx='1020' cy='30' rx='24' ry='8'/%3E%3Cellipse cx='1036' cy='25' rx='16' ry='7'/%3E%3C/g%3E%3C/svg%3E");
+  animation: hud-drift-far 190s linear infinite;
+}
+@keyframes hud-drift-near { to { transform: translate3d(-900px, 0, 0); } }
+@keyframes hud-drift-far { to { transform: translate3d(-1260px, 0, 0); } }
+
+/* ---------------------------------------------------------------------------
+   The mark: a lantern.
+
+   It was a gold four-point star in a rounded green tile — the single most
+   generic mark in circulation, and a container that is the app-icon default.
+   Neither said anything about this game.
+
+   The lantern is not a fresh idea dropped on the product; it is what the
+   product already calls itself. The title screen names the world THE LANTERN
+   ISLES (runtime/ux.js), Kindergarten's own one-line pitch is "Hop the river,
+   light the lantern, and wake the Forest Guardian" (runtime/core-ai.js), and
+   lantern flight is the arcade game the owner singled out. The mark is the
+   world's name, finally drawn.
+
+   No tile. The silhouette carries it, which is what kills the app-icon read,
+   and a free-standing lantern can actually float.
+
+   Painted as a background on ::before rather than swapped in the markup,
+   because the logo is written TWICE — Shell.tsx:11 and runtime/ux.js:161 —
+   and editing the glyph in one would leave the other showing a stale star.
+   `font-size: 0` retires the "✦" text node in both without touching either.
+   --------------------------------------------------------------------------- */
+#app > .hud .mq-brand { position: relative; color: var(--hud-ink); }
+
+#app > .hud .brand-mark,
+.title-screen .ts-nav .brand-mark {
+  position: relative;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 0;
+}
+#app > .hud .brand-mark::before,
+.title-screen .ts-nav .brand-mark::before {
+  content: ""; position: absolute; inset: 0;
+  background: center / contain no-repeat;
+}
+/* Two grounds, one mark. The bar is pale sky, so the lantern is the brand's own
+   deep green with a lit gold window. The title screen is night (#223b54 from
+   voyage.css:4) — a dark body would vanish into it, so there the body lightens
+   and the window blazes, which is simply what a lantern does after dark. Same
+   shape, same gold, same proportions: a light and a dark variant of one mark,
+   not two marks. `.title-screen .ts-nav .brand-mark` is (0,3,0) and beats
+   storybook.css:17; the bar's carries #app and beats voyage.css:29. */
+#app > .hud .brand-mark::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 39'%3E%3Cpath d='M11.4 8.2a5.6 5.6 0 0 1 11.2 0' fill='none' stroke='%23ce9350' stroke-width='2.2' stroke-linecap='round'/%3E%3Crect x='7.4' y='8.2' width='19.2' height='4.6' rx='2.3' fill='%232a5642'/%3E%3Crect x='9.4' y='12.6' width='15.2' height='19.6' rx='4.6' fill='%2332614c'/%3E%3Crect x='12.8' y='16.2' width='8.4' height='11.2' rx='3.2' fill='%23f6d486'/%3E%3Crect x='8.6' y='31.4' width='16.8' height='4' rx='2' fill='%232a5642'/%3E%3C/svg%3E"); }
+.title-screen .ts-nav .brand-mark::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 39'%3E%3Cpath d='M11.4 8.2a5.6 5.6 0 0 1 11.2 0' fill='none' stroke='%23e7c68e' stroke-width='2.2' stroke-linecap='round'/%3E%3Crect x='7.4' y='8.2' width='19.2' height='4.6' rx='2.3' fill='%23c9b189'/%3E%3Crect x='9.4' y='12.6' width='15.2' height='19.6' rx='4.6' fill='%23e6d5ab'/%3E%3Crect x='12.8' y='16.2' width='8.4' height='11.2' rx='3.2' fill='%23ffdf9b'/%3E%3Crect x='8.6' y='31.4' width='16.8' height='4' rx='2' fill='%23c9b189'/%3E%3C/svg%3E"); }
+/* Separates the silhouette from a pale sky. Follows the lantern's outline, not a
+   box — there is no box any more. Static filter on a transform-animated element,
+   so it rasterises once and the texture is reused. */
+#app > .hud .brand-mark { filter: drop-shadow(0 2px 3px rgb(24 52 44 / 0.3)); }
+
+#app > .hud .brand-mark { animation: hud-brand-lift 3.8s ease-in-out infinite; }
+#app > .hud .brand-dot { color: #ce9350; }
+
+/* The lantern rises, and what sits below it is %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 39'%3E%3Cpath d='M11.4 8.2a5.6 5.6 0 0 1 11.2 0' fill='none' stroke='%23ce9350' stroke-width='2.2' stroke-linecap='round'/%3E%3Crect x='7.4' y='8.2' width='19.2' height='4.6' rx='2.3' fill='%232a5642'/%3E%3Crect x='9.4' y='12.6' width='15.2' height='19.6' rx='4.6' fill='%2332614c'/%3E%3Crect x='12.8' y='16.2' width='8.4' height='11.2' rx='3.2' fill='%23f6d486'/%3E%3Crect x='8.6' y='31.4' width='16.8' height='4' rx='2' fill='%232a5642'/%3E%3C/svg%3E, not shadow.
+
+   This is the one thing the old treatment had backwards. A dark ellipse under a
+   lamp is a contradiction — a light source does not cast darkness beneath
+   itself. So the pool is warm now, and it behaves like a pool of light should:
+   as the lantern climbs it spreads and dims, which is the exact inverse of the
+   shadow it replaces. Same two elements, same 3.8s, same keyframe names, so
+   both stillness lists below still cover it without an edit. */
+#app > .hud .mq-brand::after {
+  content: ""; position: absolute; left: -1px; bottom: -8px; z-index: -1;
+  width: 36px; height: 14px;
+  background: radial-gradient(closest-side, rgb(255 206 120 / 0.62), rgb(255 206 120 / 0));
+  animation: hud-brand-shade 3.8s ease-in-out infinite;
+}
+@keyframes hud-brand-lift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes hud-brand-shade { 0%, 100% { transform: scale(1); opacity: 0.55; } 50% { transform: scale(1.2); opacity: 0.32; } }
+
+#app > .hud .mq-brand:hover .brand-mark,
+#app > .hud .mq-brand:focus-visible .brand-mark {
+  animation: none; transform: translateY(-5px);
+  filter: drop-shadow(0 5px 5px rgb(24 52 44 / 0.26));
+  transition: transform 0.24s var(--ease-spring), filter 0.24s ease;
+}
+#app > .hud .mq-brand:hover::after,
+#app > .hud .mq-brand:focus-visible::after { animation: none; transform: scale(1.26); opacity: 0.3; }
+
+/* ---------------------------------------------------------------------------
+   Keys. Anchored on #app: `.app:has(.world-map) > .hud .hud-pill` in
+   natural-world.css is (0,4,0), so a class-only selector here would lose.
+   --------------------------------------------------------------------------- */
+#app > .hud .hud-pill {
+  background: var(--hud-key);
+  border: 1px solid var(--hud-key-rim);
+  color: var(--hud-ink);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+#app > .hud :is(button).hud-pill {
+  box-shadow: 0 3px 0 var(--hud-key-edge);
+  transition: transform 0.16s var(--ease-spring), background-color 0.15s ease, box-shadow 0.1s ease;
+}
+#app > .hud :is(button).hud-pill:hover:not(:disabled) { background: var(--hud-key-hover); transform: translateY(-1px); }
+#app > .hud :is(button).hud-pill:active:not(:disabled) {
+  transform: translateY(3px); box-shadow: 0 0 0 var(--hud-key-edge); transition-duration: 0.04s;
+}
+
+/* Readouts: flat, so "press me" stays the plinth's job alone. */
+#app > .hud .hud-coins {
+  background: var(--hud-read); border-color: var(--hud-read-rim); box-shadow: none;
+}
+#app > .hud .hud-title {
+  background: none; border: 0; border-left: 1px solid var(--hud-divider); border-radius: 0;
+  box-shadow: none; color: var(--hud-ink-soft); font-size: 14px; font-weight: 650;
+  padding: 0 0 0 24px; min-height: 26px;
+}
+
+/* The badge count and the coin count are the two warm numbers on the bar. */
+#app > .hud .badge-pill { background: #fff8e8; border-color: #ead9ae; }
+#app > .hud .hud-coins .mq-icon, #app > .hud .badge-pill .mq-icon { color: #a57629; }
+
+/* Calm mode stays a toggle: the ring says pressed, the plinth still says button.
+   The second rule keeps the ring during the press, which the generic :active
+   shadow would otherwise drop for the length of the tap. */
+#app > .hud .hud-calm[aria-pressed="true"] {
+  background: var(--leaf-soft);
+  box-shadow: inset 0 0 0 3px #3f7f60, 0 3px 0 var(--hud-key-edge);
+}
+#app > .hud .hud-calm[aria-pressed="true"]:active:not(:disabled) {
+  box-shadow: inset 0 0 0 3px #3f7f60, 0 0 0 var(--hud-key-edge);
+}
+
+#app > .hud :is(a, button):focus-visible { outline: 3px solid #205b66; outline-offset: 3px; }
+
+/* ---------------------------------------------------------------------------
+   Stillness. The bar keeps its elevation; nothing moves.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #app > .hud .brand-mark, #app > .hud .mq-brand::after,
+  #app > .hud .hud-sky i, #app .voyage-nav::after { animation: none; }
+  #app > .hud :is(button).hud-pill { transition: background-color 0.15s ease; }
+  #app > .hud :is(button).hud-pill:hover:not(:disabled) { transform: none; }
+}
+html[data-calm] #app > .hud .brand-mark,
+html[data-calm] #app > .hud .mq-brand::after,
+html[data-calm] #app > .hud .hud-sky i,
+html[data-calm] #app .voyage-nav::after { animation: none; }
+html[data-calm] #app > .hud :is(button).hud-pill:hover:not(:disabled) { transform: none; }
+
+/* ---------------------------------------------------------------------------
+   The world's two horizontal seams.
+
+   Measured before touching anything: a pixel column across each join showed a
+   single row of #92c8c8 under the chapter tabs and a single row of #add4ce
+   above the nav — nothing but the borders themselves. Everything else already
+   lines up, because voyage.css already carries each chrome colour a little way
+   into the water (70px down from #ddf3ee, 84px up from #edf8f3), so with the
+   rules removed the two surfaces meet at the same value.
+
+   Both borders live in natural-world.css, which is the other agent's file, so
+   they are overridden here rather than deleted there. Their selectors are
+   (0,2,0) and (0,1,0); these carry an id and outrank them.
+   --------------------------------------------------------------------------- */
+#voyageWorld > .vw-region-switch { border-bottom: 0; }
+#app .voyage-nav { border-top: 0; }
+
+/* The top join is then finished: measured step 0 across the whole width.
+
+   The bottom needed one more thing. The water's upward fade lives on
+   `.voyage-world::after` at z-index 2, but the quest card sits at z-index 6 and
+   throws a 28px shadow down past the card's own edge, straight across the join
+   — so the last row of the world landed ~20 short of the nav's #edf8f3 under
+   the card, and still ~8 short away from it. Nothing at z-index 2 can fix that.
+   The nav itself is fixed at z-index 9, so it grows its own short skirt: the
+   one layer in this corner that is above both the water and the card's shadow.
+   It starts where the card ends, so the card is never washed out. */
+/* ---------------------------------------------------------------------------
+   The shallows.
+
+   The bottom was briefly a sand beach. It reads better as what it actually is:
+   the same sea, arriving. Deep aqua in the middle of the map, calming to pale
+   shallows where it meets the chrome — so the screen is one body of water from
+   the horizon haze under the sky bar all the way down to the nav.
+
+   That also settles what the nav buttons are. The top bar sits above the world,
+   so its controls are objects on a shelf: raised, with a solid plinth, pressed
+   downward. The nav sits IN the water, so its controls are the opposite —
+   nothing is raised, and the selected one is a pool sunk into the surface with
+   the light sitting on its rim. Two different materials, two different
+   affordances, neither borrowed from the other.
+   --------------------------------------------------------------------------- */
+
+/* The join: static, welded to the nav's top edge. Nothing here may move, or the
+   seam moves with it. */
+#app .voyage-nav::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 26px;
+  background: linear-gradient(rgb(184 231 228 / 0), rgb(184 231 228));
+  pointer-events: none;
+}
+
+#voyageWorld::after {
+  /* Three stops, not two. A straight fade from open water to the shallows flattens
+     the middle into one dead value; the half-strength stop at 46% is the depth
+     falling away, which is what makes the band read as distance rather than a wipe. */
+  background: linear-gradient(180deg,
+    rgb(184 231 228 / 0) 0%,
+    rgb(190 234 231 / 0.5) 46%,
+    rgb(184 231 228 / 0.93) 84%,
+    rgb(184 231 228) 100%);
+}
+#app .voyage-nav {
+  background: #b8e7e4;
+  box-shadow: 0 -4px 18px rgb(20 86 96 / 0.12);
+}
+
+/* The surface. Long shallow swells crossing the whole nav, in the same language as
+   the island's own `.vi-wave` strokes — one system, not a parallel one. It sits at
+   z-index -1 inside the nav's own stacking context, so it is above the nav's fill and
+   below every button and label. Offset one tile left and travelling exactly one tile
+   right: the band always covers the full width, the loop never snaps, and extending
+   past the left edge adds no scroll in LTR while the right edge stops exactly at 100%.
+   Every wavelength divides 840 into a whole number of full periods (4, 3, 5 and 2), or
+   the crest arrives at the tile edge out of phase and the repeat shows as a vertical
+   kink every 840px — which is a seam, just a vertical one. */
+#app .voyage-nav::after {
+  content: ""; position: absolute; left: -840px; right: auto; top: 0; bottom: 0;
+  width: calc(100% + 840px); z-index: -1; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='840' height='78' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23eafeff' stroke-linecap='round'%3E%3Cpath d='M-105 13q52.5-11 105 0t105 0t105 0t105 0t105 0t105 0t105 0t105 0t105 0t105 0' stroke-width='5' opacity='.5'/%3E%3Cpath d='M-140 34q70-13 140 0t140 0t140 0t140 0t140 0t140 0t140 0t140 0' stroke-width='4' opacity='.3'/%3E%3Cpath d='M-84 57q42-9 84 0t84 0t84 0t84 0t84 0t84 0t84 0t84 0t84 0t84 0t84 0t84 0' stroke-width='4' opacity='.38'/%3E%3Cpath d='M-210 70q105-15 210 0t210 0t210 0t210 0t210 0t210 0' stroke-width='3' opacity='.24'/%3E%3C/g%3E%3C/svg%3E") repeat-x;
+  background-size: 840px 100%;
+  animation: hud-swell 165s linear infinite;
+}
+@keyframes hud-swell { to { transform: translate3d(840px, 0, 0); } }
+
+/* The controls, as water. Resting labels float on the surface with nothing under them;
+   hovering lifts a patch of light onto the water; the selected tab is a deep pool, sunk
+   into the surface with a bright rim where the light catches its edge. `aria-pressed`
+   already carries the state for assistive tech, and the shape changes as well as the
+   colour, so the selection is never colour alone. */
+#app .voyage-nav button { color: #235a63; border-radius: 19px; }
+#app .voyage-nav button:hover:not([aria-pressed="true"]) {
+  background: rgb(255 255 255 / 0.42); color: #1b4c55;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9);
+  border-color: transparent;
+}
+#app .voyage-nav button[aria-pressed="true"] {
+  background: #1f6f7e; border-color: transparent; color: #eafcff;
+  box-shadow: inset 0 2px 5px rgb(6 48 56 / 0.45), inset 0 -1px 0 rgb(190 240 246 / 0.5), 0 1px 0 rgb(255 255 255 / 0.55);
+}
+#app .voyage-nav button:focus-visible { outline: 3px solid #14525d; outline-offset: 3px; }

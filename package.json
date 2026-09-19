@@ -16,7 +16,21 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "audit:licenses": "node scripts/license-audit.mjs",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run audit:licenses"
+    "smoke:adventure": "node scripts/adventure-smoke.mjs",
+    "smoke:complete": "node scripts/adventure-complete.mjs",
+    "smoke:flight": "node scripts/adventure-flight.mjs",
+    "smoke:learning": "node scripts/adventure-learning.mjs",
+    "smoke:arcade": "node scripts/adventure-arcade.mjs",
+    "smoke:voyage": "node scripts/adventure-voyage.mjs",
+    "smoke:frontier": "node scripts/adventure-frontier.mjs",
+    "smoke:arena": "node scripts/adventure-arena.mjs",
+    "smoke:companion": "node scripts/adventure-companion.mjs",
+    "smoke:classes": "node scripts/adventure-classes.mjs",
+    "smoke:grade-play": "node scripts/adventure-grade-play.mjs",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run audit:licenses",
+    "smoke:explain": "node scripts/adventure-explain.mjs",
+    "smoke:apex": "node scripts/adventure-apex.mjs",
+    "smoke:models": "node scripts/adventure-models.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.125.0",

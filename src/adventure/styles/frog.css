@@ -1,0 +1,81 @@
+/* Level 1: Frog Hop */
+.frog-stage { background: linear-gradient(180deg, #cdeefc 0%, #e6f6dd 40%, #d5efc9 100%); }
+.frog-scene { position: relative; height: 100%; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; padding-block: 12px 18px; }
+
+.frog-card {
+  justify-self: start; display: grid; gap: 6px; max-width: min(560px, calc(100% - 112px));
+  margin-left: 16px; padding: 14px 18px; border-radius: 24px; background: var(--surface); box-shadow: var(--lift);
+}
+.frog-round { font: 800 14px/1 var(--font-display); color: var(--leaf-deep); }
+.frog-goal { font: 700 clamp(18px, 2.4vw, 23px)/1.35 var(--font-display); text-wrap: balance; }
+.frog-goal b { color: var(--sky-deep); font-size: 1.15em; font-variant-numeric: tabular-nums; }
+.frog-count {
+  justify-self: start; padding: 6px 14px; border-radius: 999px; background: var(--leaf-soft); color: var(--leaf-deep);
+  font: 800 17px/1.2 var(--font-display); font-variant-numeric: tabular-nums;
+}
+.frog-count.over { background: var(--coral-soft); color: var(--coral-deep); }
+.frog-count.guess { background: var(--sun-soft); color: #7a5600; }
+
+.river {
+  position: relative; align-self: center; height: clamp(220px, 44vh, 360px); overflow: hidden;
+  background: linear-gradient(180deg, #86cff2 0%, var(--river) 45%, #3a9dd4 100%);
+}
+.river::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(100deg, transparent 0 40px, rgba(255, 255, 255, 0.16) 40px 44px, transparent 44px 96px);
+  animation: river-drift 7s linear infinite;
+}
+.river::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 16px 0 #93d69c, inset 0 -16px 0 #93d69c; }
+@keyframes river-drift { to { background-position: 192px 0; } }
+
+.track { position: absolute; top: 0; bottom: 0; left: 0; z-index: 1; transition: transform 0.5s var(--ease-out); }
+.pad {
+  position: absolute; top: 56%; display: grid; place-items: center; width: calc(var(--pad) * 0.86); aspect-ratio: 1;
+  padding: 0; border: 0; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 30%, #93e2a9, #3fb76a 60%, #2b9455);
+  box-shadow: 0 5px 0 rgba(20, 90, 60, 0.35); cursor: default;
+}
+.pad::before { content: ""; position: absolute; inset: 16%; border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 50%; }
+.pad:disabled { color: inherit; opacity: 1; }
+.pad-num { position: relative; font: 800 calc(var(--pad) * 0.3)/1 var(--font-display); color: #fff; text-shadow: 0 2px 0 rgba(20, 90, 60, 0.55); font-variant-numeric: tabular-nums; }
+.pad.ten { width: calc(var(--pad) * 0.96); background: radial-gradient(circle at 35% 30%, #fff1b0, var(--sun) 55%, var(--sun-edge)); box-shadow: 0 5px 0 #a87c0c; }
+.pad.ten .pad-num { color: var(--ink); text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6); font-size: calc(var(--pad) * 0.34); }
+.track.predicting .pad { cursor: pointer; animation: pad-bob 1.8s ease-in-out infinite; }
+.track.predicting .pad:nth-child(odd) { animation-delay: -0.9s; }
+.track.predicting .pad:hover { filter: brightness(1.12); }
+.pad.guess { box-shadow: 0 0 0 5px var(--coral), 0 5px 0 rgba(20, 90, 60, 0.35); }
+.flag { position: absolute; bottom: 72%; left: 48%; font-size: calc(var(--pad) * 0.42); line-height: 1; }
+.ripple { position: absolute; inset: -6px; border: 3px solid rgba(255, 255, 255, 0.9); border-radius: 50%; pointer-events: none; animation: ripple 0.65s ease-out forwards; }
+@keyframes pad-bob { 50% { margin-top: -5px; } }
+@keyframes ripple { from { opacity: 1; transform: scale(0.7); } to { opacity: 0; transform: scale(1.55); } }
+
+.frog { position: absolute; top: 56%; z-index: 3; transform: translate(-50%, -84%); transition: left 0.3s ease-in-out; pointer-events: none; }
+.frog-body { display: inline-block; font-size: calc(var(--pad) * 0.8); line-height: 1; transform-origin: 50% 90%; filter: drop-shadow(0 7px 3px rgba(20, 60, 90, 0.3)); }
+.firefly {
+  position: absolute; top: 56%; z-index: 4; width: 28px; height: 28px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, #fffbe0 0 30%, #ffd84d 46%, rgba(255, 201, 51, 0) 72%);
+  box-shadow: 0 0 24px 12px rgba(255, 214, 77, 0.55);
+}
+
+.frog-controls { display: grid; grid-template-columns: 1fr 1.1fr 1.35fr; gap: 12px; width: 100%; max-width: 780px; margin-inline: auto; padding-inline: 16px; }
+.hop-btn { min-height: 74px; padding-inline: 12px; font-size: 20px; }
+.hop-btn.big { font-size: 22px; }
+
+.frog-sum {
+  position: absolute; top: 50%; left: 50%; z-index: 6; display: grid; justify-items: center; gap: 12px;
+  width: min(440px, calc(100% - 32px)); padding: 22px 22px 20px; border-radius: 28px; background: var(--surface);
+  box-shadow: 0 30px 60px -24px rgba(36, 59, 83, 0.55); transform: translate(-50%, -50%); text-align: center;
+  animation: sum-in 0.45s var(--ease-spring);
+}
+.sum-eq { font: 800 clamp(34px, 6vw, 50px)/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.sum-ans { display: inline-block; padding: 0 12px; border-radius: 14px; background: var(--leaf-soft); color: var(--leaf-deep); }
+.sum-note { max-width: 34ch; color: var(--ink-soft); font-size: 17px; }
+@keyframes sum-in { from { opacity: 0; transform: translate(-50%, -40%) scale(0.85); } }
+
+@media (max-width: 600px) {
+  .frog-card { max-width: calc(100% - 112px); padding: 12px 14px; }
+  .frog-goal { font-size: 17px; }
+  .frog-controls { grid-template-columns: 1fr 1fr; }
+  .hop-btn { min-height: 64px; font-size: 18px; }
+  .hop-btn.big { grid-column: 1 / -1; order: -1; }
+}

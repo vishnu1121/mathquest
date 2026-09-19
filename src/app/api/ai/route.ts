@@ -1,8 +1,7 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { acceptHint, acceptStory, acceptTutorNote } from "@/ai/guards";
 import { HINT_SYSTEM, STORY_SYSTEM, TUTOR_NOTE_SYSTEM } from "@/ai/prompts";
 import { aiRequestSchema, type AiRequest, type AiResponse } from "@/ai/schemas";
-import { aiConfigured, writeText } from "@/ai/server/claude";
+import { aiConfigured, classifyProviderError, writeText } from "@/ai/server/provider";
 import { takeToken } from "@/ai/server/rateLimit";
 
 const reply = (body: AiResponse, status = 200) => Response.json(body, { status });
@@ -62,11 +61,9 @@ export async function POST(request: Request) {
     const text = await runTask(parsed);
     return text ? reply({ ok: true, text }) : reply({ ok: false, reason: "rejected" });
   } catch (error) {
-    // A bad or missing key turns AI off for the session; anything else is treated as temporary.
-    if (error instanceof Anthropic.AuthenticationError || error instanceof Anthropic.PermissionDeniedError) {
-      return reply({ ok: false, reason: "unavailable" }, 503);
-    }
-    if (error instanceof Anthropic.RateLimitError) return reply({ ok: false, reason: "busy" }, 429);
-    return reply({ ok: false, reason: "busy" }, 502);
+    // A rejected key turns AI off for the session; a rate limit or anything else is treated as temporary.
+    const failure = classifyProviderError(error);
+    if (failure === "unauthorized") return reply({ ok: false, reason: "unavailable" }, 503);
+    return reply({ ok: false, reason: "busy" }, failure === "busy" ? 429 : 502);
   }
 }

@@ -1,6 +1,8 @@
 # MathQuest
 ## Product Specification for a K–5 Adaptive Math Adventure
 
+> **Original vision, not an implementation checklist.** For the actual eight-chapter build, verification, technical constraints and latest owner direction, start with [PROJECT_STATE.md](PROJECT_STATE.md) and [CLAUDE.md](../CLAUDE.md). The current adventure does not implement every adaptive or mastery feature described below. The owner now wants an active AI main feature; the proposals in [AI_PLAYBOOK.md](AI_PLAYBOOK.md) remain unselected and unimplemented. This specification is preserved as a reference.
+
 **Document purpose:** This document is intended to serve as the primary product and UX specification for building **MathQuest** in Claude or another AI-assisted development environment.
 
 **Scope of this document:** Product vision, user experience, learning flow, adaptive behavior, AI usage, game design, UX principles, MVP priorities, edge cases, success criteria, and implementation guidance at the product level.

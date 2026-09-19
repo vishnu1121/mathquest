@@ -1,0 +1,101 @@
+/* Level 3: Guardian Duel */
+.duel-stage { background: linear-gradient(180deg, #ffe6bf 0%, #ffe9c9 34%, #d6efc4 74%, #bfe5ae 100%); }
+.duel { position: relative; height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; gap: 10px; padding-block: 12px 18px; }
+
+.duel-speech {
+  position: absolute; top: 12px; left: 16px; z-index: 4; max-width: min(380px, calc(100% - 112px));
+  padding: 12px 16px; border-radius: 6px 22px 22px 22px; background: var(--surface); box-shadow: var(--lift);
+  font: 700 clamp(16px, 2.2vw, 19px)/1.35 var(--font-display);
+}
+.duel-speech.pop { animation: pop-in 0.3s var(--ease-spring); }
+
+.duel-top { display: grid; place-items: end center; min-height: 0; padding-top: 70px; }
+.guardian { position: relative; display: grid; justify-items: center; width: min(330px, 72vw); }
+.guardian.bow .tree { animation: bow 1.2s ease-in-out 2; transform-origin: 50% 100%; }
+.tree { width: 100%; height: auto; max-height: 34vh; }
+.tree .trunk { fill: var(--trunk); }
+.tree .canopy { fill: var(--canopy); }
+.tree .canopy-light { fill: #46b470; }
+.tree .eye { fill: #fff; }
+.tree .pupil { fill: var(--ink); }
+.tree .mouth { fill: none; stroke: var(--ink); stroke-width: 6; stroke-linecap: round; }
+
+.shields { display: flex; gap: 14px; justify-content: center; margin-bottom: -18px; position: relative; z-index: 2; }
+.shield {
+  display: grid; place-items: center; width: 80px; height: 80px; border-radius: 0 60% 0 60%;
+  background: linear-gradient(135deg, #5fd08f, var(--leaf) 55%, var(--leaf-deep)); box-shadow: 0 6px 0 #0f5a33;
+  transform: rotate(-45deg); transition: transform 0.3s var(--ease-spring);
+}
+.shield span { transform: rotate(45deg); font: 800 26px/1 var(--font-display); color: #fff; text-shadow: 0 2px 0 rgba(15, 90, 51, 0.7); font-variant-numeric: tabular-nums; }
+.shield.current { box-shadow: 0 6px 0 #0f5a33, 0 0 0 5px var(--sun), 0 0 26px 8px rgba(255, 201, 51, 0.6); animation: shield-bob 1.4s ease-in-out infinite; }
+.shield.broken { animation: shield-fall 0.9s ease-in forwards; }
+@keyframes shield-bob { 50% { transform: rotate(-45deg) translate(-4px, -4px); } }
+@keyframes shield-fall { to { opacity: 0; transform: rotate(40deg) translate(60px, 180px) scale(0.6); } }
+@keyframes bow { 50% { transform: rotate(-4deg) scaleY(0.94); } }
+
+.spell {
+  display: flex; align-items: center; justify-content: center; gap: 10px; justify-self: center;
+  padding: 10px 16px; border-radius: 26px; background: rgba(255, 255, 255, 0.8); box-shadow: var(--lift);
+}
+.spell-slot, .spell-total {
+  display: grid; place-items: center; width: 76px; height: 90px; border-radius: 16px;
+  font: 800 34px/1 var(--font-display); font-variant-numeric: tabular-nums;
+}
+.spell-slot { border: 3px dashed #8cc3e8; color: #8cc3e8; background: var(--sky-soft); }
+.spell-slot.filled { border-style: solid; border-color: var(--sky-deep); color: var(--ink); background: #fff; }
+.spell-total { width: auto; min-width: 92px; padding-inline: 12px; background: var(--sun-soft); color: #8a6200; }
+.spell-total.show { animation: pop-in 0.35s var(--ease-spring); color: var(--ink); }
+.spell-op { font: 800 30px/1 var(--font-display); color: var(--ink-soft); }
+.spell.charging .spell-slot.filled { box-shadow: 0 0 0 4px var(--sky), 0 0 26px 6px rgba(45, 156, 219, 0.55); }
+.spell.fizzle { animation: nope 0.45s ease; }
+
+.hand { display: flex; justify-content: center; gap: 10px; padding-inline: 16px; min-height: 124px; }
+.card {
+  position: relative; display: grid; place-items: center; width: 88px; height: 118px; padding: 0; border: 0; border-radius: 18px;
+  background: linear-gradient(160deg, #2f8fd0, var(--sky-deep)); color: #fff; box-shadow: 0 6px 0 #144e76, var(--lift);
+  transform: rotate(var(--tilt)); transition: transform 0.22s var(--ease-spring), opacity 0.2s; cursor: pointer;
+}
+.card:hover { transform: rotate(var(--tilt)) translateY(-10px); }
+.card:active { transform: rotate(var(--tilt)) translateY(2px); }
+.card-num { font: 800 36px/1 var(--font-display); font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
+.card-rune { position: absolute; top: 8px; left: 10px; font-size: 14px; opacity: 0.75; }
+.card.used { opacity: 0.35; transform: rotate(var(--tilt)) translateY(16px) scale(0.92); }
+
+.card-ghost {
+  position: absolute; top: 0; left: 0; display: grid; place-items: center; border-radius: 16px; transform-origin: 0 0;
+  background: linear-gradient(160deg, #2f8fd0, var(--sky-deep)); color: #fff; font: 800 32px/1 var(--font-display);
+}
+.bolt {
+  position: absolute; top: -18px; left: -18px; width: 36px; height: 36px; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 25%, #9fd8ff 45%, rgba(45, 156, 219, 0) 72%); box-shadow: 0 0 30px 14px rgba(120, 200, 255, 0.8);
+}
+.acorn { position: absolute; top: 0; z-index: 5; width: 64px; height: 64px; padding: 0; border: 0; background: none; font-size: 42px; line-height: 1; cursor: pointer; }
+
+.pip-event { position: absolute; inset: 0; z-index: 9; display: grid; place-items: center; padding: 16px; background: rgba(36, 59, 83, 0.4); animation: fade 0.25s; }
+.pip-card { display: grid; justify-items: center; gap: 14px; width: min(500px, 100%); padding: 22px; border-radius: 28px; background: var(--surface); box-shadow: 0 30px 60px -20px rgba(36, 59, 83, 0.55); text-align: center; animation: pop-in 0.4s var(--ease-spring); }
+.pip-line { font: 700 19px/1.4 var(--font-display); text-wrap: balance; }
+.pip-face { font-size: 34px; vertical-align: middle; }
+.pip-work { display: grid; justify-items: end; padding: 8px 20px; border-radius: 16px; background: var(--sky-soft); font: 800 34px/1.25 var(--font-display); font-variant-numeric: tabular-nums; }
+.pip-work span:nth-child(2) { padding-bottom: 4px; border-bottom: 4px solid var(--ink); }
+.pip-bad { color: var(--coral-deep); letter-spacing: 0.08em; }
+.pip-ask { max-width: 38ch; font: 700 17px/1.4 var(--font-display); color: var(--ink-soft); }
+.pip-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+@keyframes nope { 20% { transform: translateX(-9px); } 40% { transform: translateX(9px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+
+.shields { gap: 36px; }
+
+@media (max-width: 600px) {
+  .duel-speech { max-width: calc(100% - 112px); font-size: 15px; }
+  .shields { gap: 28px; }
+  .duel-top { padding-top: 96px; }
+  .shield { width: 60px; height: 60px; }
+  .shield span { font-size: 20px; }
+  .spell { gap: 6px; padding: 8px 10px; }
+  .spell-slot, .spell-total { width: 58px; height: 70px; font-size: 27px; }
+  .spell-total { min-width: 70px; }
+  .spell-op { font-size: 22px; }
+  .hand { gap: 6px; min-height: 100px; }
+  .card { width: 64px; height: 90px; border-radius: 14px; }
+  .card-num { font-size: 26px; }
+}
