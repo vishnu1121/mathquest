@@ -1,18 +1,41 @@
 # MathQuest
 
-A maths game for kids aged 5 to 11, where the maths is the game rather than a quiz between cartoons.
+An AI-powered maths adventure for kids aged 5 to 11. Six islands, one per grade, where the maths is the
+game rather than a quiz between cartoons.
 
 Built for the **Nerdy AI Hackathon** (Prompt 01: K–5 Math Game).
 
 ### ▶ [Play it live — mathquest-rosy.vercel.app](https://mathquest-rosy.vercel.app/)
 
-No account, no install. It asks your name once, then you pick a class and you are on your island. The
-live build has AI switched on; everything still works if a provider is down.
+No account, no install. It asks your name once, then you pick a class and you are on your island.
 
-The short version: children get an island of their own, eight chapters built from their grade's real
-syllabus, and an owl who helps without giving answers. An AI writes fresh questions while they play, so
-replaying a chapter is not replaying the same five questions — but it is never allowed to *assert* an
-answer. It has to show its working, and the server re-solves that working before any child sees it.
+### What the AI does
+
+AI runs through the whole game, not one corner of it:
+
+- **Hoot the owl coaches.** He reads what is on the board — the pieces, the moves the child tried, what
+  they have built so far — and gives three hints, each one going a step further: notice, try, then see
+  it done on a smaller example. He asks; he never tells.
+- **It writes fresh questions while you play.** The next question is written while the child answers
+  this one, matched to their grade, chapter, skill and format. Replaying a chapter is not replaying the
+  same five questions.
+- **It explains, after the fact.** "You wanna know how?" walks through a question step by step, but only
+  once it has been marked, so asking can never cost the child anything.
+- **It spots the mix-up.** In the Muddle Monster Arena, a wrong answer is traced to the mistake behind
+  it — a dropped carry, a place-value slip. Code catches the common ones and the AI names the rest, and
+  the next boss is built around that exact mistake.
+- **It listens.** In Teach Pip, the child explains in their own words why Pip got it wrong, and the AI
+  judges whether they found the idea. Pip answers back.
+- **It tells the story and writes the note home.** Chapter scenes are narrated with the numbers the child
+  actually used, and grown-ups get a short note written from the evidence.
+
+**The AI writes words; code decides what is right.** Every reply is checked before a child sees it. A
+hint that gives away the answer is thrown out. An explanation must end on the answer the code worked
+out. A new question must show its working, and the server re-solves that working in exact arithmetic.
+If a check fails, or a provider is down, the game uses its built-in version and the child never waits.
+
+It runs on **Groq** with **`openai/gpt-oss-120b`**, and every AI job has a backup account, so one key
+running dry never switches a feature off.
 
 ---
 
@@ -30,7 +53,7 @@ answer. It has to show its working, and the server re-solves that working before
 ## Contents
 
 - [What you actually play](#what-you-actually-play)
-- [The two AI features](#the-two-ai-features)
+- [Every AI feature, and what checks it](#every-ai-feature-and-what-checks-it)
 - [How a generated question is checked](#how-a-generated-question-is-checked)
 - [Apex Mode and the treasure](#apex-mode-and-the-treasure)
 - [Running it](#running-it)
@@ -61,8 +84,9 @@ into a cargo ship. Typing a number on a keypad is one input among many.
 *Grade 4's place-value workbench. The digits and the blocks are the real operands, drawn from the question
 the code generated — not decoration beside a sum.*
 
-**Hoot the owl** sits with you the whole way. He notices pauses and mistakes, and asks one question
-that fits the moment. He is not allowed to say the answer — a guard strips any hint containing it.
+**Hoot the owl** sits with you the whole way. Ask him for help and the AI reads the board and writes a
+hint for what you have actually done — not a canned line. He is not allowed to say the answer; a guard
+throws out any hint that does.
 
 **Other places to go.** The Muddle Monster Arena is an adaptive practice mode with an in-session Elo
 rating and misconception bosses. Practice has trails, a mixed expedition and a set of static maths
@@ -79,7 +103,24 @@ analytics, no server-side profile. The name you type is stored on the device and
 
 ---
 
-## The two AI features
+## Every AI feature, and what checks it
+
+Eight jobs, one rule: **the AI writes the words, and code decides what is right.** The model never scores
+an answer, never awards a star and never moves a child on. Each reply passes its own guard first, and a
+reply that fails is treated exactly like a provider that did not answer.
+
+| Where | What the AI does | What code checks before a child sees it |
+|---|---|---|
+| **Hoot's hints**, on every board | Reads the board as data — pieces, moves tried, what is built so far — and writes the next of three hints: notice, try, then see it done | Must be one question. No number from the child's question or its answer. A worked example (Grade 2 up, last hint only) must use different, smaller numbers. Never repeats an earlier hint |
+| **Hoot in the Arena** | Asks one question about what the child is doing right now: a pause, a mix-up, a boss move | Code picks the moment. Only numbers from the problem, never the answer, and no words like "wrong" or "easy" |
+| **Fresh questions** | Writes the next question while the child answers this one, for their grade, chapter, skill and format | Must show its working; the server re-solves it in exact arithmetic and drops it if anything disagrees ([details](#how-a-generated-question-is-checked)) |
+| **"You wanna know how?"** | A step-by-step walkthrough of a question that has already been marked | The last line must land on the answer the code computed |
+| **Mix-up diagnosis** (Arena) | Names the mistake behind a wrong answer that the rules do not recognise | Common mix-ups are caught by code with no AI call. The AI can only choose from a fixed list, and that choice only picks a boss the code already built |
+| **Teach Pip** | Reads the child's own explanation of Pip's mistake and judges whether they found the idea | Pip's reply may only use the problem's numbers. Tap-to-choose idea cards work without AI |
+| **Story scenes** | Narrates the chapter using what the child actually did | Every number in the story must be one the child really used |
+| **Note for grown-ups** | A short note on the Adults dashboard, written from the evidence | Every number in the note must come from that evidence |
+
+The two with the most going on are shown below.
 
 ### "You wanna know how?"
 
@@ -168,8 +209,8 @@ On top of that, in order:
 7. Multiple choice: exactly one option may be correct, by value, and the positions are shuffled by a
    seeded RNG so a model that always writes the answer first cannot teach that pattern.
 8. The finished object must pass `validateTask` — the same structural gate every built-in question
-   passes — and, in the browser, `checkTask(task, correctResponse(task))`, so "See a worked example"
-   can never hand a child a losing answer.
+   passes — and, in the browser, `checkTask(task, correctResponse(task))`, so a generated board can
+   always be won.
 
 Anything that fails falls to the second provider account, and then to the built-in question the browser
 is already holding. **A rejection is not an error path. It is the normal path, taken slightly more
@@ -181,9 +222,9 @@ Measured live: roughly **three replies in four** survive the guard.
 
 ## Apex Mode and the treasure
 
-**Grades 3, 4 and 5 only**, and only once every chapter of that island is finished. Younger classes do
-not see a locked tab or a greyed-out card — Apex is not in their navigation and no Apex level is
-registered for them.
+**Grades 3, 4 and 5 only**, and only once every chapter of that island is finished. Every class can
+open the Apex tab, but Kindergarten to Grade 2 have no Apex levels at all; tapping a quest tells them
+Apex arrives in Grade 3.
 
 It replays the same eight quests at the hardest that grade goes: multi-step problems, working
 backwards, unknowns in the middle, deciding which operation is even needed. It is **not another
@@ -268,7 +309,7 @@ until somebody notices.
 
 | Job | Primary | Understudy | Carries |
 |---|---|---|---|
-| general | `AI_*` | `AI2_*` | coaching, narration, Teach Pip, diagnosis, Hoot's companion line |
+| general | `AI_*` | `AI2_*` | Hoot's coaching, story scenes, Teach Pip, mix-up diagnosis, Hoot's Arena questions, the grown-ups' note |
 | hints | `HINT_AI_*` | `HINT2_AI_*` | Hoot's hints |
 | explainer | `EXPLAIN_AI_*` | `EXPLAIN2_AI_*` | "You wanna know how?" |
 | questions | `GEN_AI_*` | `GEN2_AI_*` | fresh questions, one per question answered |
